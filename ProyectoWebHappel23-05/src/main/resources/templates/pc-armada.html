@@ -1,0 +1,60 @@
+<!doctype html>
+<html>
+	<head>
+		<div th:replace="fragments/header :: headhtml">Header</div>
+		<meta charset="UTF-8"></meta>
+		<title>Listado de Usuarios</title>	
+	</head>
+
+	<body>
+		<div class="container">
+			<div th:replace="@{'fragments/' + ${header}} :: header">Header</div>
+			
+			<div class="row">
+				<div class="col-6">
+					<div class="row">PC SELECCIONADA:</div>
+					<div class="row">
+						<div class="col-2"><img class="img-fluid" th:src="${urlimagenmother}"></img></div>
+						<div class="col-10"><label th:text="${tipomother} + ' ' + ${marcamother} + ' ' + ${modelomother}"></label><label>&nbsp;$</label><label th:text="${preciomother}"></label></div>
+					</div>
+					<div class="row">
+						<div class="col-2"><img class="img-fluid" th:src="${urlimagencpu}"></img></div>
+						<div class="col-10"><label th:text="${tipocpu} + ' ' + ${marcacpu} + ' ' + ${modelocpu}"></label><label>&nbsp;$</label><label th:text="${preciocpu}"></label></div>
+					</div>
+					<div class="row">
+						<div class="col-2"><img class="img-fluid" th:src="${urlimagengpu}"></img></div>
+						<div class="col-10"><label th:text="${tipogpu} + ' ' + ${marcagpu} + ' ' + ${modelogpu}"></label><label>&nbsp;$</label><label th:text="${preciogpu}"></label></div>
+					</div>
+					<div class="row">
+						<div class="col-2"><img class="img-fluid" th:src="${urlimagenHD}"></img></div>
+						<div class="col-10"><label th:text="${tipoHD} + ' ' + ${marcaHD} + ' ' + ${modeloHD}"></label><label>&nbsp;$</label><label th:text="${precioHD}"></label></div>
+					</div>
+					<div class="row">
+						<div class="col-2"><img class="img-fluid" th:src="${urlimagenram}"></img></div>
+						<div class="col-10"><label th:text="${tiporam} + ' ' + ${marcaram} + ' ' + ${modeloram}"></label><label>&nbsp;$</label><label th:text="${precioram}"></label></div>
+					</div>
+					<div class="row">
+						<div class="col-2"><img class="img-fluid" th:src="${urlimagenram2?: ''}"></img></div>
+						<div class="col-10"><label th:text="${tiporam2?: ''} + ' ' + ${marcaram2?: ''} + ' ' + ${modeloram2?: ''}"></label><label th:text="'&nbsp;$' +${precioram2?: ''}"></label></div>
+					</div>
+					<div class="row"><div class="col-12"><label>Precio total:&nbsp;</label><label>$</label><label th:text="${precioPC}"></label></div></div> 
+					<div class="row"><label>JUEGO SELECCIONADO:</label></div>
+					<div class="row">					
+						<div class="col-2"><img class="img-fluid" th:src="${urlimagen}"></img></div>
+						<div class="col-9"><label th:text="${nombre}"></label><label th:text="${preciogpu}"></label></div>
+					</div>
+				</div>
+				<div class="col-6">
+					<label th:text="${renPlacaDeVideoJuego} + ' ' + ${vramZ} + ', ' + ${renProcesadorZ} + ' y por ultimo ' + ${ramZ}"></label>
+				</div>
+			</div>
+			
+			<div class="row">
+				<a class="nav-link" href="/armar-pc-de-prueba">Probar otra pc</a>
+			</div>
+			
+			<div th:replace="fragments/header :: footer"></div>
+			</div>
+	</body>
+
+</html>

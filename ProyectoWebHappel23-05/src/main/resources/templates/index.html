@@ -1,0 +1,18 @@
+<!doctype html>
+<html>
+<head>
+	<div th:replace="fragments/header :: headhtml"></div>
+	<meta charset="UTF-8"></meta>
+	<title>Home</title>
+</head>
+
+<body>
+	<div class="container">
+		<div th:replace="@{'fragments/' + ${header}} :: header">Header</div>
+		
+		
+		<div th:replace="fragments/header :: footer"></div>
+	</div>
+</body>
+
+</html>

@@ -1,0 +1,35 @@
+<!doctype html>
+<html>
+	<head>
+		<div th:replace="fragments/header :: headhtml">Header</div>
+		<meta charset="UTF-8"></meta>
+		<title>Listado de Usuarios</title>	
+	</head>
+
+	<body>
+		<div class="container">
+			<div th:replace="@{'fragments/' + ${header}} :: header">Header</div>
+			
+		<!-- Write your comments here -->
+			<div class="row">
+				<h1 class="col-12">Listado  de Productos</h1>
+				<br></br>
+				<div class="card-group" th:each="producto:${listadoProductos}">
+					<div class="card">
+					  <img class="card-img-top img-fluid" alt="Responsive image" th:src="${producto.urlimagen}"></img>
+					  <div class="card-body">
+					    <h5 class="card-title" th:text="${producto.tipo} +' '+ ${producto.marca} +' '+ ${producto.modelo}"></h5>
+					    <p class="card-text" th:text="${producto.sata?: ''} +' '+ ${producto.socketcpu?: ''} +' '+ ${producto.tiporam?: '' } + ' '+ ${producto.tamanio?: ''} +' '+ ${producto.velocidad?: ''} +' '+ '$' +${producto.precio?: ''}"></p>
+					    <a href="#" class="btn btn-primary">Añadir al carrito</a><a th:href="'/detalle/' + ${producto.id}" class="btn btn-primary">Detalles</a>
+					  </div>
+					</div>
+					
+				</div>
+			</div>
+			<div th:replace="fragments/header :: footer"></div>
+			
+			
+		</div>	
+	</body>
+
+</html>

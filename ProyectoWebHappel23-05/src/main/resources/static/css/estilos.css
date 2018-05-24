@@ -1,0 +1,106 @@
+html {
+  font-size: 1rem;
+}
+
+@include media-breakpoint-up(sm) {
+  html {
+    font-size: 1.2rem;
+  }
+}
+
+@include media-breakpoint-up(md) {
+  html {
+    font-size: 1.4rem;
+  }
+}
+
+@include media-breakpoint-up(lg) {
+  html {
+    font-size: 1.6rem;
+  }
+}
+@media (max-width: @screen-xs) {
+    body{font-size: 10px;}
+}
+
+@media (max-width: @screen-sm) {
+    body{font-size: 14px;}
+}
+
+
+h5{
+    font-size: 1.4em;
+}     
+
+.logoredes {
+	padding: 2.5%;
+    padding-top: 0%;
+    width: 1000px;
+}
+
+.sin-margen {
+	margin:0px;
+}
+
+.botonSubirImagen{
+	
+}
+.comentario_modificable{
+	display:block;
+}
+
+.form-modificar-oculto{
+	display:none;
+}
+
+.form-modificar-visible{
+	display:block;
+}
+
+.form-subcomentar-oculto{
+	display:none;
+}
+
+.form-subcomentar-visible{
+	display:block;
+}
+
+.card {
+	padding:1rem;
+	width: 15rem;
+    margin: 1rem;
+}
+
+.form-busqueda {
+	display: inline-block;
+    width: 8rem;
+    vertical-align: middle;
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    color: #495057;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    border-radius: .25rem;
+    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+
+.form-inline{
+	padding: 4px 5px 2px 2px;
+    position: relative;
+    width: 215px;
+    background: none repeat scroll 0 0 #fff;
+    border: 1px solid #cccccc;
+    box-shadow: 1px 1px 1px 0 rgba(0, 0, 0, 0.08) !important;
+    float: right;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    margin-top: 2px;
+    float: right;
+}
+
+.usuariolog{
+	  margin-left: 1rem;
+}

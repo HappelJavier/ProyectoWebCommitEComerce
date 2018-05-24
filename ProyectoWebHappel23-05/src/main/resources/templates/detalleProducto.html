@@ -1,0 +1,46 @@
+<!doctype html>
+<html>
+	<head>
+		<div th:replace="fragments/header :: headhtml">Header</div>
+		<meta charset="UTF-8"></meta>
+		<title>detalle producto</title>
+	</head>
+
+
+	<body>
+		<div class="container">
+			<div th:replace="@{'fragments/' + ${header}} :: header">Header</div>
+			<div class="row">
+				<h1>detalle producto</h1>
+			</div>
+			<div class="row">
+				<div class="col-6 ">
+					<img class="img-fluid" th:src="${urlimagen}"></img>
+				</div>
+				<div class="col-6">
+					<label th:text="${tipo} + ' ' + ${marca} + ' ' + ${modelo}"> </label>
+					<br></br>
+					<label>SOCKET CPU:&nbsp;</label><label th:text="${socketcpu}"> </label>
+					<br></br>
+					<label>TIPO DE RAM:&nbsp;</label><label th:text="${tiporam}"> </label>
+					<br></br>
+					<label>PCI:&nbsp;</label><label  th:text="${pci}"> </label>
+					<br></br>
+					<label>SATA:&nbsp;</label><img th:src="${sata}"> </img>
+					<br></br>
+					<label>VELOCIDAD:&nbsp;</label><label th:text="${velocidad}"> </label>
+					<br></br>
+					<label>TAMAÑO:&nbsp;</label><label th:text="${tamanio}"></label>
+					<br></br>
+					<label>CONSUMO:&nbsp;</label><label th:text="${consumo} + 'WATTS'"> </label>
+					<br></br>
+					<label>PRECIO: $</label><label th:text="${precio}"> </label>		
+				</div>
+			</div>
+								
+			<div th:replace="fragments/header :: footer"></div>
+			
+		</div>
+	</body>
+
+</html>

@@ -1,0 +1,67 @@
+<!doctype html>
+<html>
+<head>
+<div th:replace="fragments/header :: headhtml">Header</div>
+<meta charset="UTF-8"></meta>
+<title>Registro de producto</title>
+</head>
+
+<body>
+	<div class="container">
+	<div th:replace="@{'fragments/' + ${header}} :: header">Header</div>
+		
+		<div class="row">
+			<div class="col-6">
+				<h1>Registrar Juego</h1>
+				<form action="/registrar-juego">
+					<input name="nombre" type="text" placeholder="Ingrese el nombre..."></input><br></br>
+					<input name="renplacadevideo" type="text" placeholder="Ingrese el rendimiento GPU..."></input><br></br>
+					<input name="renprocesador" type="text" placeholder="Ingrese el rendimiento CPU..."></input><br></br>
+					<input name="vram" type="text" placeholder="Ingrese tamaño de VRAM..."></input><br></br>
+					<input name="ram" type="text" placeholder="Ingrese tamaño de RAM..."></input><br></br>
+					<input value="REGISTRAR" type="submit"></input>
+				</form>
+			</div>
+			<div class="col-6">
+			<h1>Registrar Producto</h1>
+				<form action="/registrar-producto">
+					<div class="form-group">
+						<label for="exampleFormControlSelect1">Example select</label> <select
+							name="tipo" class="form-control" id="exampleFormControlSelect1">
+							<option>placa de video</option>
+							<option>microprocesador</option>
+							<option>disco duro</option>
+							<option>motherboard</option>
+							<option>memoria</option>
+						</select>
+					</div>
+
+					<br></br> <input name="marca" type="text"
+						placeholder="Ingrese la marca..."></input><br></br> <input
+						name="modelo" type="text" placeholder="Ingrese el modelo..."></input><br></br>
+					<input name="comphd" type="text"
+						placeholder="Ingrese socket sata..."></input><br></br> <input
+						name="compcpu" type="text" placeholder="Ingrese socket cpu..."></input><br></br>
+					<input name="compram" type="text"
+						placeholder="Ingrese socket ram..."></input><br></br> <input
+						name="urlimagen" type="text"
+						placeholder="Ingrese url de imagen..."></input><br></br> <input
+						name="tamaniomemoria" type="text"
+						placeholder="Ingrese tamaño de memoria en Gb..."></input><br></br>
+					<input name="velocidad" type="text"
+						placeholder="Ingrese velocidad en mHz..."></input><br></br> <input
+						name="rendimiento" type="text"
+						placeholder="Ingrese indice de rendimiento..."></input><br></br> <input
+						name="precio" type="text"
+						placeholder="Ingrese precio del producto..."></input><br></br> <input
+						value="REGISTRAR" type="submit"></input>
+
+				</form>
+			</div>
+		</div>
+	</div>
+	<div th:replace="fragments/header :: footer"></div>
+	
+	
+</body>
+</html>

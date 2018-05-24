@@ -1,0 +1,80 @@
+<!doctype html>
+<html>
+	<head>
+		<div th:replace="fragments/header :: headhtml">Header</div>
+		<meta charset="UTF-8"></meta>
+		<title>detalle producto</title>
+	</head>
+
+
+	<body>
+		<div class="container">
+			<div th:replace="@{'fragments/' + ${header}} :: header">Header</div>
+			<div class="row">
+				<h1>PERFIL USUARIO</h1>
+			</div>
+			<div class="row">
+				<div class="col-6">
+					<label>NOMBRE:&nbsp;</label><label th:text="${nombre} + ' ' + ${apellido}"> </label>
+					<br></br>
+					<label>NICK:&nbsp;</label><label th:text="${nick}"> </label>
+					<br></br>
+					<label>CONTRASEÑA:&nbsp;</label><label th:text="${contrasenia}"> </label>
+					<br></br>
+					<label>MAIL:&nbsp;</label><label  th:text="${mail}"> </label>
+					<br></br>
+					<label>PC:&nbsp;</label><label th:text="${idpc}"></label>
+					<br></br>
+					<img class="img-fluid col-4" th:src="${imagenDePerfil?: ''}"></img>
+					
+					
+					<button id="botonSubirImagen">subir imagen</button>
+					<form action="/subir-imagen">
+						<input type="text" name="inputUrlImagen" id="inputUrlImagen"></input>
+						<input type="submit"></input>
+					</form>
+					
+				</div>
+				<div class="col-6">
+					<div class="row">
+						<div class="col-2"><img class="img-fluid" th:src="${urlimagenmother?: ''}"></img></div>
+						<div class="col-10"><label th:text="${tipomother?: ''} + ' ' + ${marcamother?: ''} + ' ' + ${modelomother?: ''}"></label></div>
+					</div>
+					<div class="row">
+						<div class="col-2"><img class="img-fluid" th:src="${urlimagencpu?: ''}"></img></div>
+						<div class="col-10"><label th:text="${tipocpu?: ''} + ' ' + ${marcacpu?: ''} + ' ' + ${modelocpu?: ''}"></label></div>
+					</div>
+					<div class="row">
+						<div class="col-2"><img class="img-fluid" th:src="${urlimagengpu?: ''}"></img></div>
+						<div class="col-10"><label th:text="${tipogpu?: ''} + ' ' + ${marcagpu?: ''} + ' ' + ${modelogpu?: ''}"></label></div>
+					</div>
+					<div class="row">
+						<div class="col-2"><img class="img-fluid" th:src="${urlimagenHD?: ''}"></img></div>
+						<div class="col-10"><label th:text="${tipoHD?: ''} + ' ' + ${marcaHD?: ''} + ' ' + ${modeloHD?: ''}"></label></div>
+					</div>
+					<div class="row">
+						<div class="col-2"><img class="img-fluid" th:src="${urlimagenram1?: ''}"></img></div>
+						<div class="col-10"><label th:text="${tiporam1?: ''} + ' ' + ${marcaram1?: ''} + ' ' + ${tamanio1?: ''}"></label></div>
+					</div>
+					<div class="row">
+						<div class="col-2"><img class="img-fluid" th:src="${urlimagenram2?: ''}"></img></div>
+						<div class="col-10"><label th:text="${tiporam2?: ''} + ' ' + ${marcaram2?: ''} + ' ' + ${tamanio2?: ''}"></label></div>
+					</div>
+					<div class="row">
+						<a th:href="${urlEliminarPc?: ''}" th:text="${botonEliminarPc?: ''}"></a>
+					</div>
+
+					<div class="row">
+						<a th:href="${urlCrearPc?: ''}" th:text="${botonCrearPc?: ''}"></a>
+					</div>
+				</div>
+				
+				
+			</div>
+								
+			<div th:replace="fragments/header :: footer"></div>
+			
+		</div>
+	</body>
+
+</html>

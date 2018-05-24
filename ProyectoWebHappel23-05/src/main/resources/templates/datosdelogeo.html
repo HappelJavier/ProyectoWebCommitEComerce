@@ -1,0 +1,28 @@
+<!doctype html>
+<html>
+	<head>
+		<div th:replace="fragments/header :: headhtml">Header</div>
+		<meta charset="UTF-8"></meta>
+		<title>detalle producto</title>
+	</head>
+
+
+	<body>
+		<div class="container">
+			<div th:replace="@{'fragments/' + ${header}} :: header">Header</div>
+			<div class="row">
+				<h1>PERFIL USUARIO</h1>
+			</div>
+			<div class="row">
+				<div class="col-6">
+					<label>NOMBRE:&nbsp;</label><label th:text="${id}"> </label>
+					<br></br>
+				</div>
+			</div>
+								
+			<div th:replace="fragments/header :: footer"></div>
+			
+		</div>
+	</body>
+
+</html>
