@@ -23,7 +23,10 @@
     	    $(this).attr('id',newID);
     	});
     	
+    	$(this).siblings(".form-subcomentar-oculto")[0]
+    	
         $('#boton-subcomentar0').click(function(){
+        	debugger;
         	$('#form-subcomentar0').toggleClass('form-subcomentar-visible')
         })
     	
