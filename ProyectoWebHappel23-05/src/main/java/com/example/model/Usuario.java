@@ -12,6 +12,19 @@ public class Usuario {
 	private String imagen_de_perfil;
 	private boolean administrador;
 	
+	public Usuario(int id, String nombre, String contrasenia, String nick, String mail, String idpc,
+			String imagen_de_perfil, boolean administrador) {
+		super();
+		this.id = id;
+		this.nombre = nombre;
+		this.contrasenia = contrasenia;
+		this.nick = nick;
+		this.mail = mail;
+		this.idpc = idpc;
+		this.imagen_de_perfil = imagen_de_perfil;
+		this.administrador = administrador;
+	}
+
 	public Usuario(int id, String nombre, String contrasenia, String nick, String imagen_de_perfil, Boolean administrador) {
 		super();
 		this.id = id;

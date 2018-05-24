@@ -1,0 +1,31 @@
+<!doctype html>
+<html>
+<head>
+<div th:replace="fragments/header :: headhtml">Header</div>
+<meta charset="UTF-8"></meta>
+<title>Registro de producto</title>
+</head>
+
+<body>
+	<div class="container">
+	<div th:replace="@{'fragments/' + ${header}} :: header">Header</div>
+		
+		<div class="row">
+			<div class="col-6">
+				<h1>Registrar Juego</h1>
+				<form action="/registrar-juego">
+					<input name="nombre" type="text" placeholder="Ingrese el nombre..."></input><br></br>
+					<input name="renplacadevideo" type="text" placeholder="Ingrese el rendimiento GPU..."></input><br></br>
+					<input name="renprocesador" type="text" placeholder="Ingrese el rendimiento CPU..."></input><br></br>
+					<input name="vram" type="text" placeholder="Ingrese tamaño de VRAM..."></input><br></br>
+					<input name="ram" type="text" placeholder="Ingrese tamaño de RAM..."></input><br></br>
+					<input value="REGISTRAR" type="submit"></input>
+				</form>
+			</div>
+		</div>
+	</div>
+	<div th:replace="fragments/header :: footer"></div>
+	
+	
+</body>
+</html>

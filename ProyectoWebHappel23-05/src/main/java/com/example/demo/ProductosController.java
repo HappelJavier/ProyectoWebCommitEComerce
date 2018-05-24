@@ -54,39 +54,105 @@ public class ProductosController {
 		
 		ProductosHelper.checkearHeader(logeado, template);
 		
-		PreparedStatement consulta = connection.prepareStatement("SELECT * FROM productos;");
+		PreparedStatement consultaProductos = connection.prepareStatement("SELECT * FROM productos ORDER BY id ASC;");
 
-		ResultSet resultado = consulta.executeQuery();
+		ResultSet resultadoProductos = consultaProductos.executeQuery();
 
 		ArrayList<Producto> listadoProductos = new ArrayList<Producto>();
 
-		while ( resultado.next() ) {
-			int id = resultado.getInt("id");
-			String tipo = resultado.getString("tipo");
-			String marca = resultado.getString("marca");
-			String modelo = resultado.getString("modelo");
-			String socketcpu = resultado.getString("socketcpu");
-			String tiporam = resultado.getString("tiporam");
-			String pci = resultado.getString("pci");
-			String sata = resultado.getString("sata");
-			String velocidad = resultado.getString("velocidad");
-			String tamanio = resultado.getString("tamanio");
-			String rendimiento = resultado.getString("rendimiento");
-			String consumo = resultado.getString("consumo");
-			int precio = resultado.getInt("precio");
-			String urlimagen = resultado.getString("urlimagen");
-			Producto x = new Producto (id, tipo, marca, modelo, socketcpu, tiporam, pci, sata, velocidad, tamanio, rendimiento, consumo, precio, urlimagen);
+		while ( resultadoProductos.next() ) {
+			int idProducto = resultadoProductos.getInt("id");
+			String tipo = resultadoProductos.getString("tipo");
+			String marca = resultadoProductos.getString("marca");
+			String modelo = resultadoProductos.getString("modelo");
+			String socketcpu = resultadoProductos.getString("socketcpu");
+			String tiporam = resultadoProductos.getString("tiporam");
+			String pci = resultadoProductos.getString("pci");
+			String sata = resultadoProductos.getString("sata");
+			String velocidad = resultadoProductos.getString("velocidad");
+			String tamanio = resultadoProductos.getString("tamanio");
+			String rendimiento = resultadoProductos.getString("rendimiento");
+			String consumo = resultadoProductos.getString("consumo");
+			int precio = resultadoProductos.getInt("precio");
+			String urlimagenProducto = resultadoProductos.getString("urlimagen");
+			Producto x = new Producto (idProducto, tipo, marca, modelo, socketcpu, tiporam, pci, sata, velocidad, tamanio, rendimiento, consumo, precio, urlimagenProducto);
 			listadoProductos.add(x);	
 		}
 
 		template.addAttribute("listadoProductos", listadoProductos);
+		
+		
+		PreparedStatement consultaJuegos = connection.prepareStatement("SELECT * FROM juegos ORDER BY id ASC;");
+
+		ResultSet resultadoJuegos = consultaJuegos.executeQuery();
+
+		ArrayList<Juego> listadoJuegos= new ArrayList<Juego>();
+
+		while ( resultadoJuegos.next() ) {
+			int idJuego = resultadoJuegos.getInt("id");
+			String nombreJuego = resultadoJuegos.getString("nombre");
+			String desarrollador = resultadoJuegos.getString("desarrollador");
+			String fecha = resultadoJuegos.getString("fecha");
+			String plataforma = resultadoJuegos.getString("plataforma");
+			String genero = resultadoJuegos.getString("genero");
+			int rencpu1 = resultadoJuegos.getInt("rencpu1");
+			int rencpu2 = resultadoJuegos.getInt("rencpu2");
+			int rengpu1 = resultadoJuegos.getInt("rengpu1");
+			int rengpu2 = resultadoJuegos.getInt("rengpu2");
+			int vram1 = resultadoJuegos.getInt("vram1");
+			int vram2 = resultadoJuegos.getInt("vram2");
+			int ram1 = resultadoJuegos.getInt("ram1");
+			int ram2 = resultadoJuegos.getInt("ram2");
+			int precio = resultadoJuegos.getInt("precio");
+			String urlimagenJuego = resultadoJuegos.getString("urlimagen");
+			
+			Juego z = new Juego (idJuego, nombreJuego, desarrollador, fecha, plataforma, genero, rencpu1, rencpu2, rengpu1, rengpu2, vram1, vram2, ram1, ram2, precio, urlimagenJuego);
+			listadoJuegos.add(z);	
+		}
+
+		template.addAttribute("listadoJuegos", listadoJuegos);
+		
+		
+		PreparedStatement consultaUsuarios = connection.prepareStatement("SELECT * FROM usuarios ORDER BY id ASC;");
+
+		ResultSet resultadoUsuarios = consultaUsuarios.executeQuery();
+
+		ArrayList<Usuario> listadoUsuarios = new ArrayList<Usuario>();
+
+		while ( resultadoUsuarios.next() ) {
+			int idUsuario = resultadoUsuarios.getInt("id");
+			String nombreUsuario = resultadoUsuarios.getString("nombre");
+			String contrasenia = resultadoUsuarios.getString("contrasenia");
+			String nick = resultadoUsuarios.getString("nick");
+			String mail = resultadoUsuarios.getString("mail");
+			String idpc = resultadoUsuarios.getString("idpc");
+			String imagen_de_perfil = resultadoUsuarios.getString("imagen_de_perfil");
+			Boolean administrador = resultadoUsuarios.getBoolean("administrador");
+			Usuario y = new Usuario (idUsuario, nombreUsuario, contrasenia, nick, mail, idpc, imagen_de_perfil, administrador);
+			listadoUsuarios.add(y);	
+		}
+
+		template.addAttribute("listadoUsuarios", listadoUsuarios);
+		
 		connection.close();
 		
 		return "administrar";
 	}
 	
+	@GetMapping("/registro-juego")
+	public String registroJuego(HttpSession session,Model template) throws SQLException {
+		Connection connection;
+		connection = DriverManager.getConnection(env.getProperty("spring.datasource.url"), env.getProperty("spring.datasource.username"),
+				env.getProperty("spring.datasource.password"));
+		Usuario logeado = UsuarioHelper.usuarioLogeado(session, connection);
+		
+		ProductosHelper.checkearHeader(logeado, template);
+		
+		return "registro-juego";
+	}
+	
 	@GetMapping("/registro-producto")
-	public String registro(HttpSession session,Model template) throws SQLException {
+	public String registroProducto(HttpSession session,Model template) throws SQLException {
 		Connection connection;
 		connection = DriverManager.getConnection(env.getProperty("spring.datasource.url"), env.getProperty("spring.datasource.username"),
 				env.getProperty("spring.datasource.password"));
@@ -683,7 +749,61 @@ public class ProductosController {
 		}
 
 		connection.close();
-		return "formModificar";
+		return "formModificarProducto";
+	}
+	
+	@GetMapping("/modificar-juego/{id}")
+	public String modificarJuego(Model template, @PathVariable int id, HttpSession session) throws SQLException {
+
+		Connection connection;
+		connection = DriverManager.getConnection(env.getProperty("spring.datasource.url"), env.getProperty("spring.datasource.username"),
+				env.getProperty("spring.datasource.password"));
+		
+		Usuario logeado = UsuarioHelper.usuarioLogeado(session, connection);
+		
+		ProductosHelper.checkearHeader(logeado, template);
+		
+		PreparedStatement consulta = connection.prepareStatement("SELECT * FROM juegos WHERE id = ?;");
+		consulta.setInt(1, id);
+		
+		ResultSet resultado = consulta.executeQuery();
+
+		while ( resultado.next() ) {
+			String nombre = resultado.getString("nombre");
+			String desarrollador = resultado.getString("desarrollador");
+			String fecha = resultado.getString("fecha");
+			String plataforma = resultado.getString("plataforma");
+			String genero = resultado.getString("genero");
+			int rencpu1 = resultado.getInt("rencpu1");
+			int rencpu2 = resultado.getInt("rencpu2");
+			int rengpu1 = resultado.getInt("rengpu1");
+			int rengpu2 = resultado.getInt("rengpu2");
+			int vram1 = resultado.getInt("vram1");
+			int vram2 = resultado.getInt("vram2");
+			int ram1 = resultado.getInt("ram1");
+			int ram2 = resultado.getInt("ram2");
+			int precio = resultado.getInt("precio");
+			String urlimagenJuego = resultado.getString("urlimagen");
+			template.addAttribute("id", id);
+			template.addAttribute("nombre", nombre);
+			template.addAttribute("desarrollador", desarrollador);
+			template.addAttribute("fecha", fecha);
+			template.addAttribute("plataforma", plataforma);
+			template.addAttribute("genero", genero);
+			template.addAttribute("rencpu1", rencpu1);
+			template.addAttribute("rencpu2", rencpu2);
+			template.addAttribute("rengpu1", rengpu1);
+			template.addAttribute("rengpu2", rengpu2);
+			template.addAttribute("vram1", vram1);
+			template.addAttribute("vram2", vram2);
+			template.addAttribute("ram1", ram1);
+			template.addAttribute("ram2", ram2);
+			template.addAttribute("precio", precio);
+			template.addAttribute("urlimagen", urlimagenJuego);
+		}
+
+		connection.close();
+		return "formModificarJuego";
 	}
 	
 	@GetMapping("/update-producto")
@@ -709,8 +829,38 @@ public class ProductosController {
 		consulta.setInt(12, precio);
 		consulta.setString(13, urlimagen);
 		consulta.setInt(14, id);
+		consulta.executeUpdate();
 		
+		connection.close();
 		
+		return "redirect:/administrar";
+	}
+	
+	@GetMapping("/update-juego")
+	public String updateJuego(Model template, HttpSession session, @RequestParam int id, @RequestParam String nombre, @RequestParam String desarrollador, @RequestParam String fecha, @RequestParam String plataforma, @RequestParam String genero, @RequestParam int rencpu1, @RequestParam int rencpu2, @RequestParam int rengpu1, @RequestParam int rengpu2, @RequestParam int vram1, @RequestParam int vram2, @RequestParam int ram1, @RequestParam int ram2, @RequestParam int precio, @RequestParam String urlimagen) throws SQLException {
+
+		Connection connection;
+		connection = DriverManager.getConnection(env.getProperty("spring.datasource.url"), env.getProperty("spring.datasource.username"),
+				env.getProperty("spring.datasource.password"));
+		
+		PreparedStatement consulta = connection.prepareStatement("UPDATE juegos SET nombre = ?, desarrollador = ?, fecha = ?, plataforma = ?, genero = ?, rencpu1 = ?, rencpu2 = ?, rengpu1 = ?, rengpu2 = ?, vram1 = ?, vram2 = ?, ram1 = ?, ram2 = ?, precio = ?, urlimagen = ?  WHERE id = ? ;");
+
+		consulta.setString(1, nombre);
+		consulta.setString(2, desarrollador);
+		consulta.setString(3, fecha);
+		consulta.setString(4, plataforma);
+		consulta.setString(5, genero);
+		consulta.setInt(6, rencpu1);
+		consulta.setInt(7, rencpu2);
+		consulta.setInt(8, rengpu1);
+		consulta.setInt(9, rengpu2);
+		consulta.setInt(10, vram1);
+		consulta.setInt(11, vram2);
+		consulta.setInt(12, ram1);
+		consulta.setInt(13, ram2);
+		consulta.setInt(14, precio);
+		consulta.setString(15, urlimagen);
+		consulta.setInt(16, id);
 		consulta.executeUpdate();
 		
 		connection.close();
