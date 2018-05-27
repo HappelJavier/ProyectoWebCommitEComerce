@@ -15,8 +15,25 @@ public class Comentario {
 	private String contenido;
 	private ArrayList<Subcomentario> subcomentario;
 	private String nombre_usuario;
+	private String foto_perfil;
 	
 	
+
+	public Comentario(int id, int id_usuario_emisor, int id_usuario_receptor, int id_productos_padre,
+			int id_comentario_padre, String fecha, String contenido, ArrayList<Subcomentario> subcomentario,
+			String nombre_usuario, String foto_perfil) {
+		super();
+		this.id = id;
+		this.id_usuario_emisor = id_usuario_emisor;
+		this.id_usuario_receptor = id_usuario_receptor;
+		this.id_productos_padre = id_productos_padre;
+		this.id_comentario_padre = id_comentario_padre;
+		this.fecha = fecha;
+		this.contenido = contenido;
+		this.subcomentario = subcomentario;
+		this.nombre_usuario = nombre_usuario;
+		this.foto_perfil = foto_perfil;
+	}
 
 	public Comentario(int id, int id_usuario_emisor, int id_usuario_receptor, int id_productos_padre,
 			int id_comentario_padre, String fecha, String contenido, ArrayList<Subcomentario> subcomentario,
@@ -154,6 +171,14 @@ public class Comentario {
 
 	public void setNombre_usuario(String nombre_usuario) {
 		this.nombre_usuario = nombre_usuario;
+	}
+
+	public String getFoto_perfil() {
+		return foto_perfil;
+	}
+
+	public void setFoto_perfil(String foto_perfil) {
+		this.foto_perfil = foto_perfil;
 	}
 
 	

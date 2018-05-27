@@ -2,33 +2,21 @@
 	
 
     $(document).ready( function(){        
-    	$('.form-modificar-oculto').each(function(i){
-    	    var newID=$(this).attr('id') + i;
-    	    $(this).attr('id',newID);
-    	});
-    	$('.boton-modificar-com').each(function(i){
-    	    var newID=$(this).attr('id') + i;
-    	    $(this).attr('id',newID);
-    	});
-        $('#boton-modificar0').click(function(){
-        	$('#form-modificar0').toggleClass('form-modificar-visible')
+    	
+    	
+    	
+        $('.boton-subcomentar').click(function(){
+        	$($(this).siblings(".form-subcom")[0]).toggleClass('form-subcomentar-visible')
         })
         
-        $('.form-subcomentar-oculto').each(function(i){
-    	    var newID=$(this).attr('id') + i;
-    	    $(this).attr('id',newID);
-    	});
-    	$('.boton-subcomentar').each(function(i){
-    	    var newID=$(this).attr('id') + i;
-    	    $(this).attr('id',newID);
-    	});
-    	
-    	$(this).siblings(".form-subcomentar-oculto")[0]
-    	
-        $('#boton-subcomentar0').click(function(){
-        	debugger;
-        	$('#form-subcomentar0').toggleClass('form-subcomentar-visible')
-        })
+        $('.boton-modificar-com').click(function() {
+    		
+    		 debugger
+    		$($(this).parent().children().children().children(".form-mod")[0]).toggleClass('div_visible');
+    		 debugger
+         	$($(this).parent().children().children().children('.comentario-modificable')[0]).toggleClass('div_oculto');
+  		  
+    		});
     	
     	
     	

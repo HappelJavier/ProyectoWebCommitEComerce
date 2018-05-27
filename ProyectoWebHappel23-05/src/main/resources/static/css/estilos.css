@@ -65,6 +65,14 @@ h5{
 	display:block;
 }
 
+.div_oculto{
+	display:none;
+}
+
+.div_visible{
+	display:block;
+}
+
 .card {
 	padding:1rem;
 	width: 15rem;
@@ -103,4 +111,13 @@ h5{
 
 .usuariolog{
 	  margin-left: 1rem;
+}
+
+.subcom-box{
+	padding-left: 5rem;
+	margin: 1rem;
+}
+
+.com-box{
+	margin: 1rem;
 }

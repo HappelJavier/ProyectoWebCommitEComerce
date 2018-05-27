@@ -29,13 +29,17 @@ public class ComentariosHelper {
 			int id_usuario_receptor = resultado2.getInt("id_usuario_receptor");
 			int id_producto_padre = resultado2.getInt("id_producto_padre");
 			int id_comentario_padre = resultado2.getInt("id_comentario_padre");
-			String fecha = "El " + resultado2.getString("fecha");
+			String fecha =resultado2.getString("fecha");
 			String contenido = resultado2.getString("contenido");
+				PreparedStatement consulta4 = connection.prepareStatement("SELECT * FROM usuarios WHERE id = ? ;");
+				consulta4.setInt(1, id_usuario_emisor);
+				ResultSet resultado4 = consulta4.executeQuery();
+				resultado4.next();
+				String nombre_usuario=resultado4.getString("nick");
+				String foto_perfil=resultado4.getString("imagen_de_perfil");
 			
 			Usuario usuario = SQLHelper.sqlUsuario(id_usuario_emisor, connection );
 			
-			template.addAttribute("nick", usuario.getNick());
-			template.addAttribute("fecha", fecha);
 			
 			
 			PreparedStatement consulta3 = connection.prepareStatement("SELECT * FROM comentarios WHERE id_comentario_padre = ? ;");
@@ -46,17 +50,27 @@ public class ComentariosHelper {
 			while (resultado3.next() ) {
 				int id3 = resultado3.getInt("id");
 				int id_usuario_emisor3 = resultado3.getInt("id_usuario_emisor");
+					PreparedStatement consulta5 = connection.prepareStatement("SELECT * FROM usuarios WHERE id = ? ;");
+					consulta5.setInt(1, id_usuario_emisor3);
+					ResultSet resultado5 = consulta5.executeQuery();
+					resultado5.next();
+					String nombre_usuario3=resultado5.getString("nick");
+					String foto_perfil3=resultado5.getString("imagen_de_perfil");
+					
+				
+				
+				
 				int id_usuario_receptor3 = resultado3.getInt("id_usuario_receptor");
 				int id_producto_padre3 = resultado3.getInt("id_producto_padre");
 				int id_comentario_padre3 = resultado3.getInt("id_comentario_padre");
 				String fecha3 = resultado3.getString("fecha");
 				String contenido3 = resultado3.getString("contenido");
-				Subcomentario y = new Subcomentario(id3, id_usuario_receptor3, id_usuario_emisor3, id_producto_padre3, id_comentario_padre3, fecha3, contenido3);
+				Subcomentario y = new Subcomentario(id3, id_usuario_receptor3, id_usuario_emisor3, id_producto_padre3, id_comentario_padre3, fecha3, contenido3, nombre_usuario3, foto_perfil3);
 				subcomentarios.add(y);	
 				
 			}
 		
-			Comentario x = new Comentario (id2, id_usuario_receptor, id_usuario_emisor, id_producto_padre, id_comentario_padre, fecha, contenido, subcomentarios);
+			Comentario x = new Comentario (id2, id_usuario_receptor, id_usuario_emisor, id_producto_padre, id_comentario_padre, fecha, contenido, subcomentarios, nombre_usuario, foto_perfil);
 			listadoComentarios.add(x);	
 			
 		}

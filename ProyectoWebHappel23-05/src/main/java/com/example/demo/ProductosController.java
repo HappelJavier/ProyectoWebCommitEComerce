@@ -205,11 +205,7 @@ public class ProductosController {
 				env.getProperty("spring.datasource.password"));
 
 		PreparedStatement consulta = connection.prepareStatement(
-				"INSERT INTO productos(tipo, marca, modelo, socketcpu, tiporam, pci, sata, velocidad, tamanio, rendimiento, consumo, precio, urlimagen) VALUES( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?); "
-				+ "UPDATE productos SET compram = null, comphd = null, tamaniomemoria = null WHERE tipo = 'microprocesador'; "
-				+ "UPDATE productos SET compcpu = null, comphd = null, velocidad = null WHERE tipo = 'placa de video'; "
-				+ "UPDATE productos SET compcpu = null, compram = null, velocidad = null , rendimiento = null WHERE tipo = 'disco duro';"
-				+ " UPDATE productos SET tamaniomemoria = null, velocidad = null , rendimiento = null WHERE tipo = 'motherboard';");
+				"INSERT INTO productos(tipo, marca, modelo, socketcpu, tiporam, pci, sata, velocidad, tamanio, rendimiento, consumo, precio, urlimagen) VALUES( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?); ");
 		consulta.setString(1, tipo);
 		consulta.setString(2, marca);
 		consulta.setString(3, modelo);
@@ -1149,11 +1145,13 @@ public class ProductosController {
 			ProductosHelper.checkearHeader(logeado, template);
 			
 	
-			PreparedStatement consulta = connection.prepareStatement("INSERT INTO comentarios(id_producto_padre ,id_comentario_padre ,id_usuario_emisor ,id_usuario_receptor ,fecha ,contenido) VALUES(?, '0', ?, '0', '2018-05-01', ?)");
+			PreparedStatement consulta = connection.prepareStatement("INSERT INTO comentarios(id_producto_padre ,id_comentario_padre ,id_usuario_emisor ,id_usuario_receptor ,fecha ,contenido, foto_perfil) VALUES(?, '0', ?, '0', '2018-05-01', ?, ?)");
 
 			consulta.setInt(1, id);
 			consulta.setInt(2, logeado.getId());
 			consulta.setString(3, comentarionuevo);
+			consulta.setString(4, logeado.getImagen_de_perfil());
+			
 			
 			consulta.executeUpdate();
 			connection.close();
@@ -1176,12 +1174,13 @@ public class ProductosController {
 			ProductosHelper.checkearHeader(logeado, template);
 			
 	
-			PreparedStatement consulta = connection.prepareStatement("INSERT INTO comentarios(id_producto_padre ,id_comentario_padre ,id_usuario_emisor ,id_usuario_receptor ,fecha ,contenido) VALUES(?, ?, ?, '0', '2018-05-01', ?)");
+			PreparedStatement consulta = connection.prepareStatement("INSERT INTO comentarios(id_producto_padre ,id_comentario_padre ,id_usuario_emisor ,id_usuario_receptor ,fecha ,contenido, foto_perfil) VALUES(?, ?, ?, '0', '2018-05-01', ?, ?)");
 
 			consulta.setInt(1, id);
 			consulta.setInt(2, idcom);
 			consulta.setInt(3, logeado.getId());
 			consulta.setString(4, comentarionuevo);
+			consulta.setString(5, logeado.getImagen_de_perfil());
 			
 			consulta.executeUpdate();
 			connection.close();
