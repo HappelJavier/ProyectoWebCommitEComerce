@@ -118,6 +118,32 @@ h5{
 	margin: 1rem;
 }
 
+.subcom-unibox{
+	margin: 1rem;
+	padding: 1rem;
+	
+}
+
+
 .com-box{
 	margin: 1rem;
+	padding: 1rem;
+}
+
+.bg-com{
+	background-color:#99b3ff;
+	border-radius: 1rem;
+}
+
+.bg-subcom{
+	background-color:#ccd9ff;
+	border-radius: 1rem;
+}
+
+.coment-area{
+	background:#e6e6e6;
+	border-radius: 1rem;
+	width:30rem;
+	padding: 1rem;
+	
 }

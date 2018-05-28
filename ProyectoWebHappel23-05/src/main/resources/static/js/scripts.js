@@ -11,11 +11,13 @@
         
         $('.boton-modificar-com').click(function() {
     		
-    		 debugger
-    		$($(this).parent().children().children().children(".form-mod")[0]).toggleClass('div_visible');
-    		 debugger
-         	$($(this).parent().children().children().children('.comentario-modificable')[0]).toggleClass('div_oculto');
-  		  
+    		
+    		$($(this).parent().children(".form-mod")[0]).toggleClass('div_visible');
+    		 
+         	$($(this).parent().children('.comentario-modificable')[0]).toggleClass('div_oculto');
+    		
+    		$($(this).parent().children('.form-eliminar-com')[0]).toggleClass('div_oculto');
+    	  		  
     		});
     	
     	

@@ -1144,6 +1144,10 @@ public class ProductosController {
 					
 			ProductosHelper.checkearHeader(logeado, template);
 			
+			if (UsuarioHelper.usuarioLogeado(session, connection)== null) {
+				return "redirect:/login";
+			}
+			
 	
 			PreparedStatement consulta = connection.prepareStatement("INSERT INTO comentarios(id_producto_padre ,id_comentario_padre ,id_usuario_emisor ,id_usuario_receptor ,fecha ,contenido, foto_perfil) VALUES(?, '0', ?, '0', '2018-05-01', ?, ?)");
 
