@@ -8,78 +8,78 @@
 						<textarea class="coment-area" name="comentarionuevo" type="text" placeholder="Ingrese su comentario..."></textarea>
 						<input type="submit"></input>
 					</form>
+			</div>
+			
+			
+			<div class="col-12" th:each="comentario:${listadoComentarios}">
+				<div class="row com-box bg-com">
+					<div class="col-1">
+						<img class="img-fluid" th:src="${comentario.foto_perfil}"></img>
+					</div>
+					<div class="col-10">
+						<label class="text-uppercase" th:text="${comentario.nombre_usuario} + ' '"></label>
+						<label th:text="${comentario.fecha}"></label>
+						<h6 class="comentario-modificable"  th:text="${comentario.contenido}"></h6>
+						<form class="form-modificar-oculto form-mod" action="/modificar-comentario">
+								<textarea class="coment-area" name="comentarionuevo" th:text="${comentario.contenido}" type="text" placeholder="Modificar comentario..."></textarea>
+								<input name="id" type="hidden" th:value="${id}"></input>
+								<input name="idcom" type="hidden" th:value="${comentario.id}"></input>
+								<input type="submit" value="modificar" class="btn btn-primary btn-xs"></input>
+						</form>
+						<form class="form-eliminar-com div_oculto" action="/eliminar-comentario">
+							<input name="id" type="hidden" th:value="${id}"></input>
+							<input name="idcom" type="hidden" th:value="${comentario.id}"></input>
+							<input type="submit" value="borrar comentario" class="btn btn-primary btn-xs"></input>
+						</form>
+						<button class="boton-modificar-com">Modificar Comentario</button>
+						<button class="boton-subcomentar">Responder <i class="fa fa-reply"></i></button>
+						<form class="col-12 form-subcomentar-oculto form-subcom" action="/procesar-subcomentario">
+									<input name="id" type="hidden" th:value="${id}"></input>
+									<input name="idcom" type="hidden" th:value="${comentario.id}"></input>
+									<textarea class="coment-area" name="comentarionuevo" type="text" placeholder="Ingrese su comentario..."></textarea>
+									<input type="submit"></input>
+						</form>
+					</div>
+					
+					
+					
 				</div>
 				
 				
-				<div class="row" th:each="comentario:${listadoComentarios}">
-					<div class="row com-box bg-com">
-						<div class="col-1">
-							<img class="img-fluid" th:src="${comentario.foto_perfil}"></img>
-						</div>
-						<div class="col-10">
-							<label class="text-uppercase" th:text="${comentario.nombre_usuario} + ' '"></label>
-							<label th:text="${comentario.fecha}"></label>
-							<h6 class="comentario-modificable"  th:text="${comentario.contenido}"></h6>
-							<form class="form-modificar-oculto form-mod" action="/modificar-comentario">
+				
+				<div class="col-12 subcom-box">
+					<div class="bg-subcom subcom-unibox" th:each="subcom:${comentario.subcomentario}">
+						<div class=" row">
+							<div class="col-1">
+								<img class="img-fluid" th:src="${subcom.foto_perfil}"></img>
+							</div>
+							<div class="col-11">
+								<label class="text-uppercase" th:text="${subcom.nombre_usuario}"></label>
+								<label class="text-uppercase" th:text="${subcom.fecha}"></label>
+								<h6 class="" th:text="${subcom.contenido}" ></h6>
+								<form class="form-modificar-oculto form-mod" action="/modificar-comentario">
 									<textarea class="coment-area" name="comentarionuevo" th:text="${comentario.contenido}" type="text" placeholder="Modificar comentario..."></textarea>
 									<input name="id" type="hidden" th:value="${id}"></input>
 									<input name="idcom" type="hidden" th:value="${comentario.id}"></input>
 									<input type="submit" value="modificar" class="btn btn-primary btn-xs"></input>
-							</form>
-							<form class="form-eliminar-com div_oculto" action="/eliminar-comentario">
-								<input name="id" type="hidden" th:value="${id}"></input>
-								<input name="idcom" type="hidden" th:value="${comentario.id}"></input>
-								<input type="submit" value="borrar comentario" class="btn btn-primary btn-xs"></input>
-							</form>
-							<button class="boton-modificar-com">Modificar Comentario</button>
-							<button class="boton-subcomentar">Responder <i class="fa fa-reply"></i></button>
-							<form class="col-12 form-subcomentar-oculto form-subcom" action="/procesar-subcomentario">
-										<input name="id" type="hidden" th:value="${id}"></input>
-										<input name="idcom" type="hidden" th:value="${comentario.id}"></input>
-										<textarea class="coment-area" name="comentarionuevo" type="text" placeholder="Ingrese su comentario..."></textarea>
-										<input type="submit"></input>
-							</form>
+								</form>
+								<form class="form-eliminar-com div_oculto"  action="/eliminar-comentario">
+									<input name="id" type="hidden" th:value="${id}"></input>
+									<input name="idcom" type="hidden" th:value="${subcom.id}"></input>
+									<input type="submit" value="borrar comentario" class="btn btn-primary btn-xs"></input>
+								</form>
+								<button class="boton-modificar-com">Modificar Comentario</button>
+							</div>
+							
 						</div>
 						
 						
 						
-					</div>
-					
-					
-					
-					<div class="row subcom-box">
-						<div class="bg-subcom subcom-unibox" th:each="subcom:${comentario.subcomentario}">
-							<div class=" row">
-								<div class="col-1">
-									<img class="img-fluid" th:src="${subcom.foto_perfil}"></img>
-								</div>
-								<div class="col-11">
-									<label class="text-uppercase" th:text="${subcom.nombre_usuario}"></label>
-									<label class="text-uppercase" th:text="${subcom.fecha}"></label>
-									<h6 class="" th:text="${subcom.contenido}" ></h6>
-									<form class="form-modificar-oculto form-mod" action="/modificar-comentario">
-										<textarea class="coment-area" name="comentarionuevo" th:text="${comentario.contenido}" type="text" placeholder="Modificar comentario..."></textarea>
-										<input name="id" type="hidden" th:value="${id}"></input>
-										<input name="idcom" type="hidden" th:value="${comentario.id}"></input>
-										<input type="submit" value="modificar" class="btn btn-primary btn-xs"></input>
-									</form>
-									<form class="form-eliminar-com div_oculto"  action="/eliminar-comentario">
-										<input name="id" type="hidden" th:value="${id}"></input>
-										<input name="idcom" type="hidden" th:value="${subcom.id}"></input>
-										<input type="submit" value="borrar comentario" class="btn btn-primary btn-xs"></input>
-									</form>
-									<button class="boton-modificar-com">Modificar Comentario</button>
-								</div>
-								
-							</div>
-							
-							
-							
-							
-						</div>	
-					</div>
-		
+						
+					</div>	
 				</div>
+	
+			</div>
 		</div>
 		
 </body>

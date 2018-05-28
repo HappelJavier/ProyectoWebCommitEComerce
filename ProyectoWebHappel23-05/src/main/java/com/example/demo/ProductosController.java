@@ -52,6 +52,10 @@ public class ProductosController {
 				env.getProperty("spring.datasource.password"));
 		Usuario logeado = UsuarioHelper.usuarioLogeado(session, connection);
 		
+		if (logeado == null || logeado.isAdministrador() == false) {
+			return "redirect:/login";
+		}
+		
 		ProductosHelper.checkearHeader(logeado, template);
 		
 		PreparedStatement consultaProductos = connection.prepareStatement("SELECT * FROM productos ORDER BY id ASC;");
@@ -163,8 +167,20 @@ public class ProductosController {
 		return "registro-producto";
 	}
 	
+	@GetMapping("/registro-usuario")
+	public String registroUsuario(HttpSession session,Model template) throws SQLException {
+		Connection connection;
+		connection = DriverManager.getConnection(env.getProperty("spring.datasource.url"), env.getProperty("spring.datasource.username"),
+				env.getProperty("spring.datasource.password"));
+		Usuario logeado = UsuarioHelper.usuarioLogeado(session, connection);
+		
+		ProductosHelper.checkearHeader(logeado, template);
+		
+		return "registro-usuario";
+	}
+	
 	@GetMapping("/registrar-juego")
-	public String registrarJuego(@RequestParam String nombre,@RequestParam String desarrollador,@RequestParam String fecha,@RequestParam String plataforma, @RequestParam String genero,@RequestParam int rencpu1, @RequestParam int rencpu2, @RequestParam int rengpu1, @RequestParam int rengpu2, @RequestParam int vram1, @RequestParam int vram2, @RequestParam int ram1, @RequestParam int ram2, @RequestParam int precio,@RequestParam String urlimagen) throws SQLException {
+	public String insertJuego(@RequestParam String nombre,@RequestParam String desarrollador,@RequestParam String fecha,@RequestParam String plataforma, @RequestParam String genero,@RequestParam int rencpu1, @RequestParam int rencpu2, @RequestParam int rengpu1, @RequestParam int rengpu2, @RequestParam int vram1, @RequestParam int vram2, @RequestParam int ram1, @RequestParam int ram2, @RequestParam int precio,@RequestParam String urlimagen) throws SQLException {
 		Connection connection;
 		connection = DriverManager.getConnection(env.getProperty("spring.datasource.url"), env.getProperty("spring.datasource.username"),
 				env.getProperty("spring.datasource.password"));
@@ -196,7 +212,7 @@ public class ProductosController {
 	}
 	
 	@GetMapping("/registrar-producto")
-	public String registrarProducto(@RequestParam String tipo, @RequestParam String marca, @RequestParam String modelo,
+	public String insertProducto(@RequestParam String tipo, @RequestParam String marca, @RequestParam String modelo,
 			@RequestParam String socketcpu, @RequestParam String tiporam, @RequestParam String pci,
 			@RequestParam String sata, @RequestParam String velocidad, @RequestParam String tamanio,
 			@RequestParam String rendimiento, @RequestParam String consumo, @RequestParam int precio, @RequestParam String urlimagen) throws SQLException {
@@ -864,6 +880,23 @@ public class ProductosController {
 		return "redirect:/administrar";
 	}
 	
+	@GetMapping("/eliminar-juego/{id}")
+	public String eliminarJuego(Model template, @PathVariable int id) throws SQLException {
+	
+		Connection connection;
+		connection = DriverManager.getConnection(env.getProperty("spring.datasource.url"), env.getProperty("spring.datasource.username"),
+				env.getProperty("spring.datasource.password"));
+
+		PreparedStatement consulta = connection.prepareStatement("DELETE FROM juegos WHERE id = ?;");
+
+		consulta.setInt(1, id);
+
+		consulta.executeUpdate();
+
+		connection.close();
+		return "redirect:/administrar";
+	}
+	
 	@GetMapping("/eliminar-producto/{id}")
 	public String eliminarProducto(Model template, @PathVariable int id) throws SQLException {
 	
@@ -878,7 +911,7 @@ public class ProductosController {
 		consulta.executeUpdate();
 
 		connection.close();
-		return "redirect:/listado";
+		return "redirect:/administrar";
 	}
 	
 	@GetMapping("/eliminar-pc/{idpc}")
@@ -1149,12 +1182,12 @@ public class ProductosController {
 			}
 			
 	
-			PreparedStatement consulta = connection.prepareStatement("INSERT INTO comentarios(id_producto_padre ,id_comentario_padre ,id_usuario_emisor ,id_usuario_receptor ,fecha ,contenido, foto_perfil) VALUES(?, '0', ?, '0', '2018-05-01', ?, ?)");
+			PreparedStatement consulta = connection.prepareStatement("INSERT INTO comentarios(id_producto_padre ,id_comentario_padre ,id_usuario_emisor ,id_usuario_receptor ,fecha ,contenido) VALUES(?, '0', ?, '0', '2018-05-01', ?)");
 
 			consulta.setInt(1, id);
 			consulta.setInt(2, logeado.getId());
 			consulta.setString(3, comentarionuevo);
-			consulta.setString(4, logeado.getImagen_de_perfil());
+			
 			
 			
 			consulta.executeUpdate();
@@ -1178,13 +1211,13 @@ public class ProductosController {
 			ProductosHelper.checkearHeader(logeado, template);
 			
 	
-			PreparedStatement consulta = connection.prepareStatement("INSERT INTO comentarios(id_producto_padre ,id_comentario_padre ,id_usuario_emisor ,id_usuario_receptor ,fecha ,contenido, foto_perfil) VALUES(?, ?, ?, '0', '2018-05-01', ?, ?)");
+			PreparedStatement consulta = connection.prepareStatement("INSERT INTO comentarios(id_producto_padre ,id_comentario_padre ,id_usuario_emisor ,id_usuario_receptor ,fecha ,contenido) VALUES(?, ?, ?, '0', '2018-05-01', ?)");
 
 			consulta.setInt(1, id);
 			consulta.setInt(2, idcom);
 			consulta.setInt(3, logeado.getId());
 			consulta.setString(4, comentarionuevo);
-			consulta.setString(5, logeado.getImagen_de_perfil());
+			
 			
 			consulta.executeUpdate();
 			connection.close();
@@ -1375,7 +1408,7 @@ public class ProductosController {
 					template.addAttribute("logeadoisadmin", logeado.isAdministrador());
 					template.addAttribute("admin", "administrar");
 				}
-			return "redirect:/perfil"+ logeado.getNick() ;
+			return "redirect:/perfil/"+ logeado.getNick() ;
 		}
 		
 		return "login";
