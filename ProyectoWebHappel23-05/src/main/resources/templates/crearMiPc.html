@@ -41,6 +41,7 @@
 						<div class="form-group">
 							<label for="exampleFormControlSelect3">Example </label> 
 							<select name="memoria2" class="form-control" id="exampleFormControlSelect3" >
+								<option value="0">---</option>
 								<option th:each="producto:${listadoMemoria}" th:value="${producto.id}" th:text="${producto.marca} +' '+ ${producto.modelo}">placa de video</option>
 							</select>
 						</div>

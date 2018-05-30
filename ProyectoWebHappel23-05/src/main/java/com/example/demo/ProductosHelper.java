@@ -71,6 +71,7 @@ public class ProductosHelper {
 		} else {
 			template.addAttribute("header", "headerLogeado");
 			template.addAttribute("imgperfil", logeado.getImagen_de_perfil());
+			
 				if (logeado.isAdministrador() == true) {
 					
 					template.addAttribute("logeadoisadmin", logeado.isAdministrador());

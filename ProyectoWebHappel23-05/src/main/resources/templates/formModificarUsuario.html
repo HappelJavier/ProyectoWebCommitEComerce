@@ -13,21 +13,16 @@
 		<div class="row">
 			<div class="col-6">
 			<h1>Registrar Producto</h1>
-				<form action="/update-producto">
+				<form action="/update-usuario">
 					<input name="id" type="hidden" placeholder="Ingrese id" th:value="${id}"></input><br></br> 
-					<input name="tipo" type="text" placeholder="Ingrese tipo" th:value="${tipo}"></input><br></br> 
-					<input name="marca" type="text" placeholder="Ingrese la marca..." th:value="${marca}"></input><br></br> 
-					<input name="modelo" type="text" placeholder="Ingrese el modelo..." th:value="${modelo}"></input><br></br>
-					<input name="socketcpu" type="text" placeholder="Ingrese socketcpu" th:value="${socketcpu}"></input><br></br> 
-					<input name="tiporam" type="text" placeholder="Ingrese tiporam" th:value="${tiporam}"></input><br></br>
-					<input name="pci" type="text" placeholder="Ingrese pci" th:value="${pci}"></input><br></br> 
-					<input name="sata" type="text" placeholder="Ingrese sata" th:value="${sata}"></input><br></br> 
-					<input name="velocidad" type="text" placeholder="Ingrese velocidad" th:value="${velocidad}"></input><br></br>
-					<input name="tamanio" type="text" placeholder="Ingrese tamanio" th:value="${tamanio}"></input><br></br> 
-					<input name="rendimiento" type="text" placeholder="Ingrese indice de rendimiento" th:value="${rendimiento}"></input><br></br> 
-					<input name="consumo" type="text" placeholder="Ingrese indice de consumo" th:value="${consumo}"></input><br></br> 
-					<input name="precio" type="text" placeholder="Ingrese precio del precio" th:value="${precio}"></input><br></br> 
-					<input name="urlimagen" type="text" placeholder="Ingrese indice de urlimagen" th:value="${urlimagen}"></input><br></br> 
+					<input name="nombre" type="text" placeholder="Ingrese nombre" th:value="${nombre}"></input><br></br> 
+					<input name="apellido" type="text" placeholder="Ingrese apellido" th:value="${apellido}"></input><br></br> 
+					<input name="nick" type="text" placeholder="Ingrese nick" th:value="${nick}"></input><br></br>
+					<input name="contrasenia" type="text" placeholder="Ingrese contrasenia" th:value="${contrasenia}"></input><br></br> 
+					<input name="mail" type="text" placeholder="Ingrese mail" th:value="${mail}"></input><br></br>
+					<input name="idpc" type="text" placeholder="Ingrese idpc" th:value="${idpc}"></input><br></br> 
+					<input name="imagen_de_perfil" type="text" placeholder="Ingrese imagen_de_perfil" th:value="${imagen_de_perfil}"></input><br></br> 
+					<input name="admin" type="checkbox" placeholder="Ingrese administrador" th:value="${administrador}" th:checked="${administrador}"></input><br></br>
 					<input value="MODIFICAR" type="submit"></input>
 
 				</form>

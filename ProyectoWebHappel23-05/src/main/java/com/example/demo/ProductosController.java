@@ -179,7 +179,7 @@ public class ProductosController {
 		return "registro-usuario";
 	}
 	
-	@GetMapping("/registrar-juego")
+	@GetMapping("/insertar-juego")
 	public String insertJuego(@RequestParam String nombre,@RequestParam String desarrollador,@RequestParam String fecha,@RequestParam String plataforma, @RequestParam String genero,@RequestParam int rencpu1, @RequestParam int rencpu2, @RequestParam int rengpu1, @RequestParam int rengpu2, @RequestParam int vram1, @RequestParam int vram2, @RequestParam int ram1, @RequestParam int ram2, @RequestParam int precio,@RequestParam String urlimagen) throws SQLException {
 		Connection connection;
 		connection = DriverManager.getConnection(env.getProperty("spring.datasource.url"), env.getProperty("spring.datasource.username"),
@@ -211,7 +211,7 @@ public class ProductosController {
 		return "redirect:/registro-producto";
 	}
 	
-	@GetMapping("/registrar-producto")
+	@GetMapping("/insertar-producto")
 	public String insertProducto(@RequestParam String tipo, @RequestParam String marca, @RequestParam String modelo,
 			@RequestParam String socketcpu, @RequestParam String tiporam, @RequestParam String pci,
 			@RequestParam String sata, @RequestParam String velocidad, @RequestParam String tamanio,
@@ -241,6 +241,294 @@ public class ProductosController {
 		connection.close();
 
 		return "redirect:/registro-producto";
+	}
+	
+	@GetMapping("/insertar-usuario")
+	public String insertUsuario(@RequestParam String nombre, @RequestParam String apellido, @RequestParam String nick,
+			@RequestParam String contrasenia, @RequestParam String mail, @RequestParam (value = "admin", required = false) boolean admin) throws SQLException {
+		
+		
+		Connection connection;
+		connection = DriverManager.getConnection(env.getProperty("spring.datasource.url"), env.getProperty("spring.datasource.username"),
+				env.getProperty("spring.datasource.password"));
+		
+		PreparedStatement consulta = connection.prepareStatement(
+				"INSERT INTO usuarios(nombre, apellido, nick, contrasenia, mail, administrador) VALUES( ?, ?, ?, ?, ?, ?); ");
+		consulta.setString(1, nombre);
+		consulta.setString(2, apellido);
+		consulta.setString(3, nick);
+		consulta.setString(4, contrasenia);
+		consulta.setString(5, mail);
+		consulta.setBoolean(6, admin);
+		consulta.executeUpdate();
+
+		connection.close();
+
+		return "redirect:/registro-usuario";
+	}
+
+	@GetMapping("/modificar-producto/{id}")
+	public String modificarProducto(Model template, @PathVariable int id, HttpSession session) throws SQLException {
+
+		Connection connection;
+		connection = DriverManager.getConnection(env.getProperty("spring.datasource.url"), env.getProperty("spring.datasource.username"),
+				env.getProperty("spring.datasource.password"));
+		
+		Usuario logeado = UsuarioHelper.usuarioLogeado(session, connection);
+		
+		ProductosHelper.checkearHeader(logeado, template);
+		
+		PreparedStatement consulta = connection.prepareStatement("SELECT * FROM productos WHERE id = ?;");
+		consulta.setInt(1, id);
+		
+		ResultSet resultado = consulta.executeQuery();
+
+		while ( resultado.next() ) {
+			String tipo = resultado.getString("tipo");
+			String marca = resultado.getString("marca");
+			String modelo = resultado.getString("modelo");
+			String socketcpu = resultado.getString("socketcpu");
+			String tiporam = resultado.getString("tiporam");
+			String pci = resultado.getString("pci");
+			String sata = resultado.getString("sata");
+			String velocidad = resultado.getString("velocidad");
+			String tamanio = resultado.getString("tamanio");
+			String rendimiento = resultado.getString("rendimiento");
+			String consumo = resultado.getString("consumo");
+			int precio = resultado.getInt("precio");
+			String urlimagen = resultado.getString("urlimagen");
+			template.addAttribute("id", id);
+			template.addAttribute("tipo", tipo);
+			template.addAttribute("marca", marca);
+			template.addAttribute("modelo", modelo);
+			template.addAttribute("socketcpu", socketcpu);
+			template.addAttribute("tiporam", tiporam);
+			template.addAttribute("pci", pci);
+			template.addAttribute("sata", sata);
+			template.addAttribute("velocidad", velocidad);
+			template.addAttribute("tamanio", tamanio);
+			template.addAttribute("rendimiento", rendimiento);
+			template.addAttribute("consumo", consumo);
+			template.addAttribute("precio", precio);
+			template.addAttribute("urlimagen", urlimagen);
+		}
+
+		connection.close();
+		return "formModificarProducto";
+	}
+	
+	@GetMapping("/modificar-juego/{id}")
+	public String modificarJuego(Model template, @PathVariable int id, HttpSession session) throws SQLException {
+
+		Connection connection;
+		connection = DriverManager.getConnection(env.getProperty("spring.datasource.url"), env.getProperty("spring.datasource.username"),
+				env.getProperty("spring.datasource.password"));
+		
+		Usuario logeado = UsuarioHelper.usuarioLogeado(session, connection);
+		
+		ProductosHelper.checkearHeader(logeado, template);
+		
+		PreparedStatement consulta = connection.prepareStatement("SELECT * FROM juegos WHERE id = ?;");
+		consulta.setInt(1, id);
+		
+		ResultSet resultado = consulta.executeQuery();
+
+		while ( resultado.next() ) {
+			String nombre = resultado.getString("nombre");
+			String desarrollador = resultado.getString("desarrollador");
+			String fecha = resultado.getString("fecha");
+			String plataforma = resultado.getString("plataforma");
+			String genero = resultado.getString("genero");
+			int rencpu1 = resultado.getInt("rencpu1");
+			int rencpu2 = resultado.getInt("rencpu2");
+			int rengpu1 = resultado.getInt("rengpu1");
+			int rengpu2 = resultado.getInt("rengpu2");
+			int vram1 = resultado.getInt("vram1");
+			int vram2 = resultado.getInt("vram2");
+			int ram1 = resultado.getInt("ram1");
+			int ram2 = resultado.getInt("ram2");
+			int precio = resultado.getInt("precio");
+			String urlimagenJuego = resultado.getString("urlimagen");
+			template.addAttribute("id", id);
+			template.addAttribute("nombre", nombre);
+			template.addAttribute("desarrollador", desarrollador);
+			template.addAttribute("fecha", fecha);
+			template.addAttribute("plataforma", plataforma);
+			template.addAttribute("genero", genero);
+			template.addAttribute("rencpu1", rencpu1);
+			template.addAttribute("rencpu2", rencpu2);
+			template.addAttribute("rengpu1", rengpu1);
+			template.addAttribute("rengpu2", rengpu2);
+			template.addAttribute("vram1", vram1);
+			template.addAttribute("vram2", vram2);
+			template.addAttribute("ram1", ram1);
+			template.addAttribute("ram2", ram2);
+			template.addAttribute("precio", precio);
+			template.addAttribute("urlimagen", urlimagenJuego);
+		}
+
+		connection.close();
+		return "formModificarJuego";
+	}
+	
+	@GetMapping("/modificar-usuario/{id}")
+	public String modificarUsuario(Model template, @PathVariable int id, HttpSession session) throws SQLException {
+
+		Connection connection;
+		connection = DriverManager.getConnection(env.getProperty("spring.datasource.url"), env.getProperty("spring.datasource.username"),
+				env.getProperty("spring.datasource.password"));
+		
+		Usuario logeado = UsuarioHelper.usuarioLogeado(session, connection);
+		
+		ProductosHelper.checkearHeader(logeado, template);
+		
+		PreparedStatement consulta = connection.prepareStatement("SELECT * FROM usuarios WHERE id = ?;");
+		consulta.setInt(1, id);
+		
+		ResultSet resultado = consulta.executeQuery();
+
+		while ( resultado.next() ) {
+			String nombre = resultado.getString("nombre");
+			String apellido = resultado.getString("apellido");
+			String nick = resultado.getString("nick");
+			String contrasenia = resultado.getString("contrasenia");
+			String mail = resultado.getString("mail");
+			String idpc = resultado.getString("idpc");
+			String imagen_de_perfil = resultado.getString("imagen_de_perfil");
+			Boolean administrador = resultado.getBoolean("administrador");
+			template.addAttribute("id", id);
+			template.addAttribute("nombre", nombre);
+			template.addAttribute("apellido", apellido);
+			template.addAttribute("nick", nick);
+			template.addAttribute("contrasenia", contrasenia);
+			template.addAttribute("mail", mail);
+			template.addAttribute("idpc", idpc);
+			template.addAttribute("imagen_de_perfil", imagen_de_perfil);
+			template.addAttribute("administrador", administrador);
+			}
+
+		connection.close();
+		return "formModificarUsuario";
+	}
+	
+	@GetMapping("/update-producto")
+	public String updateProducto(Model template, HttpSession session, @RequestParam int id, @RequestParam String tipo, @RequestParam String marca, @RequestParam String modelo, @RequestParam String socketcpu, @RequestParam String tiporam, @RequestParam String pci, @RequestParam String sata, @RequestParam String velocidad, @RequestParam String tamanio, @RequestParam String rendimiento, @RequestParam String consumo, @RequestParam int precio, @RequestParam String urlimagen) throws SQLException {
+
+		Connection connection;
+		connection = DriverManager.getConnection(env.getProperty("spring.datasource.url"), env.getProperty("spring.datasource.username"),
+				env.getProperty("spring.datasource.password"));
+		
+		PreparedStatement consulta = connection.prepareStatement("UPDATE productos SET tipo = ?, marca = ?, modelo = ?, socketcpu = ?, tiporam = ?, pci = ?, sata = ?, velocidad = ?, tamanio = ?, rendimiento = ?, consumo = ?, precio = ?, urlimagen = ?  WHERE id = ? ;");
+
+		consulta.setString(1, tipo);
+		consulta.setString(2, marca);
+		consulta.setString(3, modelo);
+		consulta.setString(4, socketcpu);
+		consulta.setString(5, tiporam);
+		consulta.setString(6, pci);
+		consulta.setString(7, sata);
+		consulta.setString(8, velocidad);
+		consulta.setString(9, tamanio);
+		consulta.setString(10, rendimiento);
+		consulta.setString(11, consumo);
+		consulta.setInt(12, precio);
+		consulta.setString(13, urlimagen);
+		consulta.setInt(14, id);
+		consulta.executeUpdate();
+		
+		connection.close();
+		
+		return "redirect:/administrar";
+	}
+	
+	@GetMapping("/update-juego")
+	public String updateJuego(Model template, HttpSession session, @RequestParam int id, @RequestParam String nombre, @RequestParam String desarrollador, @RequestParam String fecha, @RequestParam String plataforma, @RequestParam String genero, @RequestParam int rencpu1, @RequestParam int rencpu2, @RequestParam int rengpu1, @RequestParam int rengpu2, @RequestParam int vram1, @RequestParam int vram2, @RequestParam int ram1, @RequestParam int ram2, @RequestParam int precio, @RequestParam String urlimagen) throws SQLException {
+
+		Connection connection;
+		connection = DriverManager.getConnection(env.getProperty("spring.datasource.url"), env.getProperty("spring.datasource.username"),
+				env.getProperty("spring.datasource.password"));
+		
+		PreparedStatement consulta = connection.prepareStatement("UPDATE juegos SET nombre = ?, desarrollador = ?, fecha = ?, plataforma = ?, genero = ?, rencpu1 = ?, rencpu2 = ?, rengpu1 = ?, rengpu2 = ?, vram1 = ?, vram2 = ?, ram1 = ?, ram2 = ?, precio = ?, urlimagen = ?  WHERE id = ? ;");
+
+		consulta.setString(1, nombre);
+		consulta.setString(2, desarrollador);
+		consulta.setString(3, fecha);
+		consulta.setString(4, plataforma);
+		consulta.setString(5, genero);
+		consulta.setInt(6, rencpu1);
+		consulta.setInt(7, rencpu2);
+		consulta.setInt(8, rengpu1);
+		consulta.setInt(9, rengpu2);
+		consulta.setInt(10, vram1);
+		consulta.setInt(11, vram2);
+		consulta.setInt(12, ram1);
+		consulta.setInt(13, ram2);
+		consulta.setInt(14, precio);
+		consulta.setString(15, urlimagen);
+		consulta.setInt(16, id);
+		consulta.executeUpdate();
+		
+		connection.close();
+		
+		return "redirect:/administrar";
+	}
+	
+	@GetMapping("/update-usuario")
+	public String updateUsuario(Model template, HttpSession session, @RequestParam int id, @RequestParam String nombre, @RequestParam String apellido, @RequestParam String nick, 
+			@RequestParam String contrasenia, @RequestParam String mail, @RequestParam (value = "admin", required = false) boolean admin) throws SQLException {
+
+		Connection connection;
+		connection = DriverManager.getConnection(env.getProperty("spring.datasource.url"), env.getProperty("spring.datasource.username"),
+				env.getProperty("spring.datasource.password"));
+		
+		PreparedStatement consulta = connection.prepareStatement("UPDATE usuarios SET nombre = ?, apellido = ?, nick = ?, contrasenia = ?, mail = ?, administrador = ? WHERE id = ? ;");
+
+		consulta.setString(1, nombre);
+		consulta.setString(2, apellido);
+		consulta.setString(3, nick);
+		consulta.setString(4, contrasenia);
+		consulta.setString(5, mail);
+		consulta.setBoolean(6, admin);
+		consulta.setInt(7, id);
+		consulta.executeUpdate();
+		
+		connection.close();
+		
+		return "redirect:/administrar";
+	}
+	
+	@GetMapping("/eliminar-juego/{id}")
+	public String eliminarJuego(Model template, @PathVariable int id) throws SQLException {
+	
+		Connection connection;
+		connection = DriverManager.getConnection(env.getProperty("spring.datasource.url"), env.getProperty("spring.datasource.username"),
+				env.getProperty("spring.datasource.password"));
+
+		PreparedStatement consulta = connection.prepareStatement("DELETE FROM juegos WHERE id = ?;");
+
+		consulta.setInt(1, id);
+
+		consulta.executeUpdate();
+
+		connection.close();
+		return "redirect:/administrar";
+	}
+	
+	@GetMapping("/eliminar-producto/{id}")
+	public String eliminarProducto(Model template, @PathVariable int id) throws SQLException {
+	
+		Connection connection;
+		connection = DriverManager.getConnection(env.getProperty("spring.datasource.url"), env.getProperty("spring.datasource.username"),
+				env.getProperty("spring.datasource.password"));
+
+		PreparedStatement consulta = connection.prepareStatement("DELETE FROM productos WHERE id = ?;");
+
+		consulta.setInt(1, id);
+
+		consulta.executeUpdate();
+
+		connection.close();
+		return "redirect:/administrar";
 	}
 	
 	@GetMapping("/subir-imagen")
@@ -712,206 +1000,6 @@ public class ProductosController {
 		
 		ProductosHelper.crearListado(session, template, connection);
 		return "listadoProductos";
-	}
-
-	@GetMapping("/modificar-producto/{id}")
-	public String modificarProducto(Model template, @PathVariable int id, HttpSession session) throws SQLException {
-
-		Connection connection;
-		connection = DriverManager.getConnection(env.getProperty("spring.datasource.url"), env.getProperty("spring.datasource.username"),
-				env.getProperty("spring.datasource.password"));
-		
-		Usuario logeado = UsuarioHelper.usuarioLogeado(session, connection);
-		
-		ProductosHelper.checkearHeader(logeado, template);
-		
-		PreparedStatement consulta = connection.prepareStatement("SELECT * FROM productos WHERE id = ?;");
-		consulta.setInt(1, id);
-		
-		ResultSet resultado = consulta.executeQuery();
-
-		while ( resultado.next() ) {
-			String tipo = resultado.getString("tipo");
-			String marca = resultado.getString("marca");
-			String modelo = resultado.getString("modelo");
-			String socketcpu = resultado.getString("socketcpu");
-			String tiporam = resultado.getString("tiporam");
-			String pci = resultado.getString("pci");
-			String sata = resultado.getString("sata");
-			String velocidad = resultado.getString("velocidad");
-			String tamanio = resultado.getString("tamanio");
-			String rendimiento = resultado.getString("rendimiento");
-			String consumo = resultado.getString("consumo");
-			int precio = resultado.getInt("precio");
-			String urlimagen = resultado.getString("urlimagen");
-			template.addAttribute("id", id);
-			template.addAttribute("tipo", tipo);
-			template.addAttribute("marca", marca);
-			template.addAttribute("modelo", modelo);
-			template.addAttribute("socketcpu", socketcpu);
-			template.addAttribute("tiporam", tiporam);
-			template.addAttribute("pci", pci);
-			template.addAttribute("sata", sata);
-			template.addAttribute("velocidad", velocidad);
-			template.addAttribute("tamanio", tamanio);
-			template.addAttribute("rendimiento", rendimiento);
-			template.addAttribute("consumo", consumo);
-			template.addAttribute("precio", precio);
-			template.addAttribute("urlimagen", urlimagen);
-		}
-
-		connection.close();
-		return "formModificarProducto";
-	}
-	
-	@GetMapping("/modificar-juego/{id}")
-	public String modificarJuego(Model template, @PathVariable int id, HttpSession session) throws SQLException {
-
-		Connection connection;
-		connection = DriverManager.getConnection(env.getProperty("spring.datasource.url"), env.getProperty("spring.datasource.username"),
-				env.getProperty("spring.datasource.password"));
-		
-		Usuario logeado = UsuarioHelper.usuarioLogeado(session, connection);
-		
-		ProductosHelper.checkearHeader(logeado, template);
-		
-		PreparedStatement consulta = connection.prepareStatement("SELECT * FROM juegos WHERE id = ?;");
-		consulta.setInt(1, id);
-		
-		ResultSet resultado = consulta.executeQuery();
-
-		while ( resultado.next() ) {
-			String nombre = resultado.getString("nombre");
-			String desarrollador = resultado.getString("desarrollador");
-			String fecha = resultado.getString("fecha");
-			String plataforma = resultado.getString("plataforma");
-			String genero = resultado.getString("genero");
-			int rencpu1 = resultado.getInt("rencpu1");
-			int rencpu2 = resultado.getInt("rencpu2");
-			int rengpu1 = resultado.getInt("rengpu1");
-			int rengpu2 = resultado.getInt("rengpu2");
-			int vram1 = resultado.getInt("vram1");
-			int vram2 = resultado.getInt("vram2");
-			int ram1 = resultado.getInt("ram1");
-			int ram2 = resultado.getInt("ram2");
-			int precio = resultado.getInt("precio");
-			String urlimagenJuego = resultado.getString("urlimagen");
-			template.addAttribute("id", id);
-			template.addAttribute("nombre", nombre);
-			template.addAttribute("desarrollador", desarrollador);
-			template.addAttribute("fecha", fecha);
-			template.addAttribute("plataforma", plataforma);
-			template.addAttribute("genero", genero);
-			template.addAttribute("rencpu1", rencpu1);
-			template.addAttribute("rencpu2", rencpu2);
-			template.addAttribute("rengpu1", rengpu1);
-			template.addAttribute("rengpu2", rengpu2);
-			template.addAttribute("vram1", vram1);
-			template.addAttribute("vram2", vram2);
-			template.addAttribute("ram1", ram1);
-			template.addAttribute("ram2", ram2);
-			template.addAttribute("precio", precio);
-			template.addAttribute("urlimagen", urlimagenJuego);
-		}
-
-		connection.close();
-		return "formModificarJuego";
-	}
-	
-	@GetMapping("/update-producto")
-	public String updateProducto(Model template, HttpSession session, @RequestParam int id, @RequestParam String tipo, @RequestParam String marca, @RequestParam String modelo, @RequestParam String socketcpu, @RequestParam String tiporam, @RequestParam String pci, @RequestParam String sata, @RequestParam String velocidad, @RequestParam String tamanio, @RequestParam String rendimiento, @RequestParam String consumo, @RequestParam int precio, @RequestParam String urlimagen) throws SQLException {
-
-		Connection connection;
-		connection = DriverManager.getConnection(env.getProperty("spring.datasource.url"), env.getProperty("spring.datasource.username"),
-				env.getProperty("spring.datasource.password"));
-		
-		PreparedStatement consulta = connection.prepareStatement("UPDATE productos SET tipo = ?, marca = ?, modelo = ?, socketcpu = ?, tiporam = ?, pci = ?, sata = ?, velocidad = ?, tamanio = ?, rendimiento = ?, consumo = ?, precio = ?, urlimagen = ?  WHERE id = ? ;");
-
-		consulta.setString(1, tipo);
-		consulta.setString(2, marca);
-		consulta.setString(3, modelo);
-		consulta.setString(4, socketcpu);
-		consulta.setString(5, tiporam);
-		consulta.setString(6, pci);
-		consulta.setString(7, sata);
-		consulta.setString(8, velocidad);
-		consulta.setString(9, tamanio);
-		consulta.setString(10, rendimiento);
-		consulta.setString(11, consumo);
-		consulta.setInt(12, precio);
-		consulta.setString(13, urlimagen);
-		consulta.setInt(14, id);
-		consulta.executeUpdate();
-		
-		connection.close();
-		
-		return "redirect:/administrar";
-	}
-	
-	@GetMapping("/update-juego")
-	public String updateJuego(Model template, HttpSession session, @RequestParam int id, @RequestParam String nombre, @RequestParam String desarrollador, @RequestParam String fecha, @RequestParam String plataforma, @RequestParam String genero, @RequestParam int rencpu1, @RequestParam int rencpu2, @RequestParam int rengpu1, @RequestParam int rengpu2, @RequestParam int vram1, @RequestParam int vram2, @RequestParam int ram1, @RequestParam int ram2, @RequestParam int precio, @RequestParam String urlimagen) throws SQLException {
-
-		Connection connection;
-		connection = DriverManager.getConnection(env.getProperty("spring.datasource.url"), env.getProperty("spring.datasource.username"),
-				env.getProperty("spring.datasource.password"));
-		
-		PreparedStatement consulta = connection.prepareStatement("UPDATE juegos SET nombre = ?, desarrollador = ?, fecha = ?, plataforma = ?, genero = ?, rencpu1 = ?, rencpu2 = ?, rengpu1 = ?, rengpu2 = ?, vram1 = ?, vram2 = ?, ram1 = ?, ram2 = ?, precio = ?, urlimagen = ?  WHERE id = ? ;");
-
-		consulta.setString(1, nombre);
-		consulta.setString(2, desarrollador);
-		consulta.setString(3, fecha);
-		consulta.setString(4, plataforma);
-		consulta.setString(5, genero);
-		consulta.setInt(6, rencpu1);
-		consulta.setInt(7, rencpu2);
-		consulta.setInt(8, rengpu1);
-		consulta.setInt(9, rengpu2);
-		consulta.setInt(10, vram1);
-		consulta.setInt(11, vram2);
-		consulta.setInt(12, ram1);
-		consulta.setInt(13, ram2);
-		consulta.setInt(14, precio);
-		consulta.setString(15, urlimagen);
-		consulta.setInt(16, id);
-		consulta.executeUpdate();
-		
-		connection.close();
-		
-		return "redirect:/administrar";
-	}
-	
-	@GetMapping("/eliminar-juego/{id}")
-	public String eliminarJuego(Model template, @PathVariable int id) throws SQLException {
-	
-		Connection connection;
-		connection = DriverManager.getConnection(env.getProperty("spring.datasource.url"), env.getProperty("spring.datasource.username"),
-				env.getProperty("spring.datasource.password"));
-
-		PreparedStatement consulta = connection.prepareStatement("DELETE FROM juegos WHERE id = ?;");
-
-		consulta.setInt(1, id);
-
-		consulta.executeUpdate();
-
-		connection.close();
-		return "redirect:/administrar";
-	}
-	
-	@GetMapping("/eliminar-producto/{id}")
-	public String eliminarProducto(Model template, @PathVariable int id) throws SQLException {
-	
-		Connection connection;
-		connection = DriverManager.getConnection(env.getProperty("spring.datasource.url"), env.getProperty("spring.datasource.username"),
-				env.getProperty("spring.datasource.password"));
-
-		PreparedStatement consulta = connection.prepareStatement("DELETE FROM productos WHERE id = ?;");
-
-		consulta.setInt(1, id);
-
-		consulta.executeUpdate();
-
-		connection.close();
-		return "redirect:/administrar";
 	}
 	
 	@GetMapping("/eliminar-pc/{idpc}")
@@ -1573,7 +1661,7 @@ public class ProductosController {
 				PreparedStatement consultaRam2 = connection.prepareStatement("SELECT * FROM productos WHERE id=? ");
 				consultaRam2.setInt(1, memoria2);
 				ResultSet ram2 = consultaRam2.executeQuery();
-				ram2.next();
+				if(ram2.next()) {
 				String tiporam2 = ram2.getString("tipo");
 				String marcaram2 = ram2.getString("marca");
 				String modeloram2 = ram2.getString("modelo");
@@ -1586,6 +1674,7 @@ public class ProductosController {
 				template.addAttribute("precioram2", precioram2);
 				template.addAttribute("urlimagenram2", urlimagenram2);  
 				template.addAttribute("tamanio2", tamanio2);
+				}
 				
 				String urlCrearPc = "/eliminar-pc/" +  idpc;
 				String botonCrearPc = "eliminar tu pc";
