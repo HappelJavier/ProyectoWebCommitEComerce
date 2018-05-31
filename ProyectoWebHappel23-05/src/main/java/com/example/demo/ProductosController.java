@@ -1290,7 +1290,7 @@ public class ProductosController {
 	}
 	
 	@GetMapping("/procesar-subcomentario")
-	public String procesarSubomentario(HttpSession session, Model template,@RequestParam int id, @RequestParam int idcom, @RequestParam String comentarionuevo) throws SQLException {
+	public String procesarSubomentario(HttpSession session, Model template,@RequestParam int id, @RequestParam int idcom, @RequestParam String comentarionuevo, @RequestParam String fecha) throws SQLException {
 			
 	
 			Connection connection;
@@ -1301,13 +1301,18 @@ public class ProductosController {
 					
 			ProductosHelper.checkearHeader(logeado, template);
 			
+			if (UsuarioHelper.usuarioLogeado(session, connection)== null) {
+				return "redirect:/login";
+			}
+			
 	
-			PreparedStatement consulta = connection.prepareStatement("INSERT INTO comentarios(id_producto_padre ,id_comentario_padre ,id_usuario_emisor ,id_usuario_receptor ,fecha ,contenido) VALUES(?, ?, ?, '0', '2018-05-01', ?)");
+			PreparedStatement consulta = connection.prepareStatement("INSERT INTO comentarios(id_producto_padre ,id_comentario_padre ,id_usuario_emisor ,id_usuario_receptor ,fecha ,contenido) VALUES(?, ?, ?, '0', ? , ?)");
 
 			consulta.setInt(1, id);
 			consulta.setInt(2, idcom);
 			consulta.setInt(3, logeado.getId());
-			consulta.setString(4, comentarionuevo);
+			consulta.setString(4, fecha);
+			consulta.setString(5, comentarionuevo);
 			
 			
 			consulta.executeUpdate();

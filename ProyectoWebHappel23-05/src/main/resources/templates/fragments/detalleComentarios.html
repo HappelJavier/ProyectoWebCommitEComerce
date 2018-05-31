@@ -38,8 +38,9 @@
 						<form class="col-12 form-subcomentar-oculto form-subcom" action="/procesar-subcomentario">
 									<input name="id" type="hidden" th:value="${id}"></input>
 									<input name="idcom" type="hidden" th:value="${comentario.id}"></input>
+									<input class="fecha" name="fecha" type="hidden" th:value="${fecha}"></input>
 									<textarea class="coment-area" name="comentarionuevo" type="text" placeholder="Ingrese su comentario..."></textarea>
-									<input type="submit"></input>
+									<input class="proc-comentario" type="submit"></input>
 						</form>
 					</div>
 					
@@ -57,12 +58,12 @@
 							</div>
 							<div class="col-11">
 								<label class="text-uppercase" th:text="${subcom.nombre_usuario}"></label>
-								<label class="text-uppercase" th:text="${subcom.fecha}"></label>
+								<label  class="fecha-com" th:text="${subcom.fecha}"></label>
 								<h6 class="" th:text="${subcom.contenido}" ></h6>
 								<form class="form-modificar-oculto form-mod" action="/modificar-comentario">
-									<textarea class="coment-area" name="comentarionuevo" th:text="${comentario.contenido}" type="text" placeholder="Modificar comentario..."></textarea>
+									<textarea class="coment-area" name="comentarionuevo" th:text="${subcom.contenido}" type="text" placeholder="Modificar comentario..."></textarea>
 									<input name="id" type="hidden" th:value="${id}"></input>
-									<input name="idcom" type="hidden" th:value="${comentario.id}"></input>
+									<input name="idcom" type="hidden" th:value="${subcom.id}"></input>
 									<input type="submit" value="modificar" class="btn btn-primary btn-xs"></input>
 								</form>
 								<form class="form-eliminar-com div_oculto"  action="/eliminar-comentario">

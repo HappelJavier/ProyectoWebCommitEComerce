@@ -18,7 +18,7 @@ public class ComentariosHelper {
 	
 	public static void cargarComentarios(Connection connection, int id, Model template) throws SQLException {
 		ArrayList<Comentario> listadoComentarios= new ArrayList<Comentario>();
-		PreparedStatement consulta2 = connection.prepareStatement("SELECT * FROM comentarios WHERE id_producto_padre = ? AND id_comentario_padre = '0';");
+		PreparedStatement consulta2 = connection.prepareStatement("SELECT * FROM comentarios WHERE id_producto_padre = ? AND id_comentario_padre = '0' ORDER BY fecha;");
 		consulta2.setInt(1, id);
 		ResultSet resultado2 = consulta2.executeQuery();
 		
@@ -42,7 +42,7 @@ public class ComentariosHelper {
 			
 			
 			
-			PreparedStatement consulta3 = connection.prepareStatement("SELECT * FROM comentarios WHERE id_comentario_padre = ? ;");
+			PreparedStatement consulta3 = connection.prepareStatement("SELECT * FROM comentarios WHERE id_comentario_padre = ? ORDER BY fecha;");
 			consulta3.setInt(1, id2);
 			ResultSet resultado3 = consulta3.executeQuery();
 			ArrayList<Subcomentario> subcomentarios = new ArrayList<Subcomentario>();
