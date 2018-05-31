@@ -585,7 +585,7 @@ public class ProductosController {
 		template.addAttribute("tipomother", tipomother);
 		template.addAttribute("marcamother", marcamother);
 		template.addAttribute("modelomother", modelomother);
-		template.addAttribute("preciomother", preciomother);
+		template.addAttribute("preciomother", (" $" + preciomother));
 		template.addAttribute("urlimagenmother", urlimagenmother);
 		
 		PreparedStatement consultaHD = connection.prepareStatement("SELECT * FROM productos WHERE id=? ");
@@ -600,7 +600,7 @@ public class ProductosController {
 		template.addAttribute("tipoHD", tipoHD);
 		template.addAttribute("marcaHD", marcaHD);
 		template.addAttribute("modeloHD", modeloHD);
-		template.addAttribute("precioHD", precioHD);
+		template.addAttribute("precioHD", (" $" + precioHD));
 		template.addAttribute("urlimagenHD", urlimagenHD);
 		
 		
@@ -616,7 +616,7 @@ public class ProductosController {
 		template.addAttribute("tipogpu", tipogpu);
 		template.addAttribute("marcagpu", marcagpu);
 		template.addAttribute("modelogpu", modelogpu);
-		template.addAttribute("preciogpu", preciogpu);
+		template.addAttribute("preciogpu", (" $" + preciogpu));
 		template.addAttribute("urlimagengpu", urlimagengpu);
 		
 		String renPlacaDeVideoX = renPlacaDeVideo.getString("rendimiento");
@@ -642,7 +642,7 @@ public class ProductosController {
 		template.addAttribute("tipocpu", tipocpu);
 		template.addAttribute("marcacpu", marcacpu);
 		template.addAttribute("modelocpu", modelocpu);
-		template.addAttribute("preciocpu", preciocpu);
+		template.addAttribute("preciocpu", (" $" + preciocpu));
 		template.addAttribute("urlimagencpu", urlimagencpu);	
 		String renProcesadorX = renProcesador.getString("rendimiento");
 		String renProcesadorY = renProcesadorX.replaceAll( "[^\\d]", "" );
@@ -664,7 +664,7 @@ public class ProductosController {
 		template.addAttribute("tiporam", tiporampc1);
 		template.addAttribute("marcaram", marcarampc1);
 		template.addAttribute("modeloram", modelorampc1);
-		template.addAttribute("precioram", preciorampc1);
+		template.addAttribute("precioram", (" $" + preciorampc1));
 		template.addAttribute("urlimagenram", urlimagenrampc1);
 		String rampc1X = rampc1.getString("tamanio");
 		template.addAttribute("tamanio1", rampc1X);
@@ -686,8 +686,8 @@ public class ProductosController {
 		template.addAttribute("tiporam2", tiporampc2);
 		template.addAttribute("marcaram2", marcarampc2);
 		template.addAttribute("modeloram2", modelorampc2);
-		template.addAttribute("precioram2", preciorampc2);
-		template.addAttribute("urlimagenram", urlimagenrampc2);
+		template.addAttribute("precioram2", (" $" + preciorampc2));
+		template.addAttribute("urlimagenram2", urlimagenrampc2);
 		String rampc2X = rampc2.getString("tamanio");
 		template.addAttribute("tamanio2", rampc2X);
 		String rampc2Y = rampc2X.replaceAll( "[^\\d]", "" );
