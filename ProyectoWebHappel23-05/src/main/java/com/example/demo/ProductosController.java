@@ -41,6 +41,8 @@ public class ProductosController {
 		
 		ProductosHelper.checkearHeader(logeado, template);
 		
+		
+		
 		return "index";
 	}
 	
