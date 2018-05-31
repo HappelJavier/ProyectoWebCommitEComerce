@@ -552,7 +552,9 @@ public class ProductosController {
 	}
 		
 	@GetMapping("/comparar-pc")
-	public String compararPc(HttpSession session,Model template, @RequestParam int micro, @RequestParam int placa, @RequestParam int memoria1, @RequestParam int memoria2, @RequestParam int mother, @RequestParam int disco, @RequestParam int juego) throws SQLException, ParseException {
+	public String compararPc(HttpSession session,Model template, @RequestParam int micro, @RequestParam int placa, 
+			@RequestParam int memoria1, @RequestParam int memoria2, @RequestParam int mother, @RequestParam int disco, 
+			@RequestParam int juego) throws SQLException, ParseException {
 		
 
 		Connection connection;

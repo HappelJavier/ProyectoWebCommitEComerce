@@ -25,6 +25,8 @@ public class ProductosHelper {
 		} else {
 			template.addAttribute("header", "headerLogeado");
 			template.addAttribute("imgperfil", logeado.getImagen_de_perfil());
+			template.addAttribute("nick", logeado.getNick());
+			
 				if (logeado.isAdministrador() == true) {
 					
 					template.addAttribute("logeadoisadmin", logeado.isAdministrador());
@@ -32,7 +34,7 @@ public class ProductosHelper {
 				}
 		}
 
-		PreparedStatement consulta = connection.prepareStatement("SELECT * FROM productos;");
+		PreparedStatement consulta = connection.prepareStatement("SELECT * FROM productos ORDER BY tipo;");
 
 		ResultSet resultado = consulta.executeQuery();
 
@@ -71,6 +73,7 @@ public class ProductosHelper {
 		} else {
 			template.addAttribute("header", "headerLogeado");
 			template.addAttribute("imgperfil", logeado.getImagen_de_perfil());
+			template.addAttribute("nick", logeado.getNick());
 			
 				if (logeado.isAdministrador() == true) {
 					
