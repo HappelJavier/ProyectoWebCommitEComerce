@@ -4,17 +4,15 @@
     $(document).ready( function(){        
     	moment.locale('es');
     	$('.proc-comentario').click(function(){
-    		
     		var a = moment().format('MMMM Do YYYY, h:mm:ss a');
     		$($(this).siblings(".fecha")[0]).attr('value', a)
     	})
     	
+    	$( ".fecha-com" ).each(function( index ) {
+    		var b = moment($(this).text(), "MMMM Do YYYY, h:mm:ss a").fromNow();
+        	$(this).text(b);
+    	});
     	
-    	
-    	
-    	var b = moment($('.fecha-com').text(), "MMMM Do YYYY, h:mm:ss a").fromNow();
-    	
-    	$('.fecha-com').text(b);
     	
     	
         $('.boton-subcomentar').click(function(){
