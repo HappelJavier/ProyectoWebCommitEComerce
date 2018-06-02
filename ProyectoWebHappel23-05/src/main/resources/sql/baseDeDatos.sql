@@ -1,4 +1,4 @@
-zqjtowhyxhskxh
+
 
 CREATE SEQUENCE public.comentarios_id_seq
     INCREMENT 1
@@ -21,7 +21,7 @@ CREATE TABLE public.comentarios
     id_comentario_padre integer,
     id_usuario_emisor integer,
     id_usuario_receptor integer,
-    fecha date,
+    fecha text COLLATE pg_catalog."default",
     contenido text COLLATE pg_catalog."default",
     CONSTRAINT comentarios_pkey PRIMARY KEY (id)
 )

@@ -1,7 +1,35 @@
 	
 	
 
-    $(document).ready( function(){        
+    $(document).ready( function(){      
+    	$('.barras').each(function() {
+    		
+    	     var dataWidth = $(this).val();
+    	     $(this).css("width", dataWidth + "%");
+    	    if (dataWidth <=20) { $(this).css("background-color", "darkred"); }
+    	    	else if (dataWidth >40 && dataWidth <=60){ $(this).css("background-color", "red"); }
+    	    	else if (dataWidth >40 && dataWidth <=60){ $(this).css("background-color", "orange"); }
+    			else if (dataWidth >60 && dataWidth<=75) { $(this).css("background-color", "yellow"); }
+    			else if (dataWidth >75 && dataWidth<=100) { $(this).css("background-color", "green"); }	
+    	  });
+    	
+    	$("#upload_widget_opener").click(function () {
+	    		cloudinary.openUploadWidget({
+	    	
+	    		upload_preset : 'zsxcsaup', 
+	    		cloud_name: 'dcamfoks1',
+	    		theme: 'white',
+	    		multiple: true,
+	    		max_image_width: 750,
+	    		max_image_height: 500,
+	    		max_files: 5,
+	    		folder: 'mi_carpeta',
+	    		sources: [ 'local', 'url', 'facebook'], 
+	    	}, function(error, result) {
+	    		console.log(error, result)
+	    	})
+    	})
+    	
     	moment.locale('es');
     	$('.proc-comentario').click(function(){
     		var a = moment().format('MMMM Do YYYY, h:mm:ss a');
@@ -28,7 +56,7 @@
     		
     		$($(this).parent().children('.form-eliminar-com')[0]).toggleClass('div_oculto');
     	  		  
-    		});
+    	});
     	
     	
     	

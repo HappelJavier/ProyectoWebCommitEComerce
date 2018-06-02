@@ -729,104 +729,107 @@ public class ProductosController {
 		
 		template.addAttribute("urlimagen", urlimagen);	
 		template.addAttribute("nombre", nombre);
-		template.addAttribute("precio", precio);
+		template.addAttribute("precio", "$" +precio);
 		//Juego x = new Juego(id, nombre, desarrollador, fecha, plataforma, genero, rencpu1, rencpu2, rengpu1, rengpu2, vram1, vram2, ram1, ram2, precio, urlimagen);
 		
-		int ren = 5;
+		int renplaca;
+		int renmicro;
+		int vram;
+		int ram;
 		
 		if (renPlacaDeVideoZ>rengpu2) {	
 			template.addAttribute("renPlacaDeVideoJuego", "La placa de video supera los requisitos recomendados del juego");
-			ren += 3;
-			template.addAttribute("ren", ren);
+			renplaca = 90;
+			template.addAttribute("renplaca", renplaca);
 		} else if (renPlacaDeVideoZ==rengpu2) {
 			template.addAttribute("renPlacaDeVideoJuego", "La placa de video esta ajustada a los requisitos recomendados del juego");
-			ren += 2;
-			template.addAttribute("ren", ren);
+			renplaca = 75;
+			template.addAttribute("renplaca", renplaca);
 		} else {
 			if (renPlacaDeVideoZ>rengpu1) {
 				template.addAttribute("renPlacaDeVideoJuego", "La placa de video supera los requisitos minimos del juego, pero no alcanza a los requisitos recomendado");
-				ren += 0;
-				template.addAttribute("ren", ren);
+				renplaca = 60;
+				template.addAttribute("renplaca", renplaca);
 			} else if (renPlacaDeVideoZ==rengpu1) {
 				template.addAttribute("renPlacaDeVideoJuego", "La placa de video esta ajustada a los requisitos minimos del juego");
-				ren -= 1;
-				template.addAttribute("ren", ren);
+				renplaca = 40;
+				template.addAttribute("renplaca", renplaca);
 			} else {
 				template.addAttribute("renPlacaDeVideoJuego", "La placa de video esta por debajo de los requisitos minimos del juego");	
-				ren -= 3;
-				template.addAttribute("ren", ren);
+				renplaca = 20;
+				template.addAttribute("renplaca", renplaca);
 			}
 		}
 		
 		if (vramZ>vram2) {
 			template.addAttribute("vramZ", "y la cantidad de memoria de la misma supera los requisitos recomendados del juego");
-			ren += 3;
-			template.addAttribute("ren2", ren);
+			vram = 90;
+			template.addAttribute("vram", vram);
 		} else if (vramZ==vram2) {
 			template.addAttribute("vramZ", "y la cantidad de memoria de la misma esta ajustada a los requisitos recomendados del juego");
-			ren += 2;
-			template.addAttribute("ren2", ren);
+			vram = 75;
+			template.addAttribute("vram", vram);
 		} else {
 			if (vramZ>vram1) {
 				template.addAttribute("vramZ", "y la cantidad de memoria de la misma supera los requisitos minimos del juego, pero no alcanza a los requisitos recomendado");
-				ren += 0;
-				template.addAttribute("ren2", ren);
+				vram = 60;
+				template.addAttribute("vram", vram);
 			} else if (vramZ==vram1) {
 				template.addAttribute("vramZ", "y la cantidad de memoria de la misma esta ajustada a los requisitos minimos del juego");
-				ren -= 1;
-				template.addAttribute("ren2", ren);
+				vram = 40;
+				template.addAttribute("vram", vram);
 			} else {
 				template.addAttribute("vramZ", "y la cantidad de memoria de la misma esta por debajo de los requisitos minimos del juego");	
-				ren -= 2;
-				template.addAttribute("ren2", ren);
+				vram = 20;
+				template.addAttribute("vram", vram);
 			}
 		}
 				
 		if (renProcesadorZ>rencpu2) {
 			template.addAttribute("renProcesadorZ", "el microprocesdor supera los requisitos recomendados del juego");
-			ren += 3;
-			template.addAttribute("ren1", ren);
+			renmicro = 90;
+			template.addAttribute("renmicro", renmicro);
 		} else if (renProcesadorZ==rencpu2) {
 			template.addAttribute("renProcesadorZ", "el microprocesdor esta ajustado a los requisitos recomendados del juego");
-			ren += 2;
-			template.addAttribute("ren1", ren);
+			renmicro = 75;
+			template.addAttribute("renmicro", renmicro);
 		} else {
 			if (renProcesadorZ>rencpu1) {
 				template.addAttribute("renProcesadorZ", "el microprocesdor supera los requisitos minimos del juego, pero no alcanza a los requisitos recomendado");
-				ren += 0;
-				template.addAttribute("ren1", ren);
+				renmicro = 60;
+				template.addAttribute("renmicro", renmicro);
 			} else if (renProcesadorZ==rencpu1) {
 				template.addAttribute("renProcesadorZ", "el microprocesdor esta ajustado a los requisitos minimos del juego");
-				ren -= 1;
-				template.addAttribute("ren1", ren);
+				renmicro = 40;
+				template.addAttribute("renmicro", renmicro);
 			} else {
 				template.addAttribute("renProcesadorZ", "el microprocesdor esta por debajo de los requisitos minimos del juego");	
-				ren -= 2;
-				template.addAttribute("ren1", ren);
+				renmicro = 20;
+				template.addAttribute("renmicro", renmicro);
 			}
 		}
 
 		if (rampc>ram2) {
 			template.addAttribute("ramZ", "la cantidad de memoria ram supera los requisitos recomendados del juego");
-			ren += 3;
-			template.addAttribute("ren", ren);
+			ram = 90;
+			template.addAttribute("ram", ram);
 		} else if (rampc==ram2) {
 			template.addAttribute("ramZ", "la cantidad de memoria ram esta ajustada a los requisitos recomendados del juego");
-			ren += 2;
-			template.addAttribute("ren3", ren);
+			ram = 75;
+			template.addAttribute("ram", ram);
 		} else {
 			if (rampc>ram1) {
 				template.addAttribute("ramZ", "la cantidad de memoria ram supera los requisitos minimos del juego, pero no alcanza a los requisitos recomendado");
-				ren += 0;
-				template.addAttribute("ren3", ren);
+				ram = 60;
+				template.addAttribute("ram", ram);
 			} else if (rampc==ram1) {
 				template.addAttribute("ramZ", "la cantidad de memoria ram esta ajustada a los requisitos minimos del juego");
-				ren -= 1;
-				template.addAttribute("ren3", ren);
+				ram = 40;
+				template.addAttribute("ram", ram);
 			} else {
 				template.addAttribute("ramZ", "la cantidad de memoria ram esta por debajo de los requisitos minimos del juego");	
-				ren -= 2;
-				template.addAttribute("ren3", ren);
+				ram = 20;
+				template.addAttribute("ram", ram);
 			}
 		}
 		
@@ -1116,6 +1119,53 @@ public class ProductosController {
 		return "listadoProductos";
 	}
 
+	@GetMapping("/memoria")
+	public String memoria(HttpSession session,Model template) throws SQLException {
+		
+
+		Connection connection;
+		connection = DriverManager.getConnection(env.getProperty("spring.datasource.url"), env.getProperty("spring.datasource.username"),
+				env.getProperty("spring.datasource.password"));
+
+		Usuario logeado = UsuarioHelper.usuarioLogeado(session, connection);
+				
+		ProductosHelper.checkearHeader(logeado, template);
+		
+		
+		PreparedStatement consulta = connection
+				.prepareStatement("SELECT * FROM productos WHERE tipo = 'memoria';");
+
+		ResultSet resultado = consulta.executeQuery();
+
+		ArrayList<Producto> listadoProductos = new ArrayList<Producto>();
+
+		while ( resultado.next() ) {
+			int id = resultado.getInt("id");
+			String tipo = resultado.getString("tipo");
+			String marca = resultado.getString("marca");
+			String modelo = resultado.getString("modelo");
+			String socketcpu = resultado.getString("socketcpu");
+			String tiporam = resultado.getString("tiporam");
+			String pci = resultado.getString("pci");
+			String sata = resultado.getString("sata");
+			String velocidad = resultado.getString("velocidad");
+			String tamanio = resultado.getString("tamanio");
+			String rendimiento = resultado.getString("rendimiento");
+			String consumo = resultado.getString("consumo");
+			int precio = resultado.getInt("precio");
+			String urlimagen = resultado.getString("urlimagen");
+			
+			
+			Producto x = new Producto (id, tipo, marca, modelo, socketcpu, tiporam, pci, sata, velocidad, tamanio, rendimiento, consumo, precio, urlimagen);
+			listadoProductos.add(x);	
+		}
+
+		template.addAttribute("listadoProductos", listadoProductos);
+		connection.close();
+
+		return "listadoProductos";
+	}
+	
 	@GetMapping("/microprocesadores")
 	public String microprocesadores(HttpSession session,Model template) throws SQLException {
 		
@@ -1444,6 +1494,7 @@ public class ProductosController {
 		return "detalleProducto";
 	}
 	
+
 	@GetMapping("/registrate")
 	public String registrate(HttpSession session, Model template) throws SQLException {
 		Connection connection;

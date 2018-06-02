@@ -147,3 +147,117 @@ h5{
 	padding: 1rem;
 	
 }
+
+.verde{
+	background-color: green;
+	padding-right: 0px;
+}
+
+.amarillo{
+	background-color: yellow;
+	padding-right: 0px;
+}
+
+.naranja{
+	background-color: orange;
+	padding-right: 0px;
+}
+
+.rojo{
+	background-color: red;
+	padding-right: 0px;
+}
+
+.rojo-oscuro{
+	background-color: darkred;
+	padding-right: 0px;
+}
+
+@import "lesshat";
+
+/* Mixings &  Variables */
+@barHeight: 20px;
+@borders: #717D95;
+@primary: #59BAC0;
+
+.transition (@property) {
+  -webkit-transition: @property;
+  -moz-transition: @property;
+  -o-transition: @property;
+  transition: @property 
+}
+
+.transform(@degree) {
+  transform:rotate(@degree);
+  -ms-transform:rotate(@degree);
+  -webkit-transform:rotate(@degree); 
+}
+
+
+.grafico-barras{
+	margin-bottom: 1em;
+	position: relative;
+	width: 80%;
+ 	margin: 1em;
+	height: auto;
+}
+
+.barra-fondo{
+  border-radius: 2px;
+    background: #DAE4EB;
+    margin-bottom: 10px;
+    display: block;
+}
+
+.barras{  
+    background-color: cyan;    
+    .transition(all 1s ease-out);
+    border-radius: 2px;
+    cursor: pointer;
+    margin-bottom: 10px;
+    padding-left: .5em;
+    position: relative;
+    z-index: 9999;
+    display: block;
+    height: 20px;  
+    width: 0%; 
+    
+    
+    &:hover {
+      .transition(all 0.5s ease);
+    }
+    
+    &:last-child {
+      margin-bottom: 0;
+    }
+    
+    &:after {
+      position: absolute;
+      content: attr(data-value);
+      display: none;
+      
+      font-size: 12px;
+      border-radius: 4px;
+      background: rgba(0,0,0,0.5);
+      color: #fff;      
+       
+      padding: 0 10px;
+      
+      margin-left: 5px;
+      left: 100%;
+      top: 0;
+    }
+    
+    &:hover:after {
+      display: block;
+    }
+  
+  
+  &-legend {
+    position: absolute;
+    margin-right: 10px;
+    left: -40px ;
+    z-index: 9999;
+  }
+
+}
