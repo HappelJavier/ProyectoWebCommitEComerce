@@ -30,7 +30,21 @@ html {
 
 h5{
     font-size: 1.4em;
-}     
+}
+     
+.no-padding{
+	padding:0px;	
+}
+
+.flex-end{
+ 	display: flex;
+	justify-content:flex-end;
+}
+
+.margin-bot-top{
+	margin-top: 2rem;
+    margin-bottom: 2rem;
+}
 
 .logoredes {
 	padding: 2.5%;

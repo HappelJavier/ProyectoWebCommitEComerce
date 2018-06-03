@@ -27,6 +27,11 @@
 	    		sources: [ 'local', 'url', 'facebook'], 
 	    	}, function(error, result) {
 	    		console.log(error, result)
+	    		var url = result[0].secure_url;
+	            
+	            console.log (url);
+	            
+	            $("form").find(".foto").val(url);
 	    	})
     	})
     	

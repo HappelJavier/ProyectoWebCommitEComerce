@@ -27,13 +27,24 @@
 					<br></br>
 					<img class="img-fluid col-4" th:src="${imagenDePerfil?: ''}"></img>
 					
-					
-					<button id="botonSubirImagen">subir imagen</button>
-					<form action="/subir-imagen">
-						<input type="text" name="inputUrlImagen" id="inputUrlImagen"></input>
-						<input type="submit"></input>
-					</form>
-					
+					<div class="row">
+						<div class="col-6">
+							<h3>Filestack</h3>
+							<button id="botonSubirImagen">Subir imagen</button>
+							<form action="/subir-imagen">
+								<input type="hidden" name="inputUrlImagen" id="inputUrlImagen"></input>
+								<input type="submit"></input>
+							</form>
+						</div>
+						<div class="col-6">
+							<h3>Cloudinary</h3>
+							<button id="upload_widget_opener">Subir imagen</button>
+							<form class="imagen-nueva" action="/subir-imagen">
+								<input class="foto" type="hidden" name="inputUrlImagen"></input>
+								<input type="submit"></input>
+							</form>	
+						</div>
+					</div>
 				</div>
 				<div class="col-6">
 					<div class="row">
