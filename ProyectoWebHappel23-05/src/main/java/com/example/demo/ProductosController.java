@@ -10,6 +10,9 @@ import java.util.ArrayList;
 
 import javax.servlet.http.HttpSession;
 
+import org.simplejavamail.email.Email;
+import org.simplejavamail.email.EmailBuilder;
+import org.simplejavamail.mailer.MailerBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Controller;
@@ -40,6 +43,7 @@ public class ProductosController {
 		
 		
 		ProductosHelper.checkearHeader(logeado, template);
+		
 		
 		
 		
@@ -999,14 +1003,33 @@ public class ProductosController {
 		return "listadoProductos";
 	}
 
-	@GetMapping("/listado")
-	public String listado(HttpSession session,Model template) throws SQLException {
+	@GetMapping("/listado/{order}")
+	public String listado(HttpSession session,Model template, @PathVariable int order) throws SQLException {
 		Connection connection;
 		connection = DriverManager.getConnection(env.getProperty("spring.datasource.url"), env.getProperty("spring.datasource.username"),
 				env.getProperty("spring.datasource.password"));
+	
+		int offset = order * 8;
 		
-		ProductosHelper.crearListado(session, template, connection);
+		ProductosHelper.crearListadoOrdenado(session, template, connection, offset);
+		
+		if (order == 0){
+			template.addAttribute("anterior", order);	
+		} else {
+			template.addAttribute("anterior", order - 1);
+			
+		}
+		
+		boolean cantidad = ProductosHelper.CheckearCantidad(session, template, connection, offset);
+		
+		if (cantidad == false){
+			template.addAttribute("siguiente", order);	
+		} else {
+			template.addAttribute("siguiente", order + 1);
+		}
+		connection.close();
 		return "listadoProductos";
+			
 	}
 	
 	@GetMapping("/eliminar-pc/{idpc}")
@@ -1072,9 +1095,8 @@ public class ProductosController {
 		return "redirect:/detalle/" + id;
 	}
 	
-	@GetMapping("/placas-de-video")
-	public String placasDeVideo(HttpSession session,Model template) throws SQLException {
-		
+	@GetMapping("/placas-de-video/{order}")
+	public String placasDeVideo(HttpSession session,Model template, @PathVariable int order) throws SQLException {
 		
 		Connection connection;
 		connection = DriverManager.getConnection(env.getProperty("spring.datasource.url"), env.getProperty("spring.datasource.username"),
@@ -1083,44 +1105,30 @@ public class ProductosController {
 		Usuario logeado = UsuarioHelper.usuarioLogeado(session, connection);
 				
 		ProductosHelper.checkearHeader(logeado, template);
+		int offset = order * 8;
+		String tiposql = "placa de video";
+		ProductosHelper.crearListadoEspecifico(session, template, connection, offset, tiposql);
 		
-		
-		PreparedStatement consulta = connection
-				.prepareStatement("SELECT * FROM productos WHERE tipo = 'placa de video';");
-
-		ResultSet resultado = consulta.executeQuery();
-
-		ArrayList<Producto> listadoProductos = new ArrayList<Producto>();
-
-		while ( resultado.next() ) {
-			int id = resultado.getInt("id");
-			String tipo = resultado.getString("tipo");
-			String marca = resultado.getString("marca");
-			String modelo = resultado.getString("modelo");
-			String socketcpu = resultado.getString("socketcpu");
-			String tiporam = resultado.getString("tiporam");
-			String pci = resultado.getString("pci");
-			String sata = resultado.getString("sata");
-			String velocidad = resultado.getString("velocidad");
-			String tamanio = resultado.getString("tamanio");
-			String rendimiento = resultado.getString("rendimiento");
-			String consumo = resultado.getString("consumo");
-			int precio = resultado.getInt("precio");
-			String urlimagen = resultado.getString("urlimagen");
+		if (order == 0){
+			template.addAttribute("anterior", order);	
+		} else {
+			template.addAttribute("anterior", order - 1);
 			
-			
-			Producto x = new Producto (id, tipo, marca, modelo, socketcpu, tiporam, pci, sata, velocidad, tamanio, rendimiento, consumo, precio, urlimagen);
-			listadoProductos.add(x);		
 		}
-
-		template.addAttribute("listadoProductos", listadoProductos);
+		
+		boolean cantidad = ProductosHelper.CheckearCantidadEspecifica(session, template, connection, offset, tiposql);
+		
+		if (cantidad == false){
+			template.addAttribute("siguiente", order);	
+		} else {
+			template.addAttribute("siguiente", order + 1);
+		}
 		connection.close();
-
 		return "listadoProductos";
 	}
 
-	@GetMapping("/memoria")
-	public String memoria(HttpSession session,Model template) throws SQLException {
+	@GetMapping("/memoria/{order}")
+	public String memoria(HttpSession session,Model template, @PathVariable int order) throws SQLException {
 		
 
 		Connection connection;
@@ -1132,42 +1140,30 @@ public class ProductosController {
 		ProductosHelper.checkearHeader(logeado, template);
 		
 		
-		PreparedStatement consulta = connection
-				.prepareStatement("SELECT * FROM productos WHERE tipo = 'memoria';");
-
-		ResultSet resultado = consulta.executeQuery();
-
-		ArrayList<Producto> listadoProductos = new ArrayList<Producto>();
-
-		while ( resultado.next() ) {
-			int id = resultado.getInt("id");
-			String tipo = resultado.getString("tipo");
-			String marca = resultado.getString("marca");
-			String modelo = resultado.getString("modelo");
-			String socketcpu = resultado.getString("socketcpu");
-			String tiporam = resultado.getString("tiporam");
-			String pci = resultado.getString("pci");
-			String sata = resultado.getString("sata");
-			String velocidad = resultado.getString("velocidad");
-			String tamanio = resultado.getString("tamanio");
-			String rendimiento = resultado.getString("rendimiento");
-			String consumo = resultado.getString("consumo");
-			int precio = resultado.getInt("precio");
-			String urlimagen = resultado.getString("urlimagen");
+		int offset = order * 8;
+		String tiposql = "memoria";
+		ProductosHelper.crearListadoEspecifico(session, template, connection, offset, tiposql);
+		
+		if (order == 0){
+			template.addAttribute("anterior", order);	
+		} else {
+			template.addAttribute("anterior", order - 1);
 			
-			
-			Producto x = new Producto (id, tipo, marca, modelo, socketcpu, tiporam, pci, sata, velocidad, tamanio, rendimiento, consumo, precio, urlimagen);
-			listadoProductos.add(x);	
 		}
-
-		template.addAttribute("listadoProductos", listadoProductos);
+		
+		boolean cantidad = ProductosHelper.CheckearCantidadEspecifica(session, template, connection, offset, tiposql);
+		
+		if (cantidad == false){
+			template.addAttribute("siguiente", order);	
+		} else {
+			template.addAttribute("siguiente", order + 1);
+		}
 		connection.close();
-
 		return "listadoProductos";
 	}
 	
-	@GetMapping("/microprocesadores")
-	public String microprocesadores(HttpSession session,Model template) throws SQLException {
+	@GetMapping("/microprocesadores/{order}")
+	public String microprocesadores(HttpSession session,Model template, @PathVariable int order) throws SQLException {
 		
 
 		Connection connection;
@@ -1179,42 +1175,30 @@ public class ProductosController {
 		ProductosHelper.checkearHeader(logeado, template);
 		
 		
-		PreparedStatement consulta = connection
-				.prepareStatement("SELECT * FROM productos WHERE tipo = 'microprocesador';");
-
-		ResultSet resultado = consulta.executeQuery();
-
-		ArrayList<Producto> listadoProductos = new ArrayList<Producto>();
-
-		while ( resultado.next() ) {
-			int id = resultado.getInt("id");
-			String tipo = resultado.getString("tipo");
-			String marca = resultado.getString("marca");
-			String modelo = resultado.getString("modelo");
-			String socketcpu = resultado.getString("socketcpu");
-			String tiporam = resultado.getString("tiporam");
-			String pci = resultado.getString("pci");
-			String sata = resultado.getString("sata");
-			String velocidad = resultado.getString("velocidad");
-			String tamanio = resultado.getString("tamanio");
-			String rendimiento = resultado.getString("rendimiento");
-			String consumo = resultado.getString("consumo");
-			int precio = resultado.getInt("precio");
-			String urlimagen = resultado.getString("urlimagen");
+		int offset = order * 8;
+		String tiposql = "microprocesador";
+		ProductosHelper.crearListadoEspecifico(session, template, connection, offset, tiposql);
+		
+		if (order == 0){
+			template.addAttribute("anterior", order);	
+		} else {
+			template.addAttribute("anterior", order - 1);
 			
-			
-			Producto x = new Producto (id, tipo, marca, modelo, socketcpu, tiporam, pci, sata, velocidad, tamanio, rendimiento, consumo, precio, urlimagen);
-			listadoProductos.add(x);	
 		}
-
-		template.addAttribute("listadoProductos", listadoProductos);
+		
+		boolean cantidad = ProductosHelper.CheckearCantidadEspecifica(session, template, connection, offset, tiposql);
+		
+		if (cantidad == false){
+			template.addAttribute("siguiente", order);	
+		} else {
+			template.addAttribute("siguiente", order + 1);
+		}
 		connection.close();
-
 		return "listadoProductos";
 	}
 		
-	@GetMapping("/discos-duros")
-	public String discosDuros(HttpSession session,Model template) throws SQLException {
+	@GetMapping("/discos-duros/{order}")
+	public String discosDuros(HttpSession session,Model template, @PathVariable int order) throws SQLException {
 		
 
 		Connection connection;
@@ -1226,42 +1210,30 @@ public class ProductosController {
 		ProductosHelper.checkearHeader(logeado, template);
 		
 
-		PreparedStatement consulta = connection
-				.prepareStatement("SELECT * FROM productos WHERE tipo = 'disco duro';");
-
-		ResultSet resultado = consulta.executeQuery();
-
-		ArrayList<Producto> listadoProductos = new ArrayList<Producto>();
-
-		while ( resultado.next() ) {
-			int id = resultado.getInt("id");
-			String tipo = resultado.getString("tipo");
-			String marca = resultado.getString("marca");
-			String modelo = resultado.getString("modelo");
-			String socketcpu = resultado.getString("socketcpu");
-			String tiporam = resultado.getString("tiporam");
-			String pci = resultado.getString("pci");
-			String sata = resultado.getString("sata");
-			String velocidad = resultado.getString("velocidad");
-			String tamanio = resultado.getString("tamanio");
-			String rendimiento = resultado.getString("rendimiento");
-			String consumo = resultado.getString("consumo");
-			int precio = resultado.getInt("precio");
-			String urlimagen = resultado.getString("urlimagen");
+		int offset = order * 8;
+		String tiposql = "disco duro";
+		ProductosHelper.crearListadoEspecifico(session, template, connection, offset, tiposql);
+		
+		if (order == 0){
+			template.addAttribute("anterior", order);	
+		} else {
+			template.addAttribute("anterior", order - 1);
 			
-			
-			Producto x = new Producto (id, tipo, marca, modelo, socketcpu, tiporam, pci, sata, velocidad, tamanio, rendimiento, consumo, precio, urlimagen);
-			listadoProductos.add(x);		
 		}
-
-		template.addAttribute("listadoProductos", listadoProductos);
+		
+		boolean cantidad = ProductosHelper.CheckearCantidadEspecifica(session, template, connection, offset, tiposql);
+		
+		if (cantidad == false){
+			template.addAttribute("siguiente", order);	
+		} else {
+			template.addAttribute("siguiente", order + 1);
+		}
 		connection.close();
-
 		return "listadoProductos";
 	}
 	
-	@GetMapping("/motherboards")
-	public String motherboards(HttpSession session,Model template) throws SQLException {
+	@GetMapping("/motherboards/{order}")
+	public String motherboards(HttpSession session,Model template, @PathVariable int order) throws SQLException {
 		
 
 		Connection connection;
@@ -1273,37 +1245,25 @@ public class ProductosController {
 		ProductosHelper.checkearHeader(logeado, template);
 		
 
-		PreparedStatement consulta = connection
-				.prepareStatement("SELECT * FROM productos WHERE tipo = 'motherboard';");
-
-		ResultSet resultado = consulta.executeQuery();
-
-		ArrayList<Producto> listadoProductos = new ArrayList<Producto>();
-
-		while ( resultado.next() ) {
-			int id = resultado.getInt("id");
-			String tipo = resultado.getString("tipo");
-			String marca = resultado.getString("marca");
-			String modelo = resultado.getString("modelo");
-			String socketcpu = resultado.getString("socketcpu");
-			String tiporam = resultado.getString("tiporam");
-			String pci = resultado.getString("pci");
-			String sata = resultado.getString("sata");
-			String velocidad = resultado.getString("velocidad");
-			String tamanio = resultado.getString("tamanio");
-			String rendimiento = resultado.getString("rendimiento");
-			String consumo = resultado.getString("consumo");
-			int precio = resultado.getInt("precio");
-			String urlimagen = resultado.getString("urlimagen");
+		int offset = order * 8;
+		String tiposql = "motherboard";
+		ProductosHelper.crearListadoEspecifico(session, template, connection, offset, tiposql);
+		
+		if (order == 0){
+			template.addAttribute("anterior", order);	
+		} else {
+			template.addAttribute("anterior", order - 1);
 			
-			
-			Producto x = new Producto (id, tipo, marca, modelo, socketcpu, tiporam, pci, sata, velocidad, tamanio, rendimiento, consumo, precio, urlimagen);
-			listadoProductos.add(x);	
 		}
-
-		template.addAttribute("listadoProductos", listadoProductos);
+		
+		boolean cantidad = ProductosHelper.CheckearCantidadEspecifica(session, template, connection, offset, tiposql);
+		
+		if (cantidad == false){
+			template.addAttribute("siguiente", order);	
+		} else {
+			template.addAttribute("siguiente", order + 1);
+		}
 		connection.close();
-
 		return "listadoProductos";
 	}
 
@@ -1494,7 +1454,6 @@ public class ProductosController {
 		return "detalleProducto";
 	}
 	
-
 	@GetMapping("/registrate")
 	public String registrate(HttpSession session, Model template) throws SQLException {
 		Connection connection;
@@ -1535,7 +1494,19 @@ public class ProductosController {
 		consulta.setString(5, mail);
 		consulta.executeUpdate();
 		connection.close();
+		
+		Email email = EmailBuilder.startingBlank()
+			    .from("javierBot", "javier.happel.16@gmail.com")
+			    .to("javierH", "happeljavierleonardo@gmail.com")
+			    .withSubject("Prueba")
+			    .withPlainText("el mail funciona")
+			    .buildEmail();
 
+			MailerBuilder
+			  .withSMTPServer("smtp.sendgrid.net", 587, "apikey", "${SENDGRID_PASSWORD}")
+			  .buildMailer()
+			  .sendMail(email);
+		
 		return "redirect:/registrate";
 	}
 	
