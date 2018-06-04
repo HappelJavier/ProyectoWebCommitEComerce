@@ -537,6 +537,23 @@ public class ProductosController {
 		return "redirect:/administrar";
 	}
 	
+	@GetMapping("/eliminar-usuario/{id}")
+	public String eliminarUsuario(Model template, @PathVariable int id) throws SQLException {
+	
+		Connection connection;
+		connection = DriverManager.getConnection(env.getProperty("spring.datasource.url"), env.getProperty("spring.datasource.username"),
+				env.getProperty("spring.datasource.password"));
+
+		PreparedStatement consulta = connection.prepareStatement("DELETE FROM usuarios WHERE id = ?;");
+
+		consulta.setInt(1, id);
+
+		consulta.executeUpdate();
+
+		connection.close();
+		return "redirect:/administrar";
+	}
+	
 	@GetMapping("/subir-imagen")
 	public String subirImagen(@RequestParam String inputUrlImagen, HttpSession session) throws SQLException {
 		
@@ -1021,6 +1038,16 @@ public class ProductosController {
 		}
 		
 		boolean cantidad = ProductosHelper.CheckearCantidad(session, template, connection, offset);
+		
+		PreparedStatement consulta3 = connection.prepareStatement("SELECT * FROM productos ORDER BY tipo LIMIT 8 OFFSET ?;");
+		consulta3.setInt(1, offset + 8);
+		ResultSet resultado3 = consulta3.executeQuery();
+		//crear arraylist para mostrar "paginas" en la seccion productos. AGREGAR JOIN EN PEDIDOS SQL DE COMENTARIOS
+		for (int offst = 8; resultado3.next() == true ;offst =+ 8){
+			PreparedStatement consulta4 = connection.prepareStatement("SELECT * FROM productos ORDER BY tipo LIMIT 8 OFFSET ?;");
+			consulta4.setInt(1, offst);
+		}
+		
 		
 		if (cantidad == false){
 			template.addAttribute("siguiente", order);	
