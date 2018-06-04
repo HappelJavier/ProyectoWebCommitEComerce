@@ -103,11 +103,9 @@ public class ProductosHelper {
 	
 	public static boolean CheckearCantidad(HttpSession session,Model template, Connection connection, int offset) throws SQLException{
 		PreparedStatement consulta = connection.prepareStatement("SELECT * FROM productos ORDER BY tipo LIMIT 8 OFFSET ?;");
-		if (offset == 0){
-			consulta.setInt(1, offset);
-		} else {
-			consulta.setInt(1, offset + 8);
-		}
+		
+		consulta.setInt(1, offset + 8);
+		
 		
 		ResultSet resultado = consulta.executeQuery();
 		if (resultado.next()){
