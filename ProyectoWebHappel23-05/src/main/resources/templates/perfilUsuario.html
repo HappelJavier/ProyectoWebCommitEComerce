@@ -72,10 +72,25 @@
 						<div class="col-10"><label th:text="${tiporam2?: ''} + ' ' + ${marcaram2?: ''} + ' ' + ${tamanio2?: ''}"></label></div>
 					</div>
 					<div class="row">
-						<a th:href="${urlEliminarPc?: ''}" th:text="${botonEliminarPc?: ''}"></a>
+						<a class="col-6" th:href="${urlEliminarPc?: ''}" th:text="${botonEliminarPc?: ''}"></a>
+					
+						<form class="col-6" action="/comparar-pc">
+							
+							<input name="micro" type="hidden" th:value="${micro}"></input>
+							<input name="placa" type="hidden" th:value="${placa}"></input>
+							<input name="memoria1" type="hidden" th:value="${memoria1}"></input>
+							<input name="memoria2" type="hidden" th:value="${memoria2}"></input>
+							<input name="mother" type="hidden" th:value="${mother}"></input>
+							<input name="disco" type="hidden" th:value="${disco}"></input>
+							<select name="juego" class="form-control" id="game" >
+								<option th:each="juego:${listadoJuegos}"  th:value="${juego.id}" th:text="${juego.nombre}"></option>
+							</select>
+							<input value="COMPARAR CON JUEGO" type="submit"></input>
+							
+							
+						</form>
 					</div>
 				
-					
 					<div class="row">
 						<a th:href="${urlCrearPc?: ''}" th:text="${botonCrearPc?: ''}"></a>
 					</div>

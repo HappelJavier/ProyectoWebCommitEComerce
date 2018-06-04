@@ -1501,9 +1501,9 @@ public class ProductosController {
 			    .withSubject("Prueba")
 			    .withPlainText("el mail funciona")
 			    .buildEmail();
-
+		
 			MailerBuilder
-			  .withSMTPServer("smtp.sendgrid.net", 587, "apikey", "${SENDGRID_PASSWORD}")
+			  .withSMTPServer("smtp.sendgrid.net", 587, "apikey", env.getProperty("spring.datasource.sendgrid"))
 			  .buildMailer()
 			  .sendMail(email);
 		
@@ -1610,6 +1610,12 @@ public class ProductosController {
 				int memoria1 = resultado2.getInt("ram1");
 				int memoria2 = resultado2.getInt("ram2");
 				int disco = resultado2.getInt("discoduro");
+				template.addAttribute("mother", mother);
+				template.addAttribute("micro", micro);
+				template.addAttribute("placa", placa);
+				template.addAttribute("memoria1", memoria1);
+				template.addAttribute("memoria2", memoria2);
+				template.addAttribute("disco", disco);
 				//int idpropietario = resultado2.getInt("idpropietario");
 			
 				PreparedStatement consultaMother = connection.prepareStatement("SELECT * FROM productos WHERE id=? ");
@@ -1712,6 +1718,38 @@ public class ProductosController {
 				String botonCrearPc = "eliminar tu pc";
 				template.addAttribute("urlEliminarPc", urlCrearPc);
 				template.addAttribute("botonEliminarPc", botonCrearPc); 
+				
+				PreparedStatement consultaJuego = connection.prepareStatement("SELECT * FROM juegos;");
+
+				ResultSet resultadoJuego = consultaJuego.executeQuery();
+
+				ArrayList<Juego> listadoJuegos = new ArrayList<Juego>();
+				
+				while ( resultadoJuego.next() ) {
+					int jid = resultadoJuego.getInt("id");
+					String jnombre = resultadoJuego.getString("nombre");
+					String jdesarrollador = resultadoJuego.getString("desarrollador");
+					String jfecha = resultadoJuego.getString("fecha");
+					String jplataforma = resultadoJuego.getString("plataforma");
+					String jgenero = resultadoJuego.getString("genero");
+					int jrencpu1 = resultadoJuego.getInt("rencpu1");
+					int jrencpu2 = resultadoJuego.getInt("rencpu2");
+					int jrengpu1 = resultadoJuego.getInt("rengpu1");
+					int jrengpu2 = resultadoJuego.getInt("rengpu2");
+					int jvram1 = resultadoJuego.getInt("vram1");
+					int jvram2 = resultadoJuego.getInt("vram2");
+					int jram1 = resultadoJuego.getInt("ram1");
+					int jram2 = resultadoJuego.getInt("ram2");
+					int jprecio = resultadoJuego.getInt("precio");
+					String jurlimagen = resultadoJuego.getString("urlimagen");
+					
+					Juego juego = new Juego(jid, jnombre, jdesarrollador, jfecha, jplataforma, jgenero, jrencpu1, jrencpu2, jrengpu1, jrengpu2, jvram1, jvram2, jram1, jram2, jprecio, jurlimagen);
+					listadoJuegos.add(juego);
+					
+					
+				}
+				
+				template.addAttribute("listadoJuegos", listadoJuegos);
 
 			}	else {
 				String urlCrearPc = "/crea-tu-pc";

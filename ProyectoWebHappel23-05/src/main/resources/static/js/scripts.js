@@ -7,7 +7,7 @@
     	     var dataWidth = $(this).val();
     	     $(this).css("width", dataWidth + "%");
     	    if (dataWidth <=20) { $(this).css("background-color", "darkred"); }
-    	    	else if (dataWidth >40 && dataWidth <=60){ $(this).css("background-color", "red"); }
+    	    	else if (dataWidth >20 && dataWidth <=40){ $(this).css("background-color", "red"); }
     	    	else if (dataWidth >40 && dataWidth <=60){ $(this).css("background-color", "orange"); }
     			else if (dataWidth >60 && dataWidth<=75) { $(this).css("background-color", "yellow"); }
     			else if (dataWidth >75 && dataWidth<=100) { $(this).css("background-color", "green"); }	
