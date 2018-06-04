@@ -57,13 +57,17 @@
 								placeholder="Buscar..." aria-label="Search"></input>
 							<button type="submit" class="btn btn-outline-dark flex-end"><i class="fa fa-search"></i></button>
 						</form>
-						<ul class="navbar-nav col-3 usuariolog">
+						<ul th:if="${estaLogeado} == false" class="navbar-nav mr-auto col-3">
+							<li class="nav-item active"><a class="nav-link" href="/registrate">Registrarse<span class="sr-only">(current)</span></a></li>
+							<li class="nav-item active"><a class="nav-link" href="/login">Login<span class="sr-only">(current)</span></a></li>
+						</ul>
+						<ul th:if="${estaLogeado} == true" class="navbar-nav col-3 usuariolog">
 							<li class="col-5"><img class="img-fluid" th:src="${imgperfil}"></img></li>
 							<div class="row">
-							<li class="nav-item active "><a class="nav-link" th:href="'/perfil/' + ${nick}">Perfil<span class="sr-only">(current)</span></a></li>
-							<li class="nav-item active "><a class="nav-link" href="/logout">Logout<span class="sr-only">(current)</span></a></li>
+								<li class="nav-item active "><a class="nav-link" th:href="'/perfil/' + ${nick}">Perfil<span class="sr-only">(current)</span></a></li>
+								<li class="nav-item active "><a class="nav-link" href="/logout">Logout<span class="sr-only">(current)</span></a></li>
 							<div th:if="${logeadoisadmin} == true">
-							<li class="nav-item active "><a class="nav-link" href="/administrar">Administrador<span class="sr-only">(current)</span></a></li>
+								<li class="nav-item active "><a class="nav-link" href="/administrar">Administrador<span class="sr-only">(current)</span></a></li>
 							</div>
 							</div>
 						</ul>

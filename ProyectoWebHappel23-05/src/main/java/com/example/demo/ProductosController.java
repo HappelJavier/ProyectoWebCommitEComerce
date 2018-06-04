@@ -1019,45 +1019,6 @@ public class ProductosController {
 		
 		return "listadoProductos";
 	}
-
-	@GetMapping("/listado/{order}")
-	public String listado(HttpSession session,Model template, @PathVariable int order) throws SQLException {
-		Connection connection;
-		connection = DriverManager.getConnection(env.getProperty("spring.datasource.url"), env.getProperty("spring.datasource.username"),
-				env.getProperty("spring.datasource.password"));
-	
-		int offset = order * 8;
-		
-		ProductosHelper.crearListadoOrdenado(session, template, connection, offset);
-		
-		if (order == 0){
-			template.addAttribute("anterior", order);	
-		} else {
-			template.addAttribute("anterior", order - 1);
-			
-		}
-		
-		boolean cantidad = ProductosHelper.CheckearCantidad(session, template, connection, offset);
-		
-		PreparedStatement consulta3 = connection.prepareStatement("SELECT * FROM productos ORDER BY tipo LIMIT 8 OFFSET ?;");
-		consulta3.setInt(1, offset + 8);
-		ResultSet resultado3 = consulta3.executeQuery();
-		//crear arraylist para mostrar "paginas" en la seccion productos. AGREGAR JOIN EN PEDIDOS SQL DE COMENTARIOS
-		for (int offst = 8; resultado3.next() == true ;offst =+ 8){
-			PreparedStatement consulta4 = connection.prepareStatement("SELECT * FROM productos ORDER BY tipo LIMIT 8 OFFSET ?;");
-			consulta4.setInt(1, offst);
-		}
-		
-		
-		if (cantidad == false){
-			template.addAttribute("siguiente", order);	
-		} else {
-			template.addAttribute("siguiente", order + 1);
-		}
-		connection.close();
-		return "listadoProductos";
-			
-	}
 	
 	@GetMapping("/eliminar-pc/{idpc}")
 	public String eliminarPc(HttpSession session, Model template, @PathVariable int idpc) throws SQLException {
@@ -1120,6 +1081,46 @@ public class ProductosController {
 		
 		connection.close();
 		return "redirect:/detalle/" + id;
+	}
+	
+	@GetMapping("/listado/{order}")
+	public String listado(HttpSession session,Model template, @PathVariable int order) throws SQLException {
+		Connection connection;
+		connection = DriverManager.getConnection(env.getProperty("spring.datasource.url"), env.getProperty("spring.datasource.username"),
+				env.getProperty("spring.datasource.password"));
+	
+		Usuario logeado = UsuarioHelper.usuarioLogeado(session, connection);
+		ProductosHelper.checkearHeader(logeado, template);
+		
+		int offset = order * 8;
+		ProductosHelper.crearListadoOrdenado(session, template, connection, offset);
+		if (order == 0){
+			template.addAttribute("anterior", order);	
+		} else {
+			template.addAttribute("anterior", order - 1);
+			
+		}
+		
+		boolean cantidad = ProductosHelper.CheckearCantidad(session, template, connection, offset);
+		
+		PreparedStatement consulta3 = connection.prepareStatement("SELECT * FROM productos ORDER BY tipo LIMIT 8 OFFSET ?;");
+		consulta3.setInt(1, offset + 8);
+		ResultSet resultado3 = consulta3.executeQuery();
+		//crear arraylist para mostrar "paginas" en la seccion productos. AGREGAR JOIN EN PEDIDOS SQL DE COMENTARIOS
+		for (int offst = 8; resultado3.next() == true ;offst =+ 8){
+			PreparedStatement consulta4 = connection.prepareStatement("SELECT * FROM productos ORDER BY tipo LIMIT 8 OFFSET ?;");
+			consulta4.setInt(1, offst);
+		}
+		
+		
+		if (cantidad == false){
+			template.addAttribute("siguiente", order);	
+		} else {
+			template.addAttribute("siguiente", order + 1);
+		}
+		connection.close();
+		return "listadoProductos";
+			
 	}
 	
 	@GetMapping("/placas-de-video/{order}")
@@ -1488,20 +1489,13 @@ public class ProductosController {
 				env.getProperty("spring.datasource.password"));
 		
 		Usuario logeado = UsuarioHelper.usuarioLogeado(session, connection);
-		
+		ProductosHelper.checkearHeader(logeado, template);
 		if (logeado == null) {
-			template.addAttribute("header", "header");
+			return "formulario-registro-usuario";
 		} else {
-			template.addAttribute("header", "headerLogeado");
-			template.addAttribute("imgperfil", logeado.getImagen_de_perfil());
-				if (logeado.isAdministrador() == true) {
-					
-					template.addAttribute("logeadoisadmin", logeado.isAdministrador());
-					template.addAttribute("admin", "administrar");
-				}
 			return "redirect:/perfil"+ logeado.getNick() ;
 		}
-		return "formulario-registro-usuario";
+		
 	}
 		
 	@GetMapping("/registrar-usuario")
@@ -1544,21 +1538,15 @@ public class ProductosController {
 				env.getProperty("spring.datasource.password"));
 		
 		Usuario logeado = UsuarioHelper.usuarioLogeado(session, connection);
+		ProductosHelper.checkearHeader(logeado, template);
 		
 		if (logeado == null) {
-			template.addAttribute("header", "header");
+			return "login";
 		} else {
-			template.addAttribute("header", "headerLogeado");
-			template.addAttribute("imgperfil", logeado.getImagen_de_perfil());
-				if (logeado.isAdministrador() == true) {
-					
-					template.addAttribute("logeadoisadmin", logeado.isAdministrador());
-					template.addAttribute("admin", "administrar");
-				}
 			return "redirect:/perfil/"+ logeado.getNick() ;
 		}
 		
-		return "login";
+		
 	}
 	
 	@GetMapping("/logout")
