@@ -232,4 +232,10 @@ INSERT INTO comentarios(id_usuario_emisor, id_producto_padre, id_comentario_padr
 
 <a th:href="'/eliminar/' + ${producto.id}">X</a>
 
-crea-tu-pccrea-tu-pccrea-tu-pccrea-tu-pccrea-tu-pccrea-tu-pc  MOTHER MEMORIA RAM DETALLES CSS
+cursor :pointer
+meteor.js
+viu.js
+react 
+angular
+
+

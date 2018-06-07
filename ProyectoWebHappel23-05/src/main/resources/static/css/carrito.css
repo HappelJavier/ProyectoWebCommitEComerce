@@ -15,9 +15,14 @@
     padding: 22px 10px;
     text-decoration: none;
     font-size: 16px;
+    
 }
 .centrado{
 	vertical-align: -webkit-baseline-middle;
+}
+
+.carrito{
+	border: none;
 }
 .badge-notify {
     background: red;

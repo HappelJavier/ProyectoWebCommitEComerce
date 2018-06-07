@@ -28,7 +28,10 @@ html {
 }
 
 
-
+.foot-listado{
+	font-size: 1.5rem;
+    text-align: center;
+}
      
 .no-padding{
 	padding:0px;	
@@ -176,12 +179,12 @@ html {
 }
 
 .rojo{
-	background-color: red;
+	background-color: #ff1a1a;
 	padding-right: 0px;
 }
 
 .rojo-oscuro{
-	background-color: darkred;
+	background-color: #cc0000;
 	padding-right: 0px;
 }
 
