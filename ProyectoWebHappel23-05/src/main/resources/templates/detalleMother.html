@@ -18,23 +18,17 @@
 					<img class="img-fluid" th:src="${urlimagen}"></img>
 				</div>
 				<div class="col-6">
-					<label>tipo:</label><label th:text="${tipo}"> </label>
+					<label class="text-uppercase" th:text="${tipo} + ' ' + ${marca} + ' ' + ${modelo}"> </label>
 					<br></br>
-					<label>marca:</label><label th:text="${marca}"> </label>
+					<label>SOCKET CPU:&nbsp;</label><label class="text-uppercase" th:text="${socketcpu}"> </label>
 					<br></br>
-					<label>modelo:</label><label th:text="${modelo}"> </label>
+					<label>SOCKET RAM:&nbsp;</label><label class="text-uppercase" th:text="${tiporam}"> </label>
 					<br></br>
-					<label>compatibilidad disco duro:</label><label th:text="${socketcpu}"> </label>
+					<label class="text-uppercase" th:text="${pci}"> </label>
 					<br></br>
-					<label>compatibilidad cpu:</label><label th:text="${tiporam}"> </label>
+					<label class="text-uppercase"  th:text="${sata}"> </label>
 					<br></br>
-					<label>compatibilidad ram:</label><label  th:text="${pci}"> </label>
-					<br></br>
-					<label>imagen:</label><img th:src="${sata}"> </img>
-					<br></br>
-					<label>precio:$</label><label th:text="${consumo}"> </label>
-					<br></br>
-					<label>precio:$</label><label th:text="${precio}"> </label>		
+					<label>PRECIO:$&nbsp;</label><label th:text="${precio}"> </label>		
 				</div>
 			</div>
 			<div th:replace="fragments/detalleComentarios :: comentarios"></div>					

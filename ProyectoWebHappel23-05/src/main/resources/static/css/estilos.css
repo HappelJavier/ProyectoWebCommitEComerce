@@ -28,9 +28,7 @@ html {
 }
 
 
-h5{
-    font-size: 1.4em;
-}
+
      
 .no-padding{
 	padding:0px;	
@@ -273,5 +271,8 @@ h5{
     left: -40px ;
     z-index: 9999;
   }
+
+
+
 
 }

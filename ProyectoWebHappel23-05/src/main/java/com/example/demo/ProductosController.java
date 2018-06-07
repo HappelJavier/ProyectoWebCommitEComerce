@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.model.Juego;
+import com.example.model.Pagina;
 import com.example.model.Producto;
 import com.example.model.Usuario;
 
@@ -1101,17 +1102,31 @@ public class ProductosController {
 			
 		}
 		
-		boolean cantidad = ProductosHelper.CheckearCantidad(session, template, connection, offset);
+		//crear arraylist para mostrar "paginas" en la seccion productos. AGREGAR JOIN EN PEDIDOS SQL DE COMENTARIOS
+		
 		
 		PreparedStatement consulta3 = connection.prepareStatement("SELECT * FROM productos ORDER BY tipo LIMIT 8 OFFSET ?;");
-		consulta3.setInt(1, offset + 8);
+		consulta3.setInt(1, offset);
 		ResultSet resultado3 = consulta3.executeQuery();
-		//crear arraylist para mostrar "paginas" en la seccion productos. AGREGAR JOIN EN PEDIDOS SQL DE COMENTARIOS
-		for (int offst = 8; resultado3.next() == true ;offst =+ 8){
+		
+		ArrayList<Pagina> listadoPaginas = new ArrayList<Pagina>();
+		int contador= 0;
+		boolean hayPaginas = resultado3.next();
+		
+		for (int offst = 8; hayPaginas == true ;offst += 8){
 			PreparedStatement consulta4 = connection.prepareStatement("SELECT * FROM productos ORDER BY tipo LIMIT 8 OFFSET ?;");
 			consulta4.setInt(1, offst);
+			ResultSet resultado4 = consulta4.executeQuery();
+			String href= "/listado/" + contador;
+			contador ++;
+			hayPaginas= resultado4.next();
+			Pagina x = new Pagina(contador, href);
+			listadoPaginas.add(x);
 		}
+		template.addAttribute("listadoPaginas", listadoPaginas);
 		
+		
+		boolean cantidad = ProductosHelper.CheckearCantidad(session, template, connection, offset);
 		
 		if (cantidad == false){
 			template.addAttribute("siguiente", order);	
@@ -1140,9 +1155,34 @@ public class ProductosController {
 		if (order == 0){
 			template.addAttribute("anterior", order);	
 		} else {
-			template.addAttribute("anterior", order - 1);
-			
+			template.addAttribute("anterior", order - 1);	
 		}
+		
+		
+		PreparedStatement consulta3 = connection.prepareStatement("SELECT * FROM productos WHERE tipo = ? ORDER BY tipo LIMIT 8 OFFSET ?;");
+		consulta3.setString(1, tiposql);
+		consulta3.setInt(2, offset);
+		
+		ResultSet resultado3 = consulta3.executeQuery();
+		
+		ArrayList<Pagina> listadoPaginas = new ArrayList<Pagina>();
+		int contador= 0;
+		boolean hayPaginas = resultado3.next();
+		
+		for (int offst = 8; hayPaginas == true ;offst += 8){
+			PreparedStatement consulta4 = connection.prepareStatement("SELECT * FROM productos WHERE tipo = ? ORDER BY tipo LIMIT 8 OFFSET ?;");
+			consulta4.setString(1, tiposql);
+			consulta4.setInt(2, offst);
+			
+			ResultSet resultado4 = consulta4.executeQuery();
+			String href= "/placas-de-video/" + contador;
+			contador ++;
+			hayPaginas= resultado4.next();
+			Pagina x = new Pagina(contador, href);
+			listadoPaginas.add(x);
+		}
+		template.addAttribute("listadoPaginas", listadoPaginas);
+	
 		
 		boolean cantidad = ProductosHelper.CheckearCantidadEspecifica(session, template, connection, offset, tiposql);
 		
@@ -1155,8 +1195,8 @@ public class ProductosController {
 		return "listadoProductos";
 	}
 
-	@GetMapping("/memoria/{order}")
-	public String memoria(HttpSession session,Model template, @PathVariable int order) throws SQLException {
+	@GetMapping("/memorias/{order}")
+	public String memorias(HttpSession session,Model template, @PathVariable int order) throws SQLException {
 		
 
 		Connection connection;
@@ -1178,6 +1218,33 @@ public class ProductosController {
 			template.addAttribute("anterior", order - 1);
 			
 		}
+		
+		PreparedStatement consulta3 = connection.prepareStatement("SELECT * FROM productos WHERE tipo = ? ORDER BY tipo LIMIT 8 OFFSET ?;");
+		consulta3.setString(1, tiposql);
+		consulta3.setInt(2, offset);
+		
+		ResultSet resultado3 = consulta3.executeQuery();
+		
+		ArrayList<Pagina> listadoPaginas = new ArrayList<Pagina>();
+		int contador= 0;
+		boolean hayPaginas = resultado3.next();
+		
+		for (int offst = 8; hayPaginas == true ;offst += 8){
+			PreparedStatement consulta4 = connection.prepareStatement("SELECT * FROM productos WHERE tipo = ? ORDER BY tipo LIMIT 8 OFFSET ?;");
+			consulta4.setString(1, tiposql);
+			consulta4.setInt(2, offst);
+			
+			ResultSet resultado4 = consulta4.executeQuery();
+			String href= "/memorias/" + contador;
+			contador ++;
+			hayPaginas= resultado4.next();
+			Pagina x = new Pagina(contador, href);
+			listadoPaginas.add(x);
+		}
+		template.addAttribute("listadoPaginas", listadoPaginas);
+
+		
+		
 		
 		boolean cantidad = ProductosHelper.CheckearCantidadEspecifica(session, template, connection, offset, tiposql);
 		
@@ -1214,6 +1281,31 @@ public class ProductosController {
 			
 		}
 		
+		PreparedStatement consulta3 = connection.prepareStatement("SELECT * FROM productos WHERE tipo = ? ORDER BY tipo LIMIT 8 OFFSET ?;");
+		consulta3.setString(1, tiposql);
+		consulta3.setInt(2, offset);
+		
+		ResultSet resultado3 = consulta3.executeQuery();
+		
+		ArrayList<Pagina> listadoPaginas = new ArrayList<Pagina>();
+		int contador= 0;
+		boolean hayPaginas = resultado3.next();
+		
+		for (int offst = 8; hayPaginas == true ;offst += 8){
+			PreparedStatement consulta4 = connection.prepareStatement("SELECT * FROM productos WHERE tipo = ? ORDER BY tipo LIMIT 8 OFFSET ?;");
+			consulta4.setString(1, tiposql);
+			consulta4.setInt(2, offst);
+			
+			ResultSet resultado4 = consulta4.executeQuery();
+			String href= "/microprocesadores/" + contador;
+			contador ++;
+			hayPaginas= resultado4.next();
+			Pagina x = new Pagina(contador, href);
+			listadoPaginas.add(x);
+		}
+		template.addAttribute("listadoPaginas", listadoPaginas);
+
+		
 		boolean cantidad = ProductosHelper.CheckearCantidadEspecifica(session, template, connection, offset, tiposql);
 		
 		if (cantidad == false){
@@ -1249,6 +1341,31 @@ public class ProductosController {
 			
 		}
 		
+		PreparedStatement consulta3 = connection.prepareStatement("SELECT * FROM productos WHERE tipo = ? ORDER BY tipo LIMIT 8 OFFSET ?;");
+		consulta3.setString(1, tiposql);
+		consulta3.setInt(2, offset);
+		
+		ResultSet resultado3 = consulta3.executeQuery();
+		
+		ArrayList<Pagina> listadoPaginas = new ArrayList<Pagina>();
+		int contador= 0;
+		boolean hayPaginas = resultado3.next();
+		
+		for (int offst = 8; hayPaginas == true ;offst += 8){
+			PreparedStatement consulta4 = connection.prepareStatement("SELECT * FROM productos WHERE tipo = ? ORDER BY tipo LIMIT 8 OFFSET ?;");
+			consulta4.setString(1, tiposql);
+			consulta4.setInt(2, offst);
+			
+			ResultSet resultado4 = consulta4.executeQuery();
+			String href= "/discos-duros/" + contador;
+			contador ++;
+			hayPaginas= resultado4.next();
+			Pagina x = new Pagina(contador, href);
+			listadoPaginas.add(x);
+		}
+		template.addAttribute("listadoPaginas", listadoPaginas);
+
+		
 		boolean cantidad = ProductosHelper.CheckearCantidadEspecifica(session, template, connection, offset, tiposql);
 		
 		if (cantidad == false){
@@ -1283,6 +1400,32 @@ public class ProductosController {
 			template.addAttribute("anterior", order - 1);
 			
 		}
+		
+		PreparedStatement consulta3 = connection.prepareStatement("SELECT * FROM productos WHERE tipo = ? ORDER BY tipo LIMIT 8 OFFSET ?;");
+		consulta3.setString(1, tiposql);
+		consulta3.setInt(2, offset);
+		
+		ResultSet resultado3 = consulta3.executeQuery();
+		
+		ArrayList<Pagina> listadoPaginas = new ArrayList<Pagina>();
+		int contador= 0;
+		boolean hayPaginas = resultado3.next();
+		
+		for (int offst = 8; hayPaginas == true ;offst += 8){
+			PreparedStatement consulta4 = connection.prepareStatement("SELECT * FROM productos WHERE tipo = ? ORDER BY tipo LIMIT 8 OFFSET ?;");
+			consulta4.setString(1, tiposql);
+			consulta4.setInt(2, offst);
+			
+			ResultSet resultado4 = consulta4.executeQuery();
+			String href= "/motherboard/" + contador;
+			contador ++;
+			hayPaginas= resultado4.next();
+			Pagina x = new Pagina(contador, href);
+			listadoPaginas.add(x);
+		}
+		template.addAttribute("listadoPaginas", listadoPaginas);
+
+		
 		
 		boolean cantidad = ProductosHelper.CheckearCantidadEspecifica(session, template, connection, offset, tiposql);
 		

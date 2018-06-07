@@ -3,7 +3,7 @@
 	<head>
 		<div th:replace="fragments/header :: headhtml">Header</div>
 		<meta charset="UTF-8"></meta>
-		<title>detalle producto</title>
+		<title>Detalle del Producto</title>
 	</head>
 
 
@@ -11,7 +11,7 @@
 		<div class="container">
 			<div th:replace="fragments/header :: header">Header</div>
 			<div class="row">
-				<h1>detalle producto</h1>
+				<h1>Detalle del Producto</h1>
 			</div>
 			<div class="row">
 				<div class="col-6 ">
@@ -27,7 +27,7 @@
 					<br></br>
 					<label>TAMAÑO:&nbsp;</label><label class="text-uppercase" th:text="${tamanio}"> </label>
 					<br></br>
-					<label>CONSUMO:&nbsp;</label><label class="text-uppercase" th:text="${consumo}"> </label>
+					<label>CONSUMO:&nbsp;</label><label class="text-uppercase" th:text="${consumo} + ' ' + 'watts' "> </label>
 					<br></br>
 					<label>PRECIO: $</label><label class="text-uppercase" th:text="${precio}"> </label>		
 				</div>

@@ -39,4 +39,6 @@
     background-color: #777;
     border-radius: 10px;
 }
-
+.modal-carro{
+	    max-width: 900px;
+}

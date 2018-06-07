@@ -3,7 +3,7 @@
 	<head>
 		<div th:replace="fragments/header :: headhtml">Header</div>
 		<meta charset="UTF-8"></meta>
-		<title>detalle producto</title>
+		<title>Detalle del Producto</title>
 	</head>
 
 
@@ -11,30 +11,22 @@
 		<div class="container">
 			<div th:replace="fragments/header :: header">Header</div>
 			<div class="row">
-				<h1>detalle producto</h1>
+				<h1>Detalle del Producto</h1>
 			</div>
 			<div class="row">
 				<div class="col-6 ">
 					<img class="img-fluid" th:src="${urlimagen}"></img>
 				</div>
 				<div class="col-6">
-					<label>tipo:</label><label th:text="${tipo}"> </label>
+					<label class="text-uppercase" th:text="${tipo} + ' ' + ${marca} + ' ' + ${modelo}"> </label>
 					<br></br>
-					<label>marca:</label><label th:text="${marca}"> </label>
+					<label class="text-uppercase" th:text="${tiporam}"> </label>
 					<br></br>
-					<label>modelo:</label><label th:text="${modelo}"> </label>
+					<label>VELOCIDAD:&nbsp;</label><label class="text-uppercase" th:text="${velocidad} + ' ' + 'MHz'"> </label>
 					<br></br>
-					<label>compatibilidad cpu:</label><label th:text="${tiporam}"> </label>
+					<label>TAMAÑO:&nbsp;</label><label class="text-uppercase" th:text="${tamanio}"> </label>
 					<br></br>
-					<label>tamaño de la memoria:</label><label th:text="${velocidad}"> </label>
-					<br></br>
-					<label>velocidad:</label><label th:text="${tamanio}"> </label>
-					<br></br>
-					<label>rendimiento:</label><label th:text="${rendimiento}"> </label>
-					<br></br>
-					<label>precio:$</label><label th:text="${consumo}"> </label>
-					<br></br>
-					<label>precio:$</label><label th:text="${precio}"> </label>		
+					<label>PRECIO:$</label><label class="text-uppercase" th:text="${precio}"> </label>		
 				</div>
 			</div>
 			<div th:replace="fragments/detalleComentarios :: comentarios"></div>					
