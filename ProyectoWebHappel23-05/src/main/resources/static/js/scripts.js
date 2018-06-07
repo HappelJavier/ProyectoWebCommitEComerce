@@ -1,19 +1,77 @@
 	
 	
 
-    $(document).ready( function(){      
-    	$('.barras').each(function() {
+    $(document).ready( function(){
+    	
+    	       console.log($().jquery); // This prints v1.4.2
+    	       console.log($j().jquery); // This prints v1.9.1
+    	     
+    	
+    	$(function () {
     		
-    	     var dataWidth = $(this).val();
-    	     $(this).css("width", dataWidth + "%");
-    	    if (dataWidth <=20) { $(this).css("background-color", "darkred"); }
-    	    	else if (dataWidth >20 && dataWidth <=40){ $(this).css("background-color", "red"); }
-    	    	else if (dataWidth >40 && dataWidth <=60){ $(this).css("background-color", "orange"); }
-    			else if (dataWidth >60 && dataWidth<=75) { $(this).css("background-color", "yellow"); }
-    			else if (dataWidth >75 && dataWidth<=100) { $(this).css("background-color", "green"); }	
+    	    var goToCartIcon = function($addTocartBtn){
+    	      var $cartIcon = $(".my-cart-icon");
+    	      var $image = $('<img width="30px" height="30px" src="' + $addTocartBtn.data("image") + '"/>').css({"position": "fixed", "z-index": "999"});
+    	      $addTocartBtn.prepend($image);
+    	      var position = $cartIcon.position();
+    	      $image.animate({
+    	        top: position.top,
+    	        left: position.left
+    	      }, 500 , "linear", function() {
+    	        $image.remove();
+    	      });
+    	    }
+
+    	    $('.my-cart-btn').myCart({
+    	      currencySymbol: '$',
+    	      classCartIcon: 'my-cart-icon',
+    	      classCartBadge: 'my-cart-badge',
+    	      classProductQuantity: 'my-product-quantity',
+    	      classProductRemove: 'my-product-remove',
+    	      classCheckoutCart: 'my-cart-checkout',
+    	      affixCartIcon: true,
+    	      showCheckoutModal: true,
+    	      numberOfDecimals: 2,
+    	      cartItems: [
+    	        
+    	      ],
+    	      clickOnAddToCart: function($addTocart){
+    	        goToCartIcon($addTocart);
+    	      },
+    	      afterAddOnCart: function(products, totalPrice, totalQuantity) {
+    	        console.log("afterAddOnCart", products, totalPrice, totalQuantity);
+    	      },
+    	      clickOnCartIcon: function($cartIcon, products, totalPrice, totalQuantity) {
+    	        console.log("cart icon clicked", $cartIcon, products, totalPrice, totalQuantity);
+    	      },
+    	      checkoutCart: function(products, totalPrice, totalQuantity) {
+    	        var checkoutString = "Total Price: " + totalPrice + "\nTotal Quantity: " + totalQuantity;
+    	        checkoutString += "\n\n id \t name \t summary \t price \t quantity \t image path";
+    	        $.each(products, function(){
+    	          checkoutString += ("\n " + this.id + " \t " + this.name + " \t " + this.summary + " \t " + this.price + " \t " + this.quantity + " \t " + this.image);
+    	        });
+    	        alert(checkoutString)
+    	        console.log("checking out", products, totalPrice, totalQuantity);
+    	      },
+    	    });
     	  });
     	
-    	$("#upload_widget_opener").click(function () {
+    	
+    	
+    	
+    	
+    	$j('.barras').each(function() {
+    		
+    	     var dataWidth = $j(this).val();
+    	     $j(this).css("width", dataWidth + "%");
+    	    if (dataWidth <=20) { $j(this).css("background-color", "darkred"); }
+    	    	else if (dataWidth >20 && dataWidth <=40){ $j(this).css("background-color", "red"); }
+    	    	else if (dataWidth >40 && dataWidth <=60){ $j(this).css("background-color", "orange"); }
+    			else if (dataWidth >60 && dataWidth<=75) { $j(this).css("background-color", "yellow"); }
+    			else if (dataWidth >75 && dataWidth<=100) { $j(this).css("background-color", "green"); }	
+    	  });
+    	
+    	$j("#upload_widget_opener").click(function () {
 	    		cloudinary.openUploadWidget({
 	    	
 	    		upload_preset : 'zsxcsaup', 
@@ -31,44 +89,44 @@
 	            
 	            console.log (url);
 	            
-	            $("form").find(".foto").val(url);
+	            $j("form").find(".foto").val(url);
 	    	})
     	})
     	
     	moment.locale('es');
-    	$('.proc-comentario').click(function(){
+    	$j('.proc-comentario').click(function(){
     		var a = moment().format('MMMM Do YYYY, h:mm:ss a');
-    		$($(this).siblings(".fecha")[0]).attr('value', a)
+    		$j($j(this).siblings(".fecha")[0]).attr('value', a)
     	})
     	
-    	$( ".fecha-com" ).each(function( index ) {
-    		var b = moment($(this).text(), "MMMM Do YYYY, h:mm:ss a").fromNow();
-        	$(this).text(b);
+    	$j( ".fecha-com" ).each(function( index ) {
+    		var b = moment($j(this).text(), "MMMM Do YYYY, h:mm:ss a").fromNow();
+        	$j(this).text(b);
     	});
     	
     	
     	
-        $('.boton-subcomentar').click(function(){
-        	$($(this).siblings(".form-subcom")[0]).toggleClass('form-subcomentar-visible')
+        $j('.boton-subcomentar').click(function(){
+        	$j($j(this).siblings(".form-subcom")[0]).toggleClass('form-subcomentar-visible')
         })
         
-        $('.boton-modificar-com').click(function() {
+        $j('.boton-modificar-com').click(function() {
     		
     		
-    		$($(this).parent().children(".form-mod")[0]).toggleClass('div_visible');
+    		$j($j(this).parent().children(".form-mod")[0]).toggleClass('div_visible');
     		 
-         	$($(this).parent().children('.comentario-modificable')[0]).toggleClass('div_oculto');
+         	$j($j(this).parent().children('.comentario-modificable')[0]).toggleClass('div_oculto');
     		
-    		$($(this).parent().children('.form-eliminar-com')[0]).toggleClass('div_oculto');
+    		$j($j(this).parent().children('.form-eliminar-com')[0]).toggleClass('div_oculto');
     	  		  
     	});
     	
     	
     	
     	var client = filestack.init('AOWJCzBZJTmiP4481B25Ez'); // aca va la clave
-        $('#botonSubirImagen').click( function(){ // este es el manejador de evento a lo que quieran que haya que hacerle click
+        $j('#botonSubirImagen').click( function(){ // este es el manejador de evento a lo que quieran que haya que hacerle click
             client.pick({accept: 'image/*'}).then(function(result) {
-                $('#inputUrlImagen').val(result.filesUploaded[0].url); // esto guarda en un input la url del archivo recien subido. pueden 
+                $j('#inputUrlImagen').val(result.filesUploaded[0].url); // esto guarda en un input la url del archivo recien subido. pueden 
                                                                   //ponerlo hidden despues para que el usuario no lo vea
             });
         });

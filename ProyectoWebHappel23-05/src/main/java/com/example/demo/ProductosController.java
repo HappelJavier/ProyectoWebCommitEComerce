@@ -41,7 +41,7 @@ public class ProductosController {
 		
 		Usuario logeado = UsuarioHelper.usuarioLogeado(session, connection);
 		
-		
+
 		ProductosHelper.checkearHeader(logeado, template);
 		
 		
