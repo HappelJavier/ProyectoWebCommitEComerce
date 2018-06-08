@@ -93,6 +93,8 @@ $(document).ready( function(){
             console.log (url);
             
             $j("form").find(".foto").val(url);
+            $j(".b-subir").toggleClass('div_oculto');
+            $j(".b-enviar").toggleClass('div_visible');
     	})
 	})
 	
@@ -126,11 +128,10 @@ $(document).ready( function(){
 	
 	
 	
-	var client = filestack.init('AOWJCzBZJTmiP4481B25Ez'); // aca va la clave
-    $j('#botonSubirImagen').click( function(){ // este es el manejador de evento a lo que quieran que haya que hacerle click
+	var client = filestack.init('AOWJCzBZJTmiP4481B25Ez'); 
+    $j('#botonSubirImagen').click( function(){ 
         client.pick({accept: 'image/*'}).then(function(result) {
-            $j('#inputUrlImagen').val(result.filesUploaded[0].url); // esto guarda en un input la url del archivo recien subido. pueden 
-                                                              //ponerlo hidden despues para que el usuario no lo vea
+            $j('#inputUrlImagen').val(result.filesUploaded[0].url); 
         });
     });
 });

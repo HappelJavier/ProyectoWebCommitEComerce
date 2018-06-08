@@ -1,16 +1,15 @@
 <!doctype html>
 <html>
-	<head>
-		<div th:replace="fragments/header :: headhtml">Header</div>
-		<meta charset="UTF-8"></meta>
-		<title>Listado de Usuarios</title>	
-	</head>
+<head>
+	<div th:replace="fragments/header :: headhtml">Header</div>
+	<meta charset="UTF-8"></meta>
+	<title>Listado de Productos</title>	
+</head>
 
-	<body>
-		<div class="container">
-			<div th:replace="fragments/header :: header">Header</div>
-			
-		<!-- Write your comments here -->
+<body>
+	<div class="container">
+		<div th:replace="fragments/header :: header">Header</div>
+		<div class="contenido-de-pagina">
 			<div class="row">
 				<h1 class="col-12">Listado  de Productos</h1>
 				<br></br>
@@ -22,29 +21,20 @@
 					    <p class="card-text text-capitalize" th:text="${producto.sata?: ''} +' '+ ${producto.socketcpu?: ''} +' '+ ${producto.tiporam?: '' } + ' '+ ${producto.tamanio?: ''} +' '+ ${producto.velocidad?: ''} +' '+ '$' +${producto.precio?: ''}"></p>
 					     <button class="btn btn-danger my-cart-btn"  data-quantity="1" 
 					     th:attr="data-image=${producto.urlimagen}, data-id=${producto.id}, data-name=${producto.tipo} +' '+ ${producto.marca} +' '+ ${producto.modelo}, data-summary=summary + ' ' + ${producto.id}, data-price=${producto.precio}" >Añadir al carro</button><a th:href="'/detalle/' + ${producto.id}" class="btn btn-primary">Detalles</a>
-					
-					 
 					  </div>
-					</div>
-					
+					</div>						
 				</div>
-				
 				<div class="col-12 foot-listado"> 
-					<a th:href="${anterior}"> anterior</a>
-					
+					<a th:href="${anterior}" class="btn btn-secondary">Anterior</a>
 					<label th:each="pagina:${listadoPaginas}">
-					<a th:href="${pagina.href}" th:text="${pagina.id}"></a>
+					<a class="btn btn-secondary" th:href="${pagina.href}" th:text="${pagina.id}"></a>
 					</label>
-					
-					
-	  				<a th:href="${siguiente}"> siguiente</a>
+	  				<a th:href="${siguiente}" class="btn btn-secondary">Siguiente</a>
 	  			</div>
-				
 			</div>
-			<div th:replace="fragments/header :: footer"></div>
-			
-			
-		</div>	
-	</body>
-
+		</div>
+		<div th:replace="fragments/header :: footer"></div>
+	</div>	
+	
+</body>
 </html>

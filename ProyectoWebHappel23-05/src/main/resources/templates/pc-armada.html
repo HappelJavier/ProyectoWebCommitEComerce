@@ -1,15 +1,15 @@
 <!doctype html>
 <html>
-	<head>
-		<div th:replace="fragments/header :: headhtml">Header</div>
-		<meta charset="UTF-8"></meta>
-		<title>Listado de Usuarios</title>	
-	</head>
+<head>
+	<div th:replace="fragments/header :: headhtml">Header</div>
+	<meta charset="UTF-8"></meta>
+	<title>Rendimiento de PC</title>	
+</head>
 
-	<body>
-		<div class="container">
-			<div th:replace="fragments/header :: header">Header</div>
-			
+<body>
+	<div class="container">
+		<div th:replace="fragments/header :: header">Header</div>
+		<div class="contenido-de-pagina">
 			<div class="row">
 				<div class="col-6 text-capitalize">
 					<div class="row">PC SELECCIONADA:</div>
@@ -67,20 +67,18 @@
 					             </span>
 					             <span class="barra-fondo"><label>Cantidad de memoria Ram</label>
 			              	<li class="barras" th:value="${ram}"></li>
-					             </span>
-					                 
+					             </span>						                 
 						</ul>
 					</section>
 					<label th:text="${renPlacaDeVideoJuego} + ' ' + ${vramZ} + ', ' + ${renProcesadorZ} + ' y por ultimo ' + ${ramZ}"></label>
 				</div>
 			</div>
-			
 			<div class="row">
 				<a class="nav-link" href="/armar-pc-de-prueba">Probar otra pc</a>
 			</div>
-			
-			<div th:replace="fragments/header :: footer"></div>
-			</div>
-	</body>
-
+		</div>
+					
+		<div th:replace="fragments/header :: footer"></div>
+	</div>
+</body>
 </html>

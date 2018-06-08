@@ -8,35 +8,33 @@
 
 <body>
 	<div class="container">
-	<div th:replace="fragments/header :: header">Header</div>
-		
-		<div class="row">
-			<div class="col-6">
-				<h1>Registrar Juego</h1>
-				<form action="/insertar-juego">
-					<input name="nombre" type="text" placeholder="Ingrese el nombre..."></input><br></br>
-					<input name="desarrollador" type="text" placeholder="Ingrese el desarrollador..."></input><br></br>
-					<input name="fecha" type="text" placeholder="Ingrese fecha..."></input><br></br>
-					<input name="plataforma" type="text" placeholder="Ingrese plataforma..."></input><br></br>
-					<input name="genero" type="text" placeholder="genero..."></input><br></br>
-					<input name="rencpu1" type="text" placeholder="Ingrese rencpu1..."></input><br></br>
-					<input name="rencpu2" type="text" placeholder="Ingrese rencpu2..."></input><br></br>
-					<input name="rengpu1" type="text" placeholder="Ingrese rengpu1..."></input><br></br>
-					<input name="rengpu2" type="text" placeholder="Ingrese rengpu2..."></input><br></br>
-					<input name="vram1" type="text" placeholder="Ingrese vram1..."></input><br></br>
-					<input name="vram2" type="text" placeholder="Ingrese vram2..."></input><br></br>
-					<input name="ram1" type="text" placeholder="Ingrese ram1..."></input><br></br>
-					<input name="ram2" type="text" placeholder="Ingrese ram2..."></input><br></br>
-					<input name="precio" type="text" placeholder="Ingrese precio..."></input><br></br>
-					<input name="urlimagen" type="text" placeholder="Ingrese urlimagen..."></input><br></br>
-					<input value="REGISTRAR" type="submit"></input>
-					
-				</form>
-			</div>
-		</div>
+		<div th:replace="fragments/header :: header">Header</div>
+		<div class="contenido-de-pagina">
+			<div class="row">
+				<div class="col-6">
+					<h1>Registrar Juego</h1>
+					<form action="/insertar-juego">
+						<input name="nombre" type="text" placeholder="Ingrese el nombre..."></input><br></br>
+						<input name="desarrollador" type="text" placeholder="Ingrese el desarrollador..."></input><br></br>
+						<input name="fecha" type="text" placeholder="Ingrese fecha..."></input><br></br>
+						<input name="plataforma" type="text" placeholder="Ingrese plataforma..."></input><br></br>
+						<input name="genero" type="text" placeholder="genero..."></input><br></br>
+						<input name="rencpu1" type="text" placeholder="Ingrese rencpu1..."></input><br></br>
+						<input name="rencpu2" type="text" placeholder="Ingrese rencpu2..."></input><br></br>
+						<input name="rengpu1" type="text" placeholder="Ingrese rengpu1..."></input><br></br>
+						<input name="rengpu2" type="text" placeholder="Ingrese rengpu2..."></input><br></br>
+						<input name="vram1" type="text" placeholder="Ingrese vram1..."></input><br></br>
+						<input name="vram2" type="text" placeholder="Ingrese vram2..."></input><br></br>
+						<input name="ram1" type="text" placeholder="Ingrese ram1..."></input><br></br>
+						<input name="ram2" type="text" placeholder="Ingrese ram2..."></input><br></br>
+						<input name="precio" type="text" placeholder="Ingrese precio..."></input><br></br>
+						<input name="urlimagen" type="text" placeholder="Ingrese urlimagen..."></input><br></br>
+						<input value="REGISTRAR" type="submit"></input>	
+					</form>
+				</div>
+			</div>		
+		</div>	
+		<div th:replace="fragments/header :: footer"></div>
 	</div>
-	<div th:replace="fragments/header :: footer"></div>
-	
-	
 </body>
 </html>

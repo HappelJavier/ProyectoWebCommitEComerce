@@ -10,63 +10,63 @@
 		<div class="container">
 			<div th:replace="fragments/header :: header">Header</div>
 			
-		
-			<div class="row">
-				<h1 class="col-12">Listado  de Productoss</h1>
-				<br></br>
-				<div class="col-3">
-					<form action="/registrar-pc-usuario" method="POST">
-						<div class="form-group">
-							<label for="exampleFormControlSelect1">Example select</label> 
-							<select name="micro" class="form-control" id="exampleFormControlSelect1" >
-								
-								<option th:each="producto:${listadoMicroprocesador}" th:value="${producto.id}" th:text="${producto.marca} +' '+ ${producto.modelo}">placa de video</option>
-							</select>	
-						</div>
-						<br></br> 
-						<div class="form-group">
-							<label for="exampleFormControlSelect2">Example </label> 
-							<select name="placa" class="form-control" id="exampleFormControlSelect2" >
-								<option th:each="producto:${listadoPlacaDeVideo}"  th:value="${producto.id}" th:text="${producto.marca} +' '+ ${producto.modelo}">placa de video</option>
-							</select>
-						</div>
-						<br></br> 	
-						<div class="form-group">
-							<label for="exampleFormControlSelect3">Example </label> 
-							<select name="memoria1" class="form-control" id="exampleFormControlSelect3" >
-								<option th:each="producto:${listadoMemoria}" th:value="${producto.id}" th:text="${producto.marca} +' '+ ${producto.modelo}">placa de video</option>
-							</select>
-						</div>
-						<br></br> 
-						<div class="form-group">
-							<label for="exampleFormControlSelect3">Example </label> 
-							<select name="memoria2" class="form-control" id="exampleFormControlSelect3" >
-								<option value="0">---</option>
-								<option th:each="producto:${listadoMemoria}" th:value="${producto.id}" th:text="${producto.marca} +' '+ ${producto.modelo}">placa de video</option>
-							</select>
-						</div>
-						<br></br> 
-						<div class="form-group">
-							<label for="exampleFormControlSelect4">Example </label> 
-							<select name="mother" class="form-control" id="exampleFormControlSelect4" >
-								<option th:each="producto:${listadoMotherboard}" th:value="${producto.id}" th:text="${producto.marca} +' '+ ${producto.modelo}">placa de video</option>
-							</select>
-						</div>
-						<br></br> 
-						<div class="form-group">
-							<label for="exampleFormControlSelect5">Example </label> 
-							<select name="disco" class="form-control" id="exampleFormControlSelect5" >
-								<option th:each="producto:${listadoDiscoDuro}" th:value="${producto.id}" th:text="${producto.marca} +' '+ ${producto.modelo}">placa de video</option>
-							</select>
-						</div>
-						<br></br> 
-						<input type="submit"></input>
-					</form>
+			<div class="contenido-de-pagina">
+				<div class="row">
+					<h1 class="col-12">Listado  de Productoss</h1>
+					<br></br>
+					<div class="col-3">
+						<form action="/registrar-pc-usuario" method="POST">
+							<div class="form-group">
+								<label for="exampleFormControlSelect1">Example select</label> 
+								<select name="micro" class="form-control" id="exampleFormControlSelect1" >
+									
+									<option th:each="producto:${listadoMicroprocesador}" th:value="${producto.id}" th:text="${producto.marca} +' '+ ${producto.modelo}">placa de video</option>
+								</select>	
+							</div>
+							<br></br> 
+							<div class="form-group">
+								<label for="exampleFormControlSelect2">Example </label> 
+								<select name="placa" class="form-control" id="exampleFormControlSelect2" >
+									<option th:each="producto:${listadoPlacaDeVideo}"  th:value="${producto.id}" th:text="${producto.marca} +' '+ ${producto.modelo}">placa de video</option>
+								</select>
+							</div>
+							<br></br> 	
+							<div class="form-group">
+								<label for="exampleFormControlSelect3">Example </label> 
+								<select name="memoria1" class="form-control" id="exampleFormControlSelect3" >
+									<option th:each="producto:${listadoMemoria}" th:value="${producto.id}" th:text="${producto.marca} +' '+ ${producto.modelo} + ' ' + ${producto.tamanio}">placa de video</option>
+								</select>
+							</div>
+							<br></br> 
+							<div class="form-group">
+								<label for="exampleFormControlSelect3">Example </label> 
+								<select name="memoria2" class="form-control" id="exampleFormControlSelect3" >
+									<option value="0">---</option>
+									<option th:each="producto:${listadoMemoria}" th:value="${producto.id}" th:text="${producto.marca} +' '+ ${producto.modelo} + ' ' + ${producto.tamanio}">placa de video</option>
+								</select>
+							</div>
+							<br></br> 
+							<div class="form-group">
+								<label for="exampleFormControlSelect4">Example </label> 
+								<select name="mother" class="form-control" id="exampleFormControlSelect4" >
+									<option th:each="producto:${listadoMotherboard}" th:value="${producto.id}" th:text="${producto.marca} +' '+ ${producto.modelo}">placa de video</option>
+								</select>
+							</div>
+							<br></br> 
+							<div class="form-group">
+								<label for="exampleFormControlSelect5">Example </label> 
+								<select name="disco" class="form-control" id="exampleFormControlSelect5" >
+									<option th:each="producto:${listadoDiscoDuro}" th:value="${producto.id}" th:text="${producto.marca} +' '+ ${producto.modelo}">placa de video</option>
+								</select>
+							</div>
+							<br></br> 
+							<input type="submit"></input>
+						</form>
+					</div>
 				</div>
 			</div>
+			
 			<div th:replace="fragments/header :: footer"></div>
-			
-			
 		</div>	
 	</body>
 

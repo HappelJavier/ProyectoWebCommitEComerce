@@ -3,34 +3,34 @@
 <head>
 <div th:replace="fragments/header :: headhtml">Header</div>
 <meta charset="UTF-8"></meta>
-<title>Registro de producto</title>
+<title>Registro de Usuario</title>
 </head>
 
 <body>
-	<div class="container">
-	<div th:replace="fragments/header :: header">Header</div>
-		
-		<div class="row">
-			<div class="col-6">
-			<h1>Registrar Producto</h1>
-				<form action="/update-usuario">
-					<input name="id" type="hidden" placeholder="Ingrese id" th:value="${id}"></input><br></br> 
-					<input name="nombre" type="text" placeholder="Ingrese nombre" th:value="${nombre}"></input><br></br> 
-					<input name="apellido" type="text" placeholder="Ingrese apellido" th:value="${apellido}"></input><br></br> 
-					<input name="nick" type="text" placeholder="Ingrese nick" th:value="${nick}"></input><br></br>
-					<input name="contrasenia" type="text" placeholder="Ingrese contrasenia" th:value="${contrasenia}"></input><br></br> 
-					<input name="mail" type="text" placeholder="Ingrese mail" th:value="${mail}"></input><br></br>
-					<input name="idpc" type="text" placeholder="Ingrese idpc" th:value="${idpc}"></input><br></br> 
-					<input name="imagen_de_perfil" type="text" placeholder="Ingrese imagen_de_perfil" th:value="${imagen_de_perfil}"></input><br></br> 
-					<input name="admin" type="checkbox" placeholder="Ingrese administrador" th:value="${administrador}" th:checked="${administrador}"></input><br></br>
-					<input value="MODIFICAR" type="submit"></input>
 
-				</form>
+	<div class="container">
+		<div th:replace="fragments/header :: header">Header</div>
+		<div class="contenido-de-pagina">
+				<div class="row">
+				<div class="col-6">
+				<h1>Registrar Usuario</h1>
+					<form action="/update-usuario">
+						<input name="id" type="hidden" placeholder="Ingrese id" th:value="${id}"></input><br></br> 
+						<input name="nombre" type="text" placeholder="Ingrese nombre" th:value="${nombre}"></input><br></br> 
+						<input name="apellido" type="text" placeholder="Ingrese apellido" th:value="${apellido}"></input><br></br> 
+						<input name="nick" type="text" placeholder="Ingrese nick" th:value="${nick}"></input><br></br>
+						<input name="contrasenia" type="text" placeholder="Ingrese contrasenia" th:value="${contrasenia}"></input><br></br> 
+						<input name="mail" type="text" placeholder="Ingrese mail" th:value="${mail}"></input><br></br>
+						<input name="idpc" type="text" placeholder="Ingrese idpc" th:value="${idpc}"></input><br></br> 
+						<input name="imagen_de_perfil" type="text" placeholder="Ingrese imagen_de_perfil" th:value="${imagen_de_perfil}"></input><br></br> 
+						<input name="admin" type="checkbox" placeholder="Ingrese administrador" th:value="${administrador}" th:checked="${administrador}"></input><br></br>
+						<input value="MODIFICAR" type="submit"></input>
+					</form>
+				</div>
 			</div>
-		</div>
+		</div>	
+		<div th:replace="fragments/header :: footer"></div>
 	</div>
-	<div th:replace="fragments/header :: footer"></div>
-	
 	
 </body>
 </html>

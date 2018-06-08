@@ -3,29 +3,30 @@
 <head>
 	<div th:replace="fragments/header :: headhtml">Header</div>
 	<meta charset="UTF-8"></meta>
-	<title>Registro usuario</title>
+	<title>Registro Usuario</title>
 </head>
 
 <body>
+
 	<div class="container">
-	<div th:replace="fragments/header :: header">Header</div>
-		<h1>Registro para usuario nuevo</h1>
-		<div class="row">
-			<div class="col-5">
-				<form action="/registrar-usuario">
-					<input name="nombre" type="text" placeholder="Ingrese su nombre..."></input><br></br>
-					<input name="apellido" type="text" placeholder="Ingrese su apellido..."></input><br></br>
-					<input name="nick" type="text" placeholder="Ingrese su nick..."></input><br></br>
-					<input name="contrasenia" type="text" placeholder="Ingrese su contraseña..."></input><br></br>
-					<input name="mail" type="text" placeholder="Ingrese su mail..."></input><br></br>
-					<input type="submit"></input>
-				</form>
+		<div th:replace="fragments/header :: header">Header</div>
+		<div class="contenido-de-pagina">
+			<h1>Registro para usuario nuevo</h1>
+			<div class="row">
+				<div class="col-5">
+					<form action="/registrar-usuario">
+						<input name="nombre" type="text" placeholder="Ingrese su nombre..."></input><br></br>
+						<input name="apellido" type="text" placeholder="Ingrese su apellido..."></input><br></br>
+						<input name="nick" type="text" placeholder="Ingrese su nick..."></input><br></br>
+						<input name="contrasenia" type="text" placeholder="Ingrese su contraseña..."></input><br></br>
+						<input name="mail" type="text" placeholder="Ingrese su mail..."></input><br></br>
+						<input type="submit"></input>
+					</form>
+				</div>
 			</div>
 		</div>
-	<div th:replace="fragments/header :: footer"></div>
+		<div th:replace="fragments/header :: footer"></div>
 	</div>
-	
-	
 	
 </body>
 </html>

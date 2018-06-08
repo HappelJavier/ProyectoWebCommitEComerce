@@ -3,41 +3,53 @@
 	<head>
 		<div th:replace="fragments/header :: headhtml">Header</div>
 		<meta charset="UTF-8"></meta>
-		<title>detalle producto</title>
+		<title class="text-capitalize" th:text=" 'detalle ' + ${tipo}"></title>
 	</head>
 
 
 	<body>
 		<div class="container">
 			<div th:replace="fragments/header :: header">Header</div>
-			<div class="row">
-				<h1>detalle producto</h1>
-			</div>
-			<div class="row">
-				<div class="col-6 ">
-					<img class="img-fluid" th:src="${urlimagen}"></img>
+			<div class="contenido-de-pagina">
+				<div class="row">
+					<h1 class="text-capitalize" th:text=" 'detalle ' + ${tipo}"></h1>
 				</div>
-				<div class="col-6">
-					<label th:text="${tipo} + ' ' + ${marca} + ' ' + ${modelo}"> </label>
-					<br></br>
-					<label>SOCKET CPU:&nbsp;</label><label th:text="${socketcpu}"> </label>
-					<br></br>
-					<label>TIPO DE RAM:&nbsp;</label><label th:text="${tiporam}"> </label>
-					<br></br>
-					<label>PCI:&nbsp;</label><label  th:text="${pci}"> </label>
-					<br></br>
-					<label>SATA:&nbsp;</label><img th:src="${sata}"> </img>
-					<br></br>
-					<label>VELOCIDAD:&nbsp;</label><label th:text="${velocidad}"> </label>
-					<br></br>
-					<label>TAMAÑO:&nbsp;</label><label th:text="${tamanio}"></label>
-					<br></br>
-					<label>CONSUMO:&nbsp;</label><label th:text="${consumo} + 'WATTS'"> </label>
-					<br></br>
-					<label>PRECIO: $</label><label th:text="${precio}"> </label>		
+				<div class="row">
+					<div class="col-6 ">
+						<img class="img-fluid" th:src="${urlimagen}"></img>
+					</div>
+					<div class="col-6">
+						<div>
+							<label class="text-uppercase" th:text="${tipo} + ' ' + ${marca} + ' ' + ${modelo}"> </label>
+						</div>
+						<div th:if="${bSocket} == true">
+							<label>SOCKET CPU:&nbsp;</label><label class="text-uppercase" th:text="${socketcpu}"> </label>
+						</div>
+						<div th:if="${bTiporam} == true">
+							<label class="text-uppercase" th:text="${tiporam}"></label>
+						</div>
+						<div th:if="${bVelocidad} == true">
+							<label>VELOCIDAD:&nbsp;</label><label class="text-uppercase" th:text="${velocidad} + ' ' + 'MHz'"> </label>
+						</div>
+						<div th:if="${bConsumo} == true">
+							<label>CONSUMO:&nbsp;</label><label class="text-uppercase" th:text="${consumo} + ' ' + 'watts' "> </label>
+						</div>
+						<div th:if="${bPci} == true">
+							<label class="text-uppercase" th:text="${pci}"></label>
+						</div>
+						<div th:if="${bSata} == true">
+							<label>SATA:&nbsp;</label><label class="text-uppercase" th:text="${sata}"></label>
+						</div>
+						<div th:if="${bTamanio} == true">
+							<label>TAMAÑO:&nbsp;</label><label class="text-uppercase" th:text="${tamanio}"> </label>
+						</div>
+						<div>
+							<label>PRECIO: $</label><label class="text-uppercase" th:text="${precio}"> </label>		
+						</div>		
+					</div>
 				</div>
+				<div th:replace="fragments/detalleComentarios :: comentarios"></div>									
 			</div>
-								
 			<div th:replace="fragments/header :: footer"></div>
 			
 		</div>

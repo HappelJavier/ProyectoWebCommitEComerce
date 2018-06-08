@@ -27,6 +27,10 @@ html {
     body{font-size: 14px;}
 }
 
+.contenido-de-pagina{
+	margin-top: 1.5rem;
+    margin-bottom: 2rem;	
+}
 
 .foot-listado{
 	font-size: 1.5rem;

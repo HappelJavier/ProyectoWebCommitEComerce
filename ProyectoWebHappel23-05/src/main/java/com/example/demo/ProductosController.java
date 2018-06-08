@@ -1547,14 +1547,21 @@ public class ProductosController {
 					template.addAttribute("tiporam", tiporam);
 					template.addAttribute("pci", pci);
 					template.addAttribute("tamanio", tamanio);
-					template.addAttribute("rendimiento", rendimiento);
 					template.addAttribute("consumo", consumo);
 					template.addAttribute("precio", precio);
 					template.addAttribute("urlimagen", urlimagen);
 					
+					template.addAttribute("bTiporam", true);
+					template.addAttribute("bPci", true);
+					template.addAttribute("bTamanio", true);
+					template.addAttribute("bConsumo", true);
+					template.addAttribute("bVelocidad", false);
+					template.addAttribute("bSata", false);
+					template.addAttribute("bSocket", false);
+					
 					ComentariosHelper.cargarComentarios(connection, id, template);
 					
-					return "detalleGpu";
+					return "detalleProducto";
 				}
 			if (tipo.equals("microprocesador")) {
 					template.addAttribute("tipo", tipo);
@@ -1567,9 +1574,17 @@ public class ProductosController {
 					template.addAttribute("precio", precio);
 					template.addAttribute("urlimagen", urlimagen);
 					
+					template.addAttribute("bSocket", true);
+					template.addAttribute("bVelocidad", true);
+					template.addAttribute("bConsumo", true);
+					template.addAttribute("bTiporam", false);
+					template.addAttribute("bPci", false);
+					template.addAttribute("bTamanio", false);
+					template.addAttribute("bSata", false);
+					
 					ComentariosHelper.cargarComentarios(connection, id, template);
 					
-					return "detalleCpu";
+					return "detalleProducto";
 				}
 			if (tipo.equals("disco duro")) {
 					template.addAttribute("tipo", tipo);
@@ -1580,10 +1595,18 @@ public class ProductosController {
 					template.addAttribute("consumo", consumo);
 					template.addAttribute("precio", precio);
 					template.addAttribute("urlimagen", urlimagen);
-
+					
+					template.addAttribute("bSata", true);
+					template.addAttribute("bTamanio", true);
+					template.addAttribute("bTiporam", false);
+					template.addAttribute("bPci", false);
+					template.addAttribute("bConsumo", false);
+					template.addAttribute("bVelocidad", false);
+					template.addAttribute("bSocket", false);
+					
 					ComentariosHelper.cargarComentarios(connection, id, template);
 					
-					return "detalleHDD";
+					return "detalleProducto";
 				}
 			if (tipo.equals("motherboard")) {
 					template.addAttribute("tipo", tipo);
@@ -1596,10 +1619,18 @@ public class ProductosController {
 					template.addAttribute("consumo", consumo);
 					template.addAttribute("precio", precio);
 					template.addAttribute("urlimagen", urlimagen);
-
+					
+					template.addAttribute("bSocket", true);
+					template.addAttribute("bTiporam", true);
+					template.addAttribute("bPci", true);
+					template.addAttribute("bSata", true);
+					template.addAttribute("bTamanio", false);
+					template.addAttribute("bConsumo", false);
+					template.addAttribute("bVelocidad", false);
+					
 					ComentariosHelper.cargarComentarios(connection, id, template);
 					
-					return "detalleMother";
+					return "detalleProducto";
 				}
 			if (tipo.equals("memoria")) {
 					template.addAttribute("tipo", tipo);
@@ -1613,9 +1644,17 @@ public class ProductosController {
 					template.addAttribute("precio", precio);
 					template.addAttribute("urlimagen", urlimagen);
 
+					template.addAttribute("bTiporam", true);
+					template.addAttribute("bVelocidad", true);
+					template.addAttribute("bTamanio", true);
+					template.addAttribute("bPci", false);
+					template.addAttribute("bConsumo", false);
+					template.addAttribute("bSata", false);
+					template.addAttribute("bSocket", false);
+					
 					ComentariosHelper.cargarComentarios(connection, id, template);
 					
-					return "detalleMemoria";
+					return "detalleProducto";
 				}
 		}
 		

@@ -8,45 +8,45 @@
 
 <body>
 	<div class="container">
-	<div th:replace="fragments/header :: header">Header</div>
-		
-		<div class="row">
-			<div class="col-6">
-			<h1>Registrar Producto</h1>
-				<form action="/insertar-producto">
-					<div class="form-group">
-						<label for="exampleFormControlSelect1">Example select</label> <select
-							name="tipo" class="form-control" id="exampleFormControlSelect1">
-							<option>placa de video</option>
-							<option>microprocesador</option>
-							<option>disco duro</option>
-							<option>motherboard</option>
-							<option>memoria</option>
-						</select>
-					</div>
-
-					<input name="id" type="hidden" placeholder="Ingrese id" th:value="${id}"></input><br></br> 
-					<input name="tipo" type="text" placeholder="Ingrese tipo" th:value="${tipo}"></input><br></br> 
-					<input name="marca" type="text" placeholder="Ingrese la marca..." th:value="${marca}"></input><br></br> 
-					<input name="modelo" type="text" placeholder="Ingrese el modelo..." th:value="${modelo}"></input><br></br>
-					<input name="socketcpu" type="text" placeholder="Ingrese socketcpu" th:value="${socketcpu}"></input><br></br> 
-					<input name="tiporam" type="text" placeholder="Ingrese tiporam" th:value="${tiporam}"></input><br></br>
-					<input name="pci" type="text" placeholder="Ingrese pci" th:value="${pci}"></input><br></br> 
-					<input name="sata" type="text" placeholder="Ingrese sata" th:value="${sata}"></input><br></br> 
-					<input name="velocidad" type="text" placeholder="Ingrese velocidad" th:value="${velocidad}"></input><br></br>
-					<input name="tamanio" type="text" placeholder="Ingrese tamanio" th:value="${tamanio}"></input><br></br> 
-					<input name="rendimiento" type="text" placeholder="Ingrese indice de rendimiento" th:value="${rendimiento}"></input><br></br> 
-					<input name="consumo" type="text" placeholder="Ingrese indice de consumo" th:value="${consumo}"></input><br></br> 
-					<input name="precio" type="text" placeholder="Ingrese precio del precio" th:value="${precio}"></input><br></br> 
-					<input name="urlimagen" type="text" placeholder="Ingrese indice de urlimagen" th:value="${urlimagen}"></input><br></br> 
-					<input value="REGISTRAR" type="submit"></input>
-
-				</form>
+		<div th:replace="fragments/header :: header">Header</div>
+		<div class="contenido-de-pagina">
+			<div class="row">
+				<div class="col-6">
+				<h1>Registrar Producto</h1>
+					<form action="/insertar-producto">
+						<div class="form-group">
+							<label for="exampleFormControlSelect1">Example select</label> <select
+								name="tipo" class="form-control" id="exampleFormControlSelect1">
+								<option>placa de video</option>
+								<option>microprocesador</option>
+								<option>disco duro</option>
+								<option>motherboard</option>
+								<option>memoria</option>
+							</select>
+						</div>
+	
+						<input name="id" type="hidden" placeholder="Ingrese id" th:value="${id}"></input><br></br> 
+						<input name="tipo" type="text" placeholder="Ingrese tipo" th:value="${tipo}"></input><br></br> 
+						<input name="marca" type="text" placeholder="Ingrese la marca..." th:value="${marca}"></input><br></br> 
+						<input name="modelo" type="text" placeholder="Ingrese el modelo..." th:value="${modelo}"></input><br></br>
+						<input name="socketcpu" type="text" placeholder="Ingrese socketcpu" th:value="${socketcpu}"></input><br></br> 
+						<input name="tiporam" type="text" placeholder="Ingrese tiporam" th:value="${tiporam}"></input><br></br>
+						<input name="pci" type="text" placeholder="Ingrese pci" th:value="${pci}"></input><br></br> 
+						<input name="sata" type="text" placeholder="Ingrese sata" th:value="${sata}"></input><br></br> 
+						<input name="velocidad" type="text" placeholder="Ingrese velocidad" th:value="${velocidad}"></input><br></br>
+						<input name="tamanio" type="text" placeholder="Ingrese tamanio" th:value="${tamanio}"></input><br></br> 
+						<input name="rendimiento" type="text" placeholder="Ingrese indice de rendimiento" th:value="${rendimiento}"></input><br></br> 
+						<input name="consumo" type="text" placeholder="Ingrese indice de consumo" th:value="${consumo}"></input><br></br> 
+						<input name="precio" type="text" placeholder="Ingrese precio del precio" th:value="${precio}"></input><br></br> 
+						<input name="urlimagen" type="text" placeholder="Ingrese indice de urlimagen" th:value="${urlimagen}"></input><br></br> 
+						<input value="REGISTRAR" type="submit"></input>
+	
+					</form>
+				</div>
 			</div>
+		
 		</div>
+		<div th:replace="fragments/header :: footer"></div>
 	</div>
-	<div th:replace="fragments/header :: footer"></div>
-	
-	
 </body>
 </html>
