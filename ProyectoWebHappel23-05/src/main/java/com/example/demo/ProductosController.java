@@ -1723,7 +1723,7 @@ public class ProductosController {
 			
 		connection.close();
 			
-		return "redirect:/registrate";
+		return "redirect:/login";
 	}
 	
 	@GetMapping("/login")
