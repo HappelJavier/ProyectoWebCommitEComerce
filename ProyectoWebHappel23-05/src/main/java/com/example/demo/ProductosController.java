@@ -45,7 +45,7 @@ public class ProductosController {
 
 		ProductosHelper.checkearHeader(logeado, template);
 		
-		
+		connection.close();
 		
 		
 		return "index";
@@ -171,6 +171,8 @@ public class ProductosController {
 		
 		ProductosHelper.checkearHeader(logeado, template);
 		
+		connection.close();
+		
 		return "registro-producto";
 	}
 	
@@ -182,6 +184,8 @@ public class ProductosController {
 		Usuario logeado = UsuarioHelper.usuarioLogeado(session, connection);
 		
 		ProductosHelper.checkearHeader(logeado, template);
+		
+		connection.close();
 		
 		return "registro-usuario";
 	}
@@ -1560,6 +1564,7 @@ public class ProductosController {
 					template.addAttribute("bSocket", false);
 					
 					ComentariosHelper.cargarComentarios(connection, id, template);
+					connection.close();
 					
 					return "detalleProducto";
 				}
@@ -1583,6 +1588,7 @@ public class ProductosController {
 					template.addAttribute("bSata", false);
 					
 					ComentariosHelper.cargarComentarios(connection, id, template);
+					connection.close();
 					
 					return "detalleProducto";
 				}
@@ -1605,6 +1611,7 @@ public class ProductosController {
 					template.addAttribute("bSocket", false);
 					
 					ComentariosHelper.cargarComentarios(connection, id, template);
+					connection.close();
 					
 					return "detalleProducto";
 				}
@@ -1629,6 +1636,7 @@ public class ProductosController {
 					template.addAttribute("bVelocidad", false);
 					
 					ComentariosHelper.cargarComentarios(connection, id, template);
+					connection.close();
 					
 					return "detalleProducto";
 				}
@@ -1653,6 +1661,7 @@ public class ProductosController {
 					template.addAttribute("bSocket", false);
 					
 					ComentariosHelper.cargarComentarios(connection, id, template);
+					connection.close();
 					
 					return "detalleProducto";
 				}
@@ -1673,8 +1682,10 @@ public class ProductosController {
 		Usuario logeado = UsuarioHelper.usuarioLogeado(session, connection);
 		ProductosHelper.checkearHeader(logeado, template);
 		if (logeado == null) {
+			connection.close();
 			return "formulario-registro-usuario";
 		} else {
+			connection.close();
 			return "redirect:/perfil"+ logeado.getNick() ;
 		}
 		
@@ -1709,7 +1720,9 @@ public class ProductosController {
 			  .withSMTPServer("smtp.sendgrid.net", 587, "apikey", env.getProperty("spring.datasource.sendgrid"))
 			  .buildMailer()
 			  .sendMail(email);
-		
+			
+		connection.close();
+			
 		return "redirect:/registrate";
 	}
 	
@@ -1723,8 +1736,10 @@ public class ProductosController {
 		ProductosHelper.checkearHeader(logeado, template);
 		
 		if (logeado == null) {
+			connection.close();
 			return "login";
 		} else {
+			connection.close();
 			return "redirect:/perfil/"+ logeado.getNick() ;
 		}
 		
@@ -1737,6 +1752,7 @@ public class ProductosController {
 		connection = DriverManager.getConnection(env.getProperty("spring.datasource.url"), env.getProperty("spring.datasource.username"),
 				env.getProperty("spring.datasource.password"));
 		UsuarioHelper.cerrarSesion(session, connection);
+		connection.close();
 		return "redirect:/login";
 	}
 	
@@ -1751,8 +1767,10 @@ public class ProductosController {
 			
 			if (sePudo){
 				Usuario logeado = UsuarioHelper.usuarioLogeado(session, connection);
+				connection.close();
 				return "redirect:/perfil/" + logeado.getNick();
 			} else {
+				connection.close();
 				return "redirect:/login";	
 			}
 		}
@@ -1956,7 +1974,7 @@ public class ProductosController {
 			}
 			
 		}
-
+		connection.close();
 		return "perfilUsuario";
 	}
 	
@@ -2012,6 +2030,7 @@ public class ProductosController {
 		
 		if (logeado == null) {
 			template.addAttribute("header", "header");
+			connection.close();
 			return "redirect:/login";
 		} else {
 			template.addAttribute("header", "headerLogeado");
@@ -2080,7 +2099,7 @@ public class ProductosController {
 		template.addAttribute("listadoMemoria", listadoMemoria);
 		template.addAttribute("listadoMotherboard", listadoMotherboard);
 		template.addAttribute("listadoDiscoDuro", listadoDiscoDuro);
-		
+		connection.close();
 		return "crearMiPc";
 	}
 
