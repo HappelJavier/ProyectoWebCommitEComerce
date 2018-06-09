@@ -26,6 +26,9 @@ html {
 @media (max-width: @screen-sm) {
     body{font-size: 14px;}
 }
+label{
+	margin-top: .5rem;	
+}
 
 .contenido-de-pagina{
 	margin-top: 1.5rem;
