@@ -1160,7 +1160,8 @@ public class ProductosController {
 			consulta.setString(3, fecha);
 			consulta.setString(4, comentarionuevo);
 			consulta.executeUpdate();
-			PreparedStatement consulta2 = connection.prepareStatement("SELECT * FROM comentarios ORDER BY id DESC LIMIT 1");
+			PreparedStatement consulta2 = connection.prepareStatement("SELECT * FROM comentarios WHERE id_usuario_emisor = ? ORDER BY id DESC LIMIT 1");
+			consulta2.setInt(1, logeado.getId());
 			ResultSet resultado2 = consulta2.executeQuery();
 			resultado2.next();
 			
@@ -1180,7 +1181,7 @@ public class ProductosController {
 	
 	@ResponseBody
 	@GetMapping("/procesar-subcomentario-ajax")
-	public String procesarSubcomentarioAjax(HttpSession session, Model template,@RequestParam int id, @RequestParam int idcom, @RequestParam String comentarionuevo, @RequestParam String fecha) throws SQLException {
+	public ArrayList<String> procesarSubcomentarioAjax(HttpSession session, Model template,@RequestParam int id, @RequestParam int idcom, @RequestParam String comentarionuevo, @RequestParam String fecha) throws SQLException {
 			
 			Connection connection;
 			connection = DriverManager.getConnection(env.getProperty("spring.datasource.url"), env.getProperty("spring.datasource.username"),
@@ -1191,7 +1192,9 @@ public class ProductosController {
 			ProductosHelper.checkearHeader(logeado, template);
 			
 			if (UsuarioHelper.usuarioLogeado(session, connection)== null) {
-				return "redirect:/login";
+				ArrayList<String> respuesta = new ArrayList<String>();
+				respuesta.add("false");
+				return respuesta;
 			}
 
 			PreparedStatement consulta = connection.prepareStatement("INSERT INTO comentarios(id_producto_padre ,id_comentario_padre ,id_usuario_emisor ,id_usuario_receptor ,fecha ,contenido) VALUES(?, ?, ?, '0', ? , ?)");
@@ -1202,8 +1205,24 @@ public class ProductosController {
 			consulta.setString(4, fecha);
 			consulta.setString(5, comentarionuevo);
 			consulta.executeUpdate();
+			
+			
+			PreparedStatement consulta2 = connection.prepareStatement("SELECT * FROM comentarios WHERE id_usuario_emisor = ? ORDER BY id DESC LIMIT 1");
+			consulta2.setInt(1, logeado.getId());
+			ResultSet resultado2 = consulta2.executeQuery();
+			resultado2.next();
+			
+			ArrayList<String> respuesta = new ArrayList<String>();
+			
+			respuesta.add(comentarionuevo);
+			respuesta.add(fecha);
+			respuesta.add(logeado.getImagen_de_perfil());
+			respuesta.add(logeado.getNick());
+			respuesta.add(resultado2.getString("id"));
+			respuesta.add("cm"+resultado2.getString("id"));
+			respuesta.add(Integer.toString(id));
 			connection.close();
-		return "redirect:/detalle/"+ id;
+		return respuesta;
 	}
 	
 	@GetMapping("/listado/{order}")
@@ -1217,13 +1236,15 @@ public class ProductosController {
 		
 		int offset = order * 8;
 		ProductosHelper.crearListadoOrdenado(session, template, connection, offset);
+		
 		if (order == 0){
-			template.addAttribute("anterior", order);	
+			template.addAttribute("anterior", order);
+			template.addAttribute("ant", false);
 		} else {
 			template.addAttribute("anterior", order - 1);
-			
+			template.addAttribute("ant", true);
 		}
-		
+
 		//crear arraylist para mostrar "paginas" en la seccion productos. AGREGAR JOIN EN PEDIDOS SQL DE COMENTARIOS
 		
 		
@@ -1251,9 +1272,11 @@ public class ProductosController {
 		boolean cantidad = ProductosHelper.CheckearCantidad(session, template, connection, offset);
 		
 		if (cantidad == false){
-			template.addAttribute("siguiente", order);	
+			template.addAttribute("siguiente", order);
+			template.addAttribute("sig", false);
 		} else {
 			template.addAttribute("siguiente", order + 1);
+			template.addAttribute("sig", true);		
 		}
 		connection.close();
 		return "listadoProductos";
@@ -1275,9 +1298,11 @@ public class ProductosController {
 		ProductosHelper.crearListadoEspecifico(session, template, connection, offset, tiposql);
 		
 		if (order == 0){
-			template.addAttribute("anterior", order);	
+			template.addAttribute("anterior", order);
+			template.addAttribute("ant", false);
 		} else {
-			template.addAttribute("anterior", order - 1);	
+			template.addAttribute("anterior", order - 1);
+			template.addAttribute("ant", true);
 		}
 		
 		
@@ -1309,9 +1334,11 @@ public class ProductosController {
 		boolean cantidad = ProductosHelper.CheckearCantidadEspecifica(session, template, connection, offset, tiposql);
 		
 		if (cantidad == false){
-			template.addAttribute("siguiente", order);	
+			template.addAttribute("siguiente", order);
+			template.addAttribute("sig", false);
 		} else {
 			template.addAttribute("siguiente", order + 1);
+			template.addAttribute("sig", true);		
 		}
 		connection.close();
 		return "listadoProductos";
@@ -1335,10 +1362,11 @@ public class ProductosController {
 		ProductosHelper.crearListadoEspecifico(session, template, connection, offset, tiposql);
 		
 		if (order == 0){
-			template.addAttribute("anterior", order);	
+			template.addAttribute("anterior", order);
+			template.addAttribute("ant", false);
 		} else {
 			template.addAttribute("anterior", order - 1);
-			
+			template.addAttribute("ant", true);
 		}
 		
 		PreparedStatement consulta3 = connection.prepareStatement("SELECT * FROM productos WHERE tipo = ? ORDER BY tipo LIMIT 8 OFFSET ?;");
@@ -1371,9 +1399,11 @@ public class ProductosController {
 		boolean cantidad = ProductosHelper.CheckearCantidadEspecifica(session, template, connection, offset, tiposql);
 		
 		if (cantidad == false){
-			template.addAttribute("siguiente", order);	
+			template.addAttribute("siguiente", order);
+			template.addAttribute("sig", false);
 		} else {
 			template.addAttribute("siguiente", order + 1);
+			template.addAttribute("sig", true);		
 		}
 		connection.close();
 		return "listadoProductos";
@@ -1397,10 +1427,11 @@ public class ProductosController {
 		ProductosHelper.crearListadoEspecifico(session, template, connection, offset, tiposql);
 		
 		if (order == 0){
-			template.addAttribute("anterior", order);	
+			template.addAttribute("anterior", order);
+			template.addAttribute("ant", false);
 		} else {
 			template.addAttribute("anterior", order - 1);
-			
+			template.addAttribute("ant", true);
 		}
 		
 		PreparedStatement consulta3 = connection.prepareStatement("SELECT * FROM productos WHERE tipo = ? ORDER BY tipo LIMIT 8 OFFSET ?;");
@@ -1431,9 +1462,11 @@ public class ProductosController {
 		boolean cantidad = ProductosHelper.CheckearCantidadEspecifica(session, template, connection, offset, tiposql);
 		
 		if (cantidad == false){
-			template.addAttribute("siguiente", order);	
+			template.addAttribute("siguiente", order);
+			template.addAttribute("sig", false);
 		} else {
 			template.addAttribute("siguiente", order + 1);
+			template.addAttribute("sig", true);		
 		}
 		connection.close();
 		return "listadoProductos";
@@ -1457,10 +1490,11 @@ public class ProductosController {
 		ProductosHelper.crearListadoEspecifico(session, template, connection, offset, tiposql);
 		
 		if (order == 0){
-			template.addAttribute("anterior", order);	
+			template.addAttribute("anterior", order);
+			template.addAttribute("ant", false);
 		} else {
 			template.addAttribute("anterior", order - 1);
-			
+			template.addAttribute("ant", true);
 		}
 		
 		PreparedStatement consulta3 = connection.prepareStatement("SELECT * FROM productos WHERE tipo = ? ORDER BY tipo LIMIT 8 OFFSET ?;");
@@ -1491,9 +1525,11 @@ public class ProductosController {
 		boolean cantidad = ProductosHelper.CheckearCantidadEspecifica(session, template, connection, offset, tiposql);
 		
 		if (cantidad == false){
-			template.addAttribute("siguiente", order);	
+			template.addAttribute("siguiente", order);
+			template.addAttribute("sig", false);
 		} else {
 			template.addAttribute("siguiente", order + 1);
+			template.addAttribute("sig", true);		
 		}
 		connection.close();
 		return "listadoProductos";
@@ -1517,10 +1553,11 @@ public class ProductosController {
 		ProductosHelper.crearListadoEspecifico(session, template, connection, offset, tiposql);
 		
 		if (order == 0){
-			template.addAttribute("anterior", order);	
+			template.addAttribute("anterior", order);
+			template.addAttribute("ant", false);
 		} else {
 			template.addAttribute("anterior", order - 1);
-			
+			template.addAttribute("ant", true);
 		}
 		
 		PreparedStatement consulta3 = connection.prepareStatement("SELECT * FROM productos WHERE tipo = ? ORDER BY tipo LIMIT 8 OFFSET ?;");
@@ -1552,9 +1589,11 @@ public class ProductosController {
 		boolean cantidad = ProductosHelper.CheckearCantidadEspecifica(session, template, connection, offset, tiposql);
 		
 		if (cantidad == false){
-			template.addAttribute("siguiente", order);	
+			template.addAttribute("siguiente", order);
+			template.addAttribute("sig", false);
 		} else {
 			template.addAttribute("siguiente", order + 1);
+			template.addAttribute("sig", true);		
 		}
 		connection.close();
 		return "listadoProductos";

@@ -27,11 +27,11 @@
 					</div>						
 				</div>
 				<div class="col-12 foot-listado"> 
-					<a th:href="${anterior}" class="btn btn-secondary">Anterior</a>
+					<a th:if="${ant} == true" th:href="${anterior}" class="btn btn-secondary">Anterior</a>
 					<label th:each="pagina:${listadoPaginas}">
 					<a class="btn btn-secondary" th:href="${pagina.href}" th:text="${pagina.id}"></a>
 					</label>
-	  				<a th:href="${siguiente}" class="btn btn-secondary">Siguiente</a>
+	  				<a th:if="${sig} == true" th:href="${siguiente}" class="btn btn-secondary">Siguiente</a>
 	  			</div>
 			</div>
 		</div>

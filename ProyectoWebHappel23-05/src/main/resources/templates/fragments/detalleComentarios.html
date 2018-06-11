@@ -3,7 +3,7 @@
 	<body>
 		<div class="comentario-body" th:fragment="comentarios">
 			<div class="row">
-					<!-- <form action="/procesar-comentario">
+					 <!--<form action="/procesar-comentario">
 						<input name="id" type="hidden" th:value="${id}"></input>
 						<input class="fecha" name="fecha" type="hidden" th:value="${fecha}"></input>
 						
@@ -11,10 +11,10 @@
 						<input class="proc-comentario" type="submit" value="comentar"></input>
 					</form>  -->
 					<div>
-					<textarea class="text-com coment-area" id="comentario-nuevo" th:attr="data-id=${id}, data-fecha=3" rows="4" cols="50"></textarea>
+						<textarea class="text-com coment-area" id="comentario-nuevo" th:attr="data-id=${id}, data-fecha=3" rows="4" cols="50"></textarea>
 					</div>
 					<div class="col-4">
-					<label class="btn btn-primary btn-xs proc-comentario btn-com-com" >Comentar</label>
+						<label class="btn btn-primary btn-xs proc-comentario btn-com-com" >Comentar</label>
 					</div>
 						
 			</div>
@@ -42,6 +42,12 @@
 							<textarea class="coment-area" name="comentarionuevo" type="text" placeholder="Ingrese su comentario..."></textarea>
 							<input class="proc-comentario" type="submit"></input>
 						</form>
+						<!--  <div>
+							<textarea class="text-com coment-area subcomentario-nuevo" th:attr="data-idcom=${comentario.id}, data-id=${id}, data-fecha=3" rows="4" cols="50"></textarea>
+						</div>
+						<div class="col-4">
+							<label class="btn btn-primary btn-xs proc-comentario btn-subcom-com" >Comentar</label>
+						</div>-->
 					</div>
 				</div>
 				<div class="col-12 subcom-box">
