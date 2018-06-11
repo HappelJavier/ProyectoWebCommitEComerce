@@ -13,18 +13,36 @@
 		<div class="contenido-de-pagina">
 				<div class="row">
 				<div class="col-6">
-				<h1>Registrar Usuario</h1>
+				<h1>Modificar Usuario</h1>
 					<form action="/update-usuario">
 						<input name="id" type="hidden" placeholder="Ingrese id" th:value="${id}"></input><br></br> 
-						<input name="nombre" type="text" placeholder="Ingrese nombre" th:value="${nombre}"></input><br></br> 
-						<input name="apellido" type="text" placeholder="Ingrese apellido" th:value="${apellido}"></input><br></br> 
-						<input name="nick" type="text" placeholder="Ingrese nick" th:value="${nick}"></input><br></br>
-						<input name="contrasenia" type="text" placeholder="Ingrese contrasenia" th:value="${contrasenia}"></input><br></br> 
-						<input name="mail" type="text" placeholder="Ingrese mail" th:value="${mail}"></input><br></br>
-						<input name="idpc" type="text" placeholder="Ingrese idpc" th:value="${idpc}"></input><br></br> 
-						<input name="imagen_de_perfil" type="text" placeholder="Ingrese imagen_de_perfil" th:value="${imagen_de_perfil}"></input><br></br> 
-						<input name="admin" type="checkbox" placeholder="Ingrese administrador" th:value="${administrador}" th:checked="${administrador}"></input><br></br>
-						<input value="MODIFICAR" type="submit"></input>
+						<div class="col-12">
+							<div class="row">
+								<label class="col-4">Nombre</label><input class="margin-input" name="nombre" type="text" placeholder="Ingrese nombre" th:value="${nombre}"></input>
+							</div>
+							<div class="row">
+								<label class="col-4">Apellido</label><input class="margin-input" name="apellido" type="text" placeholder="Ingrese apellido" th:value="${apellido}"></input>
+							</div>
+							<div class="row">
+								<label class="col-4">Usuario</label><input class="margin-input" name="nick" type="text" placeholder="Ingrese usuario" th:value="${nick}"></input>
+							</div>
+							<div class="row">
+								<label class="col-4">Contraseña</label><input class="margin-input" name="contrasenia" type="text" placeholder="Ingrese contrasenia" th:value="${contrasenia}"></input>
+							</div>
+							<div class="row">
+								<label class="col-4">Mail</label><input class="margin-input" name="mail" type="text" placeholder="Ingrese mail" th:value="${mail}"></input>
+							</div>
+							<div class="row">
+								<label class="col-4">PC N°</label><input class="margin-input" name="idpc" type="text" placeholder="Ingrese idpc" th:value="${idpc}"></input>
+							</div>
+							<div class="row">
+								<label class="col-4">Url Imagen</label><input class="margin-input" name="imagen_de_perfil" type="text" placeholder="Ingrese imagen_de_perfil" th:value="${imagen_de_perfil}"></input>
+							</div>
+							<div class="row">
+								<label class="col-4">Es Admin?</label><input class="margin-input" name="admin" type="checkbox" placeholder="Ingrese administrador" th:value="${administrador}" th:checked="${administrador}"></input>
+							</div>
+						</div>
+							<input value="MODIFICAR" type="submit"></input>
 					</form>
 				</div>
 			</div>

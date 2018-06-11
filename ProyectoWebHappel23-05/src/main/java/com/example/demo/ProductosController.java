@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.example.model.Juego;
 import com.example.model.Pagina;
@@ -877,7 +878,7 @@ public class ProductosController {
 		ProductosHelper.checkearHeader(logeado, template);
 			
 		
-		PreparedStatement consulta = connection.prepareStatement("SELECT * FROM productos;");
+		PreparedStatement consulta = connection.prepareStatement("SELECT * FROM productos ORDER BY precio ASC;");
 
 		ResultSet resultado = consulta.executeQuery();
 
@@ -1069,6 +1070,26 @@ public class ProductosController {
 		return "redirect:/detalle/" + id;
 	}
 	
+	@ResponseBody
+	@GetMapping("/eliminar-comentario-ajax")
+	public String eliminarComentarioAjax(Model template, @RequestParam int idcom, @RequestParam int id) throws SQLException {
+		
+		
+		Connection connection;
+		connection = DriverManager.getConnection(env.getProperty("spring.datasource.url"), env.getProperty("spring.datasource.username"),
+				env.getProperty("spring.datasource.password"));
+
+		PreparedStatement consulta = connection.prepareStatement("DELETE FROM comentarios WHERE id = ?; DELETE FROM comentarios WHERE id_comentario_padre = ?;");
+
+		consulta.setInt(1, idcom);
+		consulta.setInt(2, idcom);
+		
+		consulta.executeUpdate();
+		
+		connection.close();
+		return Integer.toString(idcom);
+	}
+	
 	@GetMapping("/modificar-comentario")
 	public String modificarComentario(Model template, @RequestParam int idcom, @RequestParam String comentarionuevo, @RequestParam int id) throws SQLException {
 		
@@ -1086,6 +1107,103 @@ public class ProductosController {
 		
 		connection.close();
 		return "redirect:/detalle/" + id;
+	}
+	
+	@ResponseBody
+	@GetMapping("/modificar-comentario-ajax")
+	public ArrayList<String> modificarComentarioAjax(Model template, @RequestParam int idcom, @RequestParam String comentarionuevo, @RequestParam int id) throws SQLException {
+		
+		
+		Connection connection;
+		connection = DriverManager.getConnection(env.getProperty("spring.datasource.url"), env.getProperty("spring.datasource.username"),
+				env.getProperty("spring.datasource.password"));
+
+		PreparedStatement consulta = connection.prepareStatement("UPDATE comentarios SET contenido = ? WHERE id = ? ;");
+
+		consulta.setString(1, comentarionuevo);
+		consulta.setInt(2, idcom);
+		
+		consulta.executeUpdate();
+		
+		connection.close();
+		
+		ArrayList<String> respuesta = new ArrayList<String>();
+		String idcomen=Integer.toString(idcom);
+		
+		respuesta.add(comentarionuevo);
+		respuesta.add(idcomen);
+		
+		return respuesta;
+	}
+	
+	@ResponseBody
+	@GetMapping("/procesar-comentario-ajax")
+	public ArrayList<String> procesarComentarioAjax(HttpSession session, Model template,@RequestParam int id, @RequestParam String comentarionuevo, @RequestParam String fecha) throws SQLException {
+			Connection connection;
+			connection = DriverManager.getConnection(env.getProperty("spring.datasource.url"), env.getProperty("spring.datasource.username"),
+					env.getProperty("spring.datasource.password"));
+	
+			Usuario logeado = UsuarioHelper.usuarioLogeado(session, connection);
+					
+			ProductosHelper.checkearHeader(logeado, template);
+			
+			if (UsuarioHelper.usuarioLogeado(session, connection)== null) {
+				ArrayList<String> respuesta = new ArrayList<String>();
+				respuesta.add("false");
+				return respuesta;
+			}
+
+			PreparedStatement consulta = connection.prepareStatement("INSERT INTO comentarios(id_producto_padre ,id_comentario_padre ,id_usuario_emisor ,id_usuario_receptor ,fecha ,contenido) VALUES(?, '0', ?, '0', ? , ?)");
+
+			consulta.setInt(1, id);
+			consulta.setInt(2, logeado.getId());
+			consulta.setString(3, fecha);
+			consulta.setString(4, comentarionuevo);
+			consulta.executeUpdate();
+			PreparedStatement consulta2 = connection.prepareStatement("SELECT * FROM comentarios ORDER BY id DESC LIMIT 1");
+			ResultSet resultado2 = consulta2.executeQuery();
+			resultado2.next();
+			
+			ArrayList<String> respuesta = new ArrayList<String>();
+			
+			
+			respuesta.add(comentarionuevo);
+			respuesta.add(fecha);
+			respuesta.add(logeado.getImagen_de_perfil());
+			respuesta.add(logeado.getNick());
+			respuesta.add(resultado2.getString("id"));
+			respuesta.add("cm"+resultado2.getString("id"));
+			respuesta.add(Integer.toString(id));
+			connection.close();
+		return respuesta;
+	}
+	
+	@ResponseBody
+	@GetMapping("/procesar-subcomentario-ajax")
+	public String procesarSubcomentarioAjax(HttpSession session, Model template,@RequestParam int id, @RequestParam int idcom, @RequestParam String comentarionuevo, @RequestParam String fecha) throws SQLException {
+			
+			Connection connection;
+			connection = DriverManager.getConnection(env.getProperty("spring.datasource.url"), env.getProperty("spring.datasource.username"),
+					env.getProperty("spring.datasource.password"));
+	
+			Usuario logeado = UsuarioHelper.usuarioLogeado(session, connection);
+					
+			ProductosHelper.checkearHeader(logeado, template);
+			
+			if (UsuarioHelper.usuarioLogeado(session, connection)== null) {
+				return "redirect:/login";
+			}
+
+			PreparedStatement consulta = connection.prepareStatement("INSERT INTO comentarios(id_producto_padre ,id_comentario_padre ,id_usuario_emisor ,id_usuario_receptor ,fecha ,contenido) VALUES(?, ?, ?, '0', ? , ?)");
+
+			consulta.setInt(1, id);
+			consulta.setInt(2, idcom);
+			consulta.setInt(3, logeado.getId());
+			consulta.setString(4, fecha);
+			consulta.setString(5, comentarionuevo);
+			consulta.executeUpdate();
+			connection.close();
+		return "redirect:/detalle/"+ id;
 	}
 	
 	@GetMapping("/listado/{order}")
@@ -1457,29 +1575,22 @@ public class ProductosController {
 			if (UsuarioHelper.usuarioLogeado(session, connection)== null) {
 				return "redirect:/login";
 			}
-			
-	
+
 			PreparedStatement consulta = connection.prepareStatement("INSERT INTO comentarios(id_producto_padre ,id_comentario_padre ,id_usuario_emisor ,id_usuario_receptor ,fecha ,contenido) VALUES(?, '0', ?, '0', ? , ?)");
 
 			consulta.setInt(1, id);
 			consulta.setInt(2, logeado.getId());
 			consulta.setString(3, fecha);
 			consulta.setString(4, comentarionuevo);
-			
-			
-			
 			consulta.executeUpdate();
 			connection.close();
-			
-			
-			
 		return "redirect:/detalle/"+ id;
 	}
 	
-	@GetMapping("/procesar-subcomentario")
-	public String procesarSubomentario(HttpSession session, Model template,@RequestParam int id, @RequestParam int idcom, @RequestParam String comentarionuevo, @RequestParam String fecha) throws SQLException {
-			
 	
+	@GetMapping("/procesar-subcomentario")
+	public String procesarSubcomentario(HttpSession session, Model template,@RequestParam int id, @RequestParam int idcom, @RequestParam String comentarionuevo, @RequestParam String fecha) throws SQLException {
+			
 			Connection connection;
 			connection = DriverManager.getConnection(env.getProperty("spring.datasource.url"), env.getProperty("spring.datasource.username"),
 					env.getProperty("spring.datasource.password"));
@@ -1491,8 +1602,7 @@ public class ProductosController {
 			if (UsuarioHelper.usuarioLogeado(session, connection)== null) {
 				return "redirect:/login";
 			}
-			
-	
+
 			PreparedStatement consulta = connection.prepareStatement("INSERT INTO comentarios(id_producto_padre ,id_comentario_padre ,id_usuario_emisor ,id_usuario_receptor ,fecha ,contenido) VALUES(?, ?, ?, '0', ? , ?)");
 
 			consulta.setInt(1, id);
@@ -1500,13 +1610,8 @@ public class ProductosController {
 			consulta.setInt(3, logeado.getId());
 			consulta.setString(4, fecha);
 			consulta.setString(5, comentarionuevo);
-			
-			
 			consulta.executeUpdate();
 			connection.close();
-			
-			
-			
 		return "redirect:/detalle/"+ id;
 	}
 	
@@ -2042,7 +2147,7 @@ public class ProductosController {
 		}
 		
 
-		PreparedStatement consulta = connection.prepareStatement("SELECT * FROM productos;");
+		PreparedStatement consulta = connection.prepareStatement("SELECT * FROM productos ORDER BY precio ASC;");
 
 		ResultSet resultado = consulta.executeQuery();
 

@@ -13,23 +13,51 @@
 		<div class="contenido-de-pagina">
 			<div class="row">
 				<div class="col-6">
-				<h1>Registrar Producto</h1>
+				<h1>Modificar Producto</h1>
 					<form action="/update-producto">
-						<input name="id" type="hidden" placeholder="Ingrese id" th:value="${id}"></input><br></br> 
-						<input name="tipo" type="text" placeholder="Ingrese tipo" th:value="${tipo}"></input><br></br> 
-						<input name="marca" type="text" placeholder="Ingrese la marca..." th:value="${marca}"></input><br></br> 
-						<input name="modelo" type="text" placeholder="Ingrese el modelo..." th:value="${modelo}"></input><br></br>
-						<input name="socketcpu" type="text" placeholder="Ingrese socketcpu" th:value="${socketcpu}"></input><br></br> 
-						<input name="tiporam" type="text" placeholder="Ingrese tiporam" th:value="${tiporam}"></input><br></br>
-						<input name="pci" type="text" placeholder="Ingrese pci" th:value="${pci}"></input><br></br> 
-						<input name="sata" type="text" placeholder="Ingrese sata" th:value="${sata}"></input><br></br> 
-						<input name="velocidad" type="text" placeholder="Ingrese velocidad" th:value="${velocidad}"></input><br></br>
-						<input name="tamanio" type="text" placeholder="Ingrese tamanio" th:value="${tamanio}"></input><br></br> 
-						<input name="rendimiento" type="text" placeholder="Ingrese indice de rendimiento" th:value="${rendimiento}"></input><br></br> 
-						<input name="consumo" type="text" placeholder="Ingrese indice de consumo" th:value="${consumo}"></input><br></br> 
-						<input name="precio" type="text" placeholder="Ingrese precio del precio" th:value="${precio}"></input><br></br> 
-						<input name="urlimagen" type="text" placeholder="Ingrese indice de urlimagen" th:value="${urlimagen}"></input><br></br> 
-						<input value="MODIFICAR" type="submit"></input>
+						<div class="col-12">
+							<input class="margin-input" name="id" type="hidden" placeholder="Ingrese id" th:value="${id}"></input>
+							<div class="row">
+								<label class="col-4">Tipo</label><input class="margin-input" name="tipo" type="text" placeholder="Ingrese tipo" th:value="${tipo}"></input>
+							</div>
+							<div class="row">
+								<label class="col-4">Marca</label><input class="margin-input" name="marca" type="text" placeholder="Ingrese la marca..." th:value="${marca}"></input>
+							</div>
+							<div class="row">
+								<label class="col-4">Modelo</label><input class="margin-input" name="modelo" type="text" placeholder="Ingrese el modelo..." th:value="${modelo}"></input>
+							</div>
+							<div class="row">
+								<label class="col-4">Socket</label><input class="margin-input" name="socketcpu" type="text" placeholder="Ingrese socketcpu" th:value="${socketcpu}"></input>
+							</div>
+							<div class="row">
+								<label class="col-4">Ram</label><input class="margin-input" name="tiporam" type="text" placeholder="Ingrese tiporam" th:value="${tiporam}"></input>
+							</div>
+							<div class="row">
+								<label class="col-4">Pci</label><input class="margin-input" name="pci" type="text" placeholder="Ingrese pci" th:value="${pci}"></input>
+							</div>
+							<div class="row">
+								<label class="col-4">Sata</label><input class="margin-input" name="sata" type="text" placeholder="Ingrese sata" th:value="${sata}"></input>
+							</div>
+							<div class="row">
+								<label class="col-4">Velocidad</label><input class="margin-input" name="velocidad" type="text" placeholder="Ingrese velocidad" th:value="${velocidad}"></input>
+							</div>
+							<div class="row">
+								<label class="col-4">Tamaño</label><input class="margin-input" name="tamanio" type="text" placeholder="Ingrese tamanio" th:value="${tamanio}"></input>
+							</div>
+							<div class="row">
+								<label class="col-4">Rendimiento</label><input class="margin-input" name="rendimiento" type="text" placeholder="Ingrese indice de rendimiento" th:value="${rendimiento}"></input>
+							</div>
+							<div class="row">
+								<label class="col-4">Consumo</label><input class="margin-input" name="consumo" type="text" placeholder="Ingrese indice de consumo" th:value="${consumo}"></input>
+							</div>
+							<div class="row">
+								<label class="col-4">Precio</label><input class="margin-input" name="precio" type="text" placeholder="Ingrese precio del precio" th:value="${precio}"></input>
+							</div>
+							<div class="row">
+								<label class="col-4">Url Imagen</label><input class="margin-input" name="urlimagen" type="text" placeholder="Ingrese indice de urlimagen" th:value="${urlimagen}"></input>
+							</div>
+							<input value="MODIFICAR" type="submit"></input>
+						</div>
 					</form>
 				</div>
 			</div>

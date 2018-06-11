@@ -29,7 +29,9 @@ html {
 label{
 	margin-top: .5rem;	
 }
-
+.margin-input{
+	margin: .3rem;
+}
 .contenido-de-pagina{
 	margin-top: 1.5rem;
     margin-bottom: 2rem;	

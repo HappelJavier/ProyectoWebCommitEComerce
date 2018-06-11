@@ -1,18 +1,96 @@
 $(document).ready( function(){
 	console.log($().jquery); 
 	console.log($j().jquery); 
-	$('.boton').click(function(){
-		
-		var id = $(this).data("id");
-		
-		$.ajax({
-			url:"/eliminar-ajax" + id
-		}).done(function( respuesta){
-			var id = respuesta;
-			$("label[data-id=" + id + "]").closest('div').remove();
-			$(loquesea).append(contenido);
+	
+	$j('.btn-com-com').click(function(){
+		var fecha = moment().format('MMMM Do YYYY, h:mm:ss a');
+		debugger
+		$j(this).siblings(".text-com").data("fecha", fecha);
+		debugger
+		var id = $j("#comentario-nuevo").data("id"); 
+		var comentarionuevo = $j("#comentario-nuevo").val();
+		debugger
+		$j.ajax({
+			url:"/procesar-comentario-ajax",
+			data: "id=" +id+ "&comentarionuevo=" +comentarionuevo+ "&fecha="+fecha
+			
+		}).done(function( data){
+			debugger
+			var comentarionuevo = data [0];
+			var fecha = data[1];
+			var imgurl = data[2];
+			var nick = data[3];
+			var idcom = data[4];
+			var cmid = data[5];
+			var idpro = data[6];
+			var cid = "c"+id;
+			debugger
+			var fecha2 = moment(fecha, "MMMM Do YYYY, h:mm:ss a").fromNow();
+	    	debugger
+			$(".comentario-body").append("<div class='col-12 comentario' id="+idcom+">" +
+					"<div class='row com-box bg-com'>" +
+						"<div class='col-1'>" +
+							"<img class='img-fluid' src="+imgurl+"></img>" +
+								"</div>"+
+									"<div class='col-10'>"+
+										"<label class='text-uppercase'>"+nick+"&nbsp;</label>"+
+										"<label class='fecha-com'>"+fecha2+"</label>"+
+										"<h6 id="+cmid+" class='comentario-modificable'>"+comentarionuevo+"</h6>"+
+										"<div class='form-modificar-oculto form-mod'>"+
+											"<textarea class='text-com coment-area' id="+cid+" rows='4' cols='50'></textarea>"+
+											"<label class='btn btn-primary btn-xs btn-mod-com' data-id="+idpro+" >Modificar</label>"+
+										"</div>"+
+										"<label class='btn btn-primary btn-xs form-eliminar-com div_oculto btn-del-com' data-id="+idpro+">Borrar Comentario</label>"+
+										"<button class='boton-modificar-com'>Modificar Comentario</button>"+
+										"<button class='boton-subcomentar'>Responder <i class='fa fa-reply'></i></button>"+
+										"<form class='col-12 form-subcomentar-oculto form-subcom' action='/procesar-subcomentario'>"+
+											"<input name='id' type='hidden' value="+idpro+"></input>"+
+											"<input name='idcom' type='hidden' value="+idcom+"></input>"+
+											"<input class='fecha' name='fecha' type='hidden' value="+fecha+"></input>"+
+											"<textarea class='coment-area' name='comentarionuevo' type='text' placeholder='Ingrese su comentario...'></textarea>"+
+											"<input class='proc-comentario' type='submit'></input>"+
+										"</form>"+
+									"</div>"+
+								"</div>");
+			
 		})
-	})       
+	})
+	
+	$j('.btn-del-com').click(function(){
+		debugger
+		var idcom = $j(this).data("idcom");
+		var id = $j(this).data("id");
+		debugger
+		$j.ajax({
+			url:"/eliminar-comentario-ajax",
+			data: "idcom=" +idcom + "&id=" +id
+		}).done(function( data){
+			debugger
+			var id = data;
+			$j("div#"+ id).remove();
+
+		})
+	}) 
+	
+	$j('.btn-mod-com').click(function(){
+		var idcom = $j(this).data("idcom");
+		var id = $j(this).data("id");
+		var comentarionuevo = $j("#c"+idcom+".text-com").val();
+		debugger
+		$j.ajax({
+			url:"/modificar-comentario-ajax",
+			data: "idcom=" +idcom + "&id=" +id +"&comentarionuevo=" +comentarionuevo
+		}).done(function( data){
+			debugger
+			var comentarionuevo= data[0] 
+			var id = data[1];
+			debugger
+			$j("#cm"+id).text(comentarionuevo);
+			$j($j("#"+id).find(".form-mod")).toggleClass('div_visible');
+	     	$j($j("#"+id).find('.comentario-modificable')).toggleClass('div_oculto');
+			$j($j("#"+id).find('.form-eliminar-com')).toggleClass('div_oculto');
+		})
+	})
     	       	       
 	$(function () {
 	    var goToCartIcon = function($addTocartBtn){
@@ -99,10 +177,7 @@ $(document).ready( function(){
 	})
 	
 	moment.locale('es');
-	$j('.proc-comentario').click(function(){
-		var a = moment().format('MMMM Do YYYY, h:mm:ss a');
-		$j($j(this).siblings(".fecha")[0]).attr('value', a)
-	})
+	
 	
 	$j( ".fecha-com" ).each(function( index ) {
 		var b = moment($j(this).text(), "MMMM Do YYYY, h:mm:ss a").fromNow();

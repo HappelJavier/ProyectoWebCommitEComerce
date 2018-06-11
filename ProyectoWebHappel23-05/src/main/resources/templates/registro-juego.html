@@ -14,22 +14,56 @@
 				<div class="col-6">
 					<h1>Registrar Juego</h1>
 					<form action="/insertar-juego">
-						<input name="nombre" type="text" placeholder="Ingrese el nombre..."></input><br></br>
-						<input name="desarrollador" type="text" placeholder="Ingrese el desarrollador..."></input><br></br>
-						<input name="fecha" type="text" placeholder="Ingrese fecha..."></input><br></br>
-						<input name="plataforma" type="text" placeholder="Ingrese plataforma..."></input><br></br>
-						<input name="genero" type="text" placeholder="genero..."></input><br></br>
-						<input name="rencpu1" type="text" placeholder="Ingrese rencpu1..."></input><br></br>
-						<input name="rencpu2" type="text" placeholder="Ingrese rencpu2..."></input><br></br>
-						<input name="rengpu1" type="text" placeholder="Ingrese rengpu1..."></input><br></br>
-						<input name="rengpu2" type="text" placeholder="Ingrese rengpu2..."></input><br></br>
-						<input name="vram1" type="text" placeholder="Ingrese vram1..."></input><br></br>
-						<input name="vram2" type="text" placeholder="Ingrese vram2..."></input><br></br>
-						<input name="ram1" type="text" placeholder="Ingrese ram1..."></input><br></br>
-						<input name="ram2" type="text" placeholder="Ingrese ram2..."></input><br></br>
-						<input name="precio" type="text" placeholder="Ingrese precio..."></input><br></br>
-						<input name="urlimagen" type="text" placeholder="Ingrese urlimagen..."></input><br></br>
-						<input value="REGISTRAR" type="submit"></input>	
+						<div class="col-12">
+							<input name="id" type="hidden" placeholder="Ingrese id" th:value="${id}"></input>
+							<div class="row">
+								<label class="col-4">Nombre</label><input class="margin-input" name="nombre" type="text" placeholder="Ingrese el nombre" th:value="${nombre}"></input>
+							</div>
+							<div class="row">
+								<label class="col-4">Desarrollador</label><input class="margin-input" name="desarrollador" type="text" placeholder="Ingrese el desarrollador" th:value="${desarrollador}"></input>
+							</div>
+							<div class="row">
+								<label class="col-4">Fecha</label><input class="margin-input" name="fecha" type="text" placeholder="Ingrese la fecha" th:value="${fecha}"></input>
+							</div>
+							<div class="row">
+								<label class="col-4">Plataforma</label><input class="margin-input" name="plataforma" type="text" placeholder="Ingrese plataforma" th:value="${plataforma}"></input>
+							</div>
+							<div class="row">
+								<label class="col-4">Genero</label><input class="margin-input" name="genero" type="text" placeholder="Ingrese genero" th:value="${genero}"></input>
+							</div>
+							<div class="row">
+								<label class="col-4">Cpu Minimo</label><input class="margin-input" name="rencpu1" type="text" placeholder="Ingrese rencpu1" th:value="${rencpu1}"></input>
+							</div>
+							<div class="row">
+								<label class="col-4">Cpu Recomendada</label><input class="margin-input" name="rencpu2" type="text" placeholder="Ingrese rencpu2" th:value="${rencpu2}"></input>
+							</div>
+							<div class="row">
+								<label class="col-4">Gpu Minima</label><input class="margin-input" name="rengpu1" type="text" placeholder="Ingrese rengpu1" th:value="${rengpu1}"></input>
+							</div>
+							<div class="row">
+								<label class="col-4">Gpu Recomendada</label><input class="margin-input" name="rengpu2" type="text" placeholder="Ingrese rengpu2" th:value="${rengpu2}"></input>
+							</div>
+							<div class="row">
+								<label class="col-4">Vram Minima</label><input class="margin-input" name="vram1" type="text" placeholder="Ingrese vram1" th:value="${vram1}"></input>
+							</div>
+							<div class="row">
+								<label class="col-4">Vram Recomendada</label><input class="margin-input" name="vram2" type="text" placeholder="Ingrese vram2" th:value="${vram2}"></input>
+							</div>
+							<div class="row">
+								<label class="col-4">Ram Minima</label><input class="margin-input" name="ram1" type="text" placeholder="Ingrese ram1" th:value="${ram1}"></input>
+							</div>
+							<div class="row">
+								<label class="col-4">Ram Recomendada</label><input class="margin-input" name="ram2" type="text" placeholder="Ingrese ram2" th:value="${ram2}"></input>
+							</div>
+							<div class="row">
+								<label class="col-4">Precio</label><input class="margin-input" name="precio" type="text" placeholder="Ingrese precio" th:value="${precio}"></input>
+							</div>
+							<div class="row">
+								<label class="col-4">Url Imagen</label><input class="margin-input" name="urlimagen" type="text" placeholder="Ingrese urlimagen" th:value="${urlimagen}"></input>
+							</div>
+						</div>
+						
+						<input value="REGISTRAR" type="submit"></input>
 					</form>
 				</div>
 			</div>		
