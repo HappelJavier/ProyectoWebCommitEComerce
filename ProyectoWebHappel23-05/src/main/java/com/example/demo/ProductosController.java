@@ -1221,6 +1221,7 @@ public class ProductosController {
 			respuesta.add(resultado2.getString("id"));
 			respuesta.add("cm"+resultado2.getString("id"));
 			respuesta.add(Integer.toString(id));
+			respuesta.add(Integer.toString(idcom));
 			connection.close();
 		return respuesta;
 	}

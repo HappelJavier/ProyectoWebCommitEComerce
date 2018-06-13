@@ -1,21 +1,17 @@
 $(document).ready( function(){
 	console.log($().jquery); 
 	console.log($j().jquery); 
+	$( '.comentario-body' ).on( 'click', '.btn-com-com', function() {
 	
-	$j('.btn-com-com').click(function(){
 		var fecha = moment().format('MMMM Do YYYY, h:mm:ss a');
-		debugger
 		$j(this).siblings(".text-com").data("fecha", fecha);
-		debugger
 		var id = $j("#comentario-nuevo").data("id"); 
 		var comentarionuevo = $j("#comentario-nuevo").val();
-		debugger
 		$j.ajax({
 			url:"/procesar-comentario-ajax",
 			data: "id=" +id+ "&comentarionuevo=" +comentarionuevo+ "&fecha="+fecha
 			
 		}).done(function( data){
-			debugger
 			var comentarionuevo = data [0];
 			var fecha = data[1];
 			var imgurl = data[2];
@@ -23,10 +19,8 @@ $(document).ready( function(){
 			var idcom = data[4];
 			var cmid = data[5];
 			var idpro = data[6];
-			var cid = "c"+id;
-			debugger
+			var cid = "c"+idcom;
 			var fecha2 = moment(fecha, "MMMM Do YYYY, h:mm:ss a").fromNow();
-	    	debugger
 			$(".comentario-body").append("<div class='col-12 comentario' id="+idcom+">" +
 					"<div class='row com-box bg-com'>" +
 						"<div class='col-1'>" +
@@ -38,7 +32,7 @@ $(document).ready( function(){
 										"<h6 id="+cmid+" class='comentario-modificable'>"+comentarionuevo+"</h6>"+
 										"<div class='form-modificar-oculto form-mod'>"+
 											"<textarea class='text-com coment-area' id="+cid+" rows='4' cols='50'></textarea>"+
-											"<label class='btn btn-primary btn-xs btn-mod-com' data-id="+idpro+" >Modificar</label>"+
+											"<label class='btn btn-primary btn-xs btn-mod-com' data-id="+idpro+" data-idcom="+idcom+" >Modificar</label>"+
 										"</div>"+
 										"<label class='btn btn-primary btn-xs form-eliminar-com div_oculto btn-del-com' data-id="+idpro+">Borrar Comentario</label>"+
 										"<button class='boton-modificar-com'>Modificar Comentario</button>"+
@@ -55,21 +49,17 @@ $(document).ready( function(){
 		})
 	})
 	
-	$j('.btn-subcom-com').click(function(){
+	$( '.comentario-body' ).on( 'click', '.btn-subcom-com', function() {
 		var fecha = moment().format('MMMM Do YYYY, h:mm:ss a');
-		debugger
 		$j(this).siblings(".text-com").data("fecha", fecha);
-		debugger
 		var id = $j(this).parent().parent().find(".subcomentario-nuevo").data("id"); 
 		var idcom = $j(this).parent().parent().find(".subcomentario-nuevo").data("idcom"); 
 		var comentarionuevo =  $j(this).parent().parent().find(".subcomentario-nuevo").val();
-		debugger
 		$j.ajax({
 			url:"/procesar-subcomentario-ajax",
 			data: "id=" +id+ "&idcom=" +idcom+"&comentarionuevo=" +comentarionuevo+ "&fecha="+fecha 
 			
 		}).done(function( data){
-			debugger
 			var comentarionuevo = data [0];
 			var fecha = data[1];
 			var imgurl = data[2];
@@ -77,74 +67,85 @@ $(document).ready( function(){
 			var idcom = data[4];
 			var cmid = data[5];
 			var idpro = data[6];
-			var cid = "c"+id;
-			debugger
+			var cid = "c"+idcom;
+			var idcompadre = data[7];
 			var fecha2 = moment(fecha, "MMMM Do YYYY, h:mm:ss a").fromNow();
-	    	debugger
-			$(".comentario-body").append("<div class='col-12 comentario' id="+idcom+">" +
-					"<div class='row com-box bg-com'>" +
+	    	
+			$j("#"+idcompadre+".comentario").children(".subcom-box").append("<div class='bg-subcom subcom-unibox' id="+idcom+">" +
+					"<div class='row'>" +
 						"<div class='col-1'>" +
 							"<img class='img-fluid' src="+imgurl+"></img>" +
 								"</div>"+
-									"<div class='col-10'>"+
-										"<label class='text-uppercase'>"+nick+"&nbsp;</label>"+
-										"<label class='fecha-com'>"+fecha2+"</label>"+
-										"<h6 id="+cmid+" class='comentario-modificable'>"+comentarionuevo+"</h6>"+
-										"<div class='form-modificar-oculto form-mod'>"+
-											"<textarea class='text-com coment-area' id="+cid+" rows='4' cols='50'></textarea>"+
-											"<label class='btn btn-primary btn-xs btn-mod-com' data-id="+idpro+" >Modificar</label>"+
-										"</div>"+
-										"<label class='btn btn-primary btn-xs form-eliminar-com div_oculto btn-del-com' data-id="+idpro+">Borrar Comentario</label>"+
-										"<button class='boton-modificar-com'>Modificar Comentario</button>"+
-										"<button class='boton-subcomentar'>Responder <i class='fa fa-reply'></i></button>"+
-										"<form class='col-12 form-subcomentar-oculto form-subcom' action='/procesar-subcomentario'>"+
-											"<input name='id' type='hidden' value="+idpro+"></input>"+
-											"<input name='idcom' type='hidden' value="+idcom+"></input>"+
-											"<input class='fecha' name='fecha' type='hidden' value="+fecha+"></input>"+
-											"<textarea class='coment-area' name='comentarionuevo' type='text' placeholder='Ingrese su comentario...'></textarea>"+
-											"<input class='proc-comentario' type='submit'></input>"+
-										"</form>"+
-									"</div>"+
-								"</div>");
+							"<div class='col-10'>"+
+								"<label class='text-uppercase'>"+nick+"&nbsp;</label>"+
+								"<label class='fecha-com'>"+fecha2+"</label>"+
+								"<h6 id="+cmid+" class='comentario-modificable'>"+comentarionuevo+"</h6>"+
+								"<div class='form-modificar-oculto form-mod'>"+
+									"<textarea class='text-com coment-area' id="+cid+" rows='4' cols='50'></textarea>"+
+									"<label class='btn btn-primary btn-xs btn-mod-com' data-id="+idpro+" data-idcom="+idcom+" >Modificar</label>"+
+								"</div>"+
+								"<label class='btn btn-primary btn-xs form-eliminar-com div_oculto btn-del-com' data-id="+idpro+">Borrar Comentario</label>"+
+								"<button class='boton-modificar-com'>Modificar Comentario</button>"+
+								"<button class='boton-subcomentar'>Responder <i class='fa fa-reply'></i></button>"+
+								"<form class='col-12 form-subcomentar-oculto form-subcom' action='/procesar-subcomentario'>"+
+									"<input name='id' type='hidden' value="+idpro+"></input>"+
+									"<input name='idcom' type='hidden' value="+idcom+"></input>"+
+									"<input class='fecha' name='fecha' type='hidden' value="+fecha+"></input>"+
+									"<textarea class='coment-area' name='comentarionuevo' type='text' placeholder='Ingrese su comentario...'></textarea>"+
+									"<input class='proc-comentario' type='submit'></input>"+
+								"</form>"+
+							"</div>"+
+						"</div>");
 		})
 	})
-	
-	$j('.btn-del-com').click(function(){
-		debugger
+	$( '.comentario-body' ).on( 'click', '.btn-del-com', function() {
 		var idcom = $j(this).data("idcom");
 		var id = $j(this).data("id");
-		debugger
 		$j.ajax({
 			url:"/eliminar-comentario-ajax",
 			data: "idcom=" +idcom + "&id=" +id
 		}).done(function( data){
-			debugger
 			var id = data;
 			$j("div#"+ id).remove();
 
 		})
 	}) 
-	
-	$j('.btn-mod-com').click(function(){
+	$( '.comentario-body' ).on( 'click', '.btn-mod-com', function() {
 		var idcom = $j(this).data("idcom");
 		var id = $j(this).data("id");
 		var comentarionuevo = $j("#c"+idcom+".text-com").val();
-		debugger
 		$j.ajax({
 			url:"/modificar-comentario-ajax",
 			data: "idcom=" +idcom + "&id=" +id +"&comentarionuevo=" +comentarionuevo
 		}).done(function( data){
-			debugger
 			var comentarionuevo= data[0] 
 			var id = data[1];
-			debugger
 			$j("#cm"+id).text(comentarionuevo);
 			$j($j("#"+id).find(".form-mod")).toggleClass('div_visible');
 	     	$j($j("#"+id).find('.comentario-modificable')).toggleClass('div_oculto');
 			$j($j("#"+id).find('.form-eliminar-com')).toggleClass('div_oculto');
 		})
 	})
-    	       	       
+    	      
+	$( '.comentario-body' ).on( 'click', '.boton-subcomentar', function() {
+    	$j($j(this).closest(".com-text").find(".form-subcom")[0]).toggleClass('form-subcomentar-visible')
+    	debugger
+    	if ($j(this).closest(".com-text").find(".form-mod").hasClass('div_visible')){
+    		$j($j(this).closest(".com-text").find(".form-mod")[0]).toggleClass('div_visible'); 
+    	    $j($j(this).closest(".com-text").find('.comentario-modificable')[0]).toggleClass('div_oculto');
+    		$j($j(this).closest(".com-text").find('.form-eliminar-com')[0]).toggleClass('div_oculto');
+    	}
+    })
+    
+   $( '.comentario-body' ).on( 'click', '.boton-modificar-com', function() {
+		$j($j(this).closest(".com-text").find(".form-mod")[0]).toggleClass('div_visible'); 
+	    $j($j(this).closest(".com-text").find('.comentario-modificable')[0]).toggleClass('div_oculto');
+		$j($j(this).closest(".com-text").find('.form-eliminar-com')[0]).toggleClass('div_oculto');
+		if ($j(this).closest(".com-text").find(".form-subcom").hasClass('form-subcomentar-visible')){
+			$j($j(this).closest(".com-text").find(".form-subcom")[0]).toggleClass('form-subcomentar-visible')
+		}
+	});
+	
 	$(function () {
 	    var goToCartIcon = function($addTocartBtn){
 	      var $cartIcon = $(".my-cart-icon");
@@ -239,20 +240,6 @@ $(document).ready( function(){
 	
 	
 	
-    $j('.boton-subcomentar').click(function(){
-    	$j($j(this).siblings(".form-subcom")[0]).toggleClass('form-subcomentar-visible')
-    })
-    
-    $j('.boton-modificar-com').click(function() {
-		
-		
-		$j($j(this).parent().children(".form-mod")[0]).toggleClass('div_visible');
-		 
-     	$j($j(this).parent().children('.comentario-modificable')[0]).toggleClass('div_oculto');
-		
-		$j($j(this).parent().children('.form-eliminar-com')[0]).toggleClass('div_oculto');
-	  		  
-	});
 	
 	
 	

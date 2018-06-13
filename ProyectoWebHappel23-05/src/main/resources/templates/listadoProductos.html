@@ -9,11 +9,11 @@
 <body>
 	<div class="container">
 		<div th:replace="fragments/header :: header">Header</div>
-		<div class="contenido-de-pagina">
+		<div class=" row contenido-de-pagina">
 			<div class="row">
 				<h1 class="col-12">Listado  de Productos</h1>
 				<br></br>
-				<div class="card-group" th:each="producto:${listadoProductos}">
+				<div class="card-group mx-auto" th:each="producto:${listadoProductos}">
 					<div class="card">
 					  <img class="card-img-top img-fluid" alt="Responsive image" th:src="${producto.urlimagen}"></img>
 					  <div class="card-body">
