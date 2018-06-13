@@ -129,19 +129,18 @@ $(document).ready( function(){
     	      
 	$( '.comentario-body' ).on( 'click', '.boton-subcomentar', function() {
     	$j($j(this).closest(".com-text").find(".form-subcom")[0]).toggleClass('form-subcomentar-visible')
-    	debugger
     	if ($j(this).closest(".com-text").find(".form-mod").hasClass('div_visible')){
     		$j($j(this).closest(".com-text").find(".form-mod")[0]).toggleClass('div_visible'); 
-    	    $j($j(this).closest(".com-text").find('.comentario-modificable')[0]).toggleClass('div_oculto');
     		$j($j(this).closest(".com-text").find('.form-eliminar-com')[0]).toggleClass('div_oculto');
+    		$j($j(this).closest(".com-text").find('.btn-mod-com')[0]).toggleClass('div_oculto');
     	}
     })
     
    $( '.comentario-body' ).on( 'click', '.boton-modificar-com', function() {
 		$j($j(this).closest(".com-text").find(".form-mod")[0]).toggleClass('div_visible'); 
-	    $j($j(this).closest(".com-text").find('.comentario-modificable')[0]).toggleClass('div_oculto');
 		$j($j(this).closest(".com-text").find('.form-eliminar-com')[0]).toggleClass('div_oculto');
-		if ($j(this).closest(".com-text").find(".form-subcom").hasClass('form-subcomentar-visible')){
+		$j($j(this).closest(".com-text").find('.btn-mod-com')[0]).toggleClass('div_oculto');
+    	if ($j(this).closest(".com-text").find(".form-subcom").hasClass('form-subcomentar-visible')){
 			$j($j(this).closest(".com-text").find(".form-subcom")[0]).toggleClass('form-subcomentar-visible')
 		}
 	});

@@ -30,6 +30,14 @@ label{
 	margin-top: .5rem;	
 }
 
+textarea:focus{
+	outline: none;
+	border-radius: 1rem;
+	box-shadow: 0 0 2pt 2pt blue;	
+	background-color: white;
+}
+
+
 .margin-input{
 	margin: .3rem;
 }
@@ -166,11 +174,10 @@ label{
 }
 
 .coment-area{
-	background:#e6e6e6;
-	border-radius: 1rem;
-	width:30rem;
-	padding: 1rem;
-	
+	background: #e6e6e6;
+    border-radius: .5rem;
+    width: 29rem;
+    padding: 1rem;
 }
 
 .verde{

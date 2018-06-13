@@ -42,8 +42,8 @@
 						<h6 th:id="'cm' + ${comentario.id}" class="comentario-modificable"  th:text="${comentario.contenido}"></h6>
 						<div class="form-modificar-oculto form-mod">
 							<textarea class="text-com coment-area" th:id="'c'+${comentario.id}" th:text="${comentario.contenido}" rows="4" cols="50"></textarea>
-							<label class="btn btn-primary btn-xs btn-mod-com " th:attr="data-id=${id}, data-idcom=${comentario.id}">Modificar</label>
 						</div>
+						<label class="btn btn-primary btn-xs div_oculto btn-mod-com " th:attr="data-id=${id}, data-idcom=${comentario.id}">Modificar</label>
 						<label class="btn btn-primary btn-xs form-eliminar-com div_oculto btn-del-com" th:attr="data-id=${id}, data-idcom=${comentario.id}">Borrar Comentario</label>
 						
 						<!-- <form class="col-12 form-subcomentar-oculto form-subcom" action="/procesar-subcomentario">
@@ -75,8 +75,9 @@
 								<h6 th:id="'cm' + ${subcom.id}" class="comentario-modificable" th:text="${subcom.contenido}" ></h6>
 								<div class="form-modificar-oculto form-mod">
 									<textarea class="text-com coment-area" th:text="${subcom.contenido}" th:id="'c'+${subcom.id}" rows="4" cols="50"></textarea>
-									<label class="btn btn-primary btn-xs btn-mod-com " th:attr="data-id=${id}, data-idcom=${subcom.id}">Modificar</label>
+
 								</div>
+								<label class="btn btn-primary btn-xs div_oculto btn-mod-com " th:attr="data-id=${id}, data-idcom=${subcom.id}">Modificar</label>
 								<label class="btn btn-primary btn-xs form-eliminar-com div_oculto btn-del-com" th:attr="data-id=${id}, data-idcom=${subcom.id}">Borra Comentario</label>
 								<button class="boton-modificar-com">Modificar Comentario</button>
 							</div>
