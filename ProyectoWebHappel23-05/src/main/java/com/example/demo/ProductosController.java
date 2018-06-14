@@ -865,48 +865,48 @@ public class ProductosController {
 		}
 				
 		if (renProcesadorZ>rencpu2) {
-			template.addAttribute("renProcesadorZ", "el microprocesdor supera los requisitos recomendados del juego");
+			template.addAttribute("renProcesadorZ", "El microprocesdor supera los requisitos recomendados del juego");
 			renmicro = 90;
 			template.addAttribute("renmicro", renmicro);
 		} else if (renProcesadorZ==rencpu2) {
-			template.addAttribute("renProcesadorZ", "el microprocesdor esta ajustado a los requisitos recomendados del juego");
+			template.addAttribute("renProcesadorZ", "El microprocesdor esta ajustado a los requisitos recomendados del juego");
 			renmicro = 75;
 			template.addAttribute("renmicro", renmicro);
 		} else {
 			if (renProcesadorZ>rencpu1) {
-				template.addAttribute("renProcesadorZ", "el microprocesdor supera los requisitos minimos del juego, pero no alcanza a los requisitos recomendado");
+				template.addAttribute("renProcesadorZ", "El microprocesdor supera los requisitos minimos del juego, pero no alcanza a los requisitos recomendado");
 				renmicro = 60;
 				template.addAttribute("renmicro", renmicro);
 			} else if (renProcesadorZ==rencpu1) {
-				template.addAttribute("renProcesadorZ", "el microprocesdor esta ajustado a los requisitos minimos del juego");
+				template.addAttribute("renProcesadorZ", "El microprocesdor esta ajustado a los requisitos minimos del juego");
 				renmicro = 40;
 				template.addAttribute("renmicro", renmicro);
 			} else {
-				template.addAttribute("renProcesadorZ", "el microprocesdor esta por debajo de los requisitos minimos del juego");	
+				template.addAttribute("renProcesadorZ", "El microprocesdor esta por debajo de los requisitos minimos del juego");	
 				renmicro = 20;
 				template.addAttribute("renmicro", renmicro);
 			}
 		}
 
 		if (rampc>ram2) {
-			template.addAttribute("ramZ", "la cantidad de memoria ram supera los requisitos recomendados del juego");
+			template.addAttribute("ramZ", "La cantidad de memoria ram supera los requisitos recomendados del juego");
 			ram = 90;
 			template.addAttribute("ram", ram);
 		} else if (rampc==ram2) {
-			template.addAttribute("ramZ", "la cantidad de memoria ram esta ajustada a los requisitos recomendados del juego");
+			template.addAttribute("ramZ", "La cantidad de memoria ram esta ajustada a los requisitos recomendados del juego");
 			ram = 75;
 			template.addAttribute("ram", ram);
 		} else {
 			if (rampc>ram1) {
-				template.addAttribute("ramZ", "la cantidad de memoria ram supera los requisitos minimos del juego, pero no alcanza a los requisitos recomendado");
+				template.addAttribute("ramZ", "La cantidad de memoria ram supera los requisitos minimos del juego, pero no alcanza a los requisitos recomendado");
 				ram = 60;
 				template.addAttribute("ram", ram);
 			} else if (rampc==ram1) {
-				template.addAttribute("ramZ", "la cantidad de memoria ram esta ajustada a los requisitos minimos del juego");
+				template.addAttribute("ramZ", "La cantidad de memoria ram esta ajustada a los requisitos minimos del juego");
 				ram = 40;
 				template.addAttribute("ram", ram);
 			} else {
-				template.addAttribute("ramZ", "la cantidad de memoria ram esta por debajo de los requisitos minimos del juego");	
+				template.addAttribute("ramZ", "La cantidad de memoria ram esta por debajo de los requisitos minimos del juego");	
 				ram = 20;
 				template.addAttribute("ram", ram);
 			}

@@ -70,11 +70,15 @@
 					             </span>						                 
 						</ul>
 					</section>
-					<label th:text="${renPlacaDeVideoJuego} + ' ' + ${vramZ} + ', ' + ${renProcesadorZ} + ' y por ultimo ' + ${ramZ}"></label>
+					<ul>
+						<li th:text="${renPlacaDeVideoJuego} + ' ' + ${vramZ}"></li>
+						<li th:text="${renProcesadorZ}"></li>
+						<li th:text="${ramZ}"></li>
+					</ul>
 				</div>
 			</div>
 			<div class="row">
-				<a class="nav-link" href="/armar-pc-de-prueba">Probar otra pc</a>
+				<a class="btn btn-primary nav-link" href="/armar-pc-de-prueba">Probar otra pc</a>
 			</div>
 		</div>
 					
