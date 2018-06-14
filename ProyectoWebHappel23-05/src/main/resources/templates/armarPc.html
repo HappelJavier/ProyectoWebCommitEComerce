@@ -10,32 +10,68 @@
 		<div class="container">
 			<div th:replace="fragments/header :: header">Header</div>
 			
-			<div class="contenido-de-pagina">
-				<div class="row">
-					<h1 class="col-12">ARMÁ TU PC</h1>
-					<br></br>
-					<div class="col-12">
-						<form class="row" action="/comparar-pc">
-							<div class="col-5 ">
+			<div class="row contenido-de-pagina">
+				<h1 class="col-12">ARMÁ TU PC</h1>
+				<br></br>
+				<div class="col-12">
+					<form class="row" action="/comparar-pc">
+						<div class="col-12">
+							<div class="row">
+								<div class="col-4">
 									<div class="form-group">
+										<span class="fa-stack fa-1x">
+										  <i class="fa fa-circle fa-stack-2x"></i>
+										  <strong class="fa-stack-1x white">1</strong>
+										</span>
+										<label for="motherboard">Motherboard</label> 
+										<select name="mother" class="form-control text-capitalize" id="motherboard" >
+											<option th:each="producto:${listadoMotherboard}" th:value="${producto.id}" th:text="${producto.marca} +' '+ ${producto.modelo}"></option>
+										</select>
+									</div> 
+									<div class="form-group">
+										<span class="fa-stack fa-1x">
+										  <i class="fa fa-circle fa-stack-2x"></i>
+										  <strong class="fa-stack-1x white">2</strong>
+										</span>
 										<label for="microprocesador">Microprocesador</label> 
 										<select name="micro" class="form-control text-capitalize" id="microprocesador" >
 											<option th:each="producto:${listadoMicroprocesador}" th:value="${producto.id}" th:text="${producto.marca} +' '+ ${producto.modelo}"></option>
 										</select>
-									</div> 
+									</div>	
+									
 									<div class="form-group">
+										<span class="fa-stack fa-1x">
+										  <i class="fa fa-circle fa-stack-2x"></i>
+										  <strong class="fa-stack-1x white">3</strong>
+										</span>
 										<label for="placadevideo">Placa de Video</label> 
 										<select name="placa" class="form-control text-capitalize" id="placadevideo" >
 											<option th:each="producto:${listadoPlacaDeVideo}"  th:value="${producto.id}" th:text="${producto.marca} +' '+ ${producto.modelo}"></option>
 										</select>
-									</div>	
+									</div> 
+								</div>
+								<div class="col-4">
+									<div>
+										<img class="img-fluid" src="/imagenes/motherboard.jpg"></img>
+										
+									</div>
+								</div>
+								<div class="col-4">
 									<div class="form-group">
+										<span class="fa-stack fa-1x">
+										  <i class="fa fa-circle fa-stack-2x"></i>
+										  <strong class="fa-stack-1x white">4</strong>
+										</span>
 										<label for="memoriaram1">Memoria Ram 1</label> 
 										<select name="memoria1" class="form-control text-capitalize" id="memoriaram1" >
 											<option th:each="producto:${listadoMemoria}" th:value="${producto.id}" th:text="${producto.marca} +' '+ ${producto.modelo} +' '+ ${producto.tamanio}"></option>
 										</select>
 									</div>
 									<div class="form-group">
+										<span class="fa-stack fa-1x">
+										  <i class="fa fa-circle fa-stack-2x"></i>
+										  <strong class="fa-stack-1x white">5</strong>
+										</span>
 										<label for="memoriaram2">Memoria Ram 2</label> 
 										<select name="memoria2" class="form-control text-capitalize" id="memoriaram2" >
 											<option value="0">---</option>
@@ -43,32 +79,32 @@
 										</select>
 									</div> 
 									<div class="form-group">
-										<label for="motherboard">Motherboard</label> 
-										<select name="mother" class="form-control text-capitalize" id="motherboard" >
-											<option th:each="producto:${listadoMotherboard}" th:value="${producto.id}" th:text="${producto.marca} +' '+ ${producto.modelo}"></option>
-										</select>
-									</div> 
-									<div class="form-group">
+										<span class="fa-stack fa-1x">
+										  <i class="fa fa-circle fa-stack-2x"></i>
+										  <strong class="fa-stack-1x white">6</strong>
+										</span>
 										<label for="discoduro">Disco Duro</label> 
 										<select name="disco" class="form-control text-capitalize" id="discoduro" >
 											<option th:each="producto:${listadoDiscoDuro}" th:value="${producto.id}" th:text="${producto.marca} +' '+ ${producto.modelo}"></option>
 										</select>
 									</div>
+								</div>
 							</div>
-							<div class="col-5">
-									<div class="form-group">
-										<label for="game">Juego a Comparar</label> 
-										<select name="juego" class="form-control text-capitalize" id="game" >
-											<option th:each="juego:${listadoJuegos}"  th:value="${juego.id}" th:text="${juego.nombre}"></option>
-										</select>
-									</div> 
-									<input type="submit"></input>
-							</div>
-						</form>
-					</div>
+									
+									
+						</div>
+						<div class="col-4">
+							<div class="form-group">
+								<label for="game">Juego a Comparar</label> 
+								<select name="juego" class="form-control text-capitalize" id="game" >
+									<option th:each="juego:${listadoJuegos}"  th:value="${juego.id}" th:text="${juego.nombre}"></option>
+								</select>
+							</div> 
+							<input type="submit"></input>
+						</div>
+					</form>
 				</div>
 			</div>
-
 			<div th:replace="fragments/header :: footer"></div>
 		</div>	
 	</body>

@@ -29,14 +29,28 @@ html {
 label{
 	margin-top: .5rem;	
 }
-
+.mapaimg{
+	width: 100%;
+    min-height: 23rem;
+}
+    
 textarea:focus{
 	outline: none;
-	border-radius: 1rem;
+	border-radius: 0.5rem;
 	box-shadow: 0 0 2pt 2pt blue;	
 	background-color: white;
 }
+.border-black{
+	margin: .2rem;
+	border: .2rem solid black;
+}
 
+.white{
+	color:white
+}
+.pad-top{
+	padding-top: 1rem;
+}
 
 .margin-input{
 	margin: .3rem;

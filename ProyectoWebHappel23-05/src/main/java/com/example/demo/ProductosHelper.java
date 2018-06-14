@@ -149,6 +149,41 @@ public class ProductosHelper {
 				}
 		}
 	}
+	
+public static void crearListadoOfertas(HttpSession session,Model template, Connection connection, int offset) throws SQLException{
+		
+		PreparedStatement consulta = connection.prepareStatement("SELECT * FROM productos WHERE enoferta = ? ORDER BY tipo LIMIT 4 OFFSET ?;");
+		consulta.setBoolean(1, true);
+		consulta.setInt(2, offset);
+		ResultSet resultado = consulta.executeQuery();
+
+		ArrayList<Producto> listadoProductos = new ArrayList<Producto>();
+
+		while ( resultado.next() ) {
+			int id = resultado.getInt("id");
+			String tipo = resultado.getString("tipo");
+			String marca = resultado.getString("marca");
+			String modelo = resultado.getString("modelo");
+			String socketcpu = resultado.getString("socketcpu");
+			String tiporam = resultado.getString("tiporam");
+			String pci = resultado.getString("pci");
+			String sata = resultado.getString("sata");
+			String velocidad = resultado.getString("velocidad");
+			String tamanio = resultado.getString("tamanio");
+			String rendimiento = resultado.getString("rendimiento");
+			String consumo = resultado.getString("consumo");
+			int precio = resultado.getInt("precio");
+			String urlimagen = resultado.getString("urlimagen");
+			
+			
+			Producto x = new Producto (id, tipo, marca, modelo, socketcpu, tiporam, pci, sata, velocidad, tamanio, rendimiento, consumo, precio, urlimagen);
+			listadoProductos.add(x);	
+		}
+
+		template.addAttribute("listadoProductos", listadoProductos);
+		
+	}
+	
 }
 	
 	

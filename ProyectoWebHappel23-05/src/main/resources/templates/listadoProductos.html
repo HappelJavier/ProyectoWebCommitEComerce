@@ -13,12 +13,14 @@
 			<div class="row">
 				<h1 class="col-12">Listado  de Productos</h1>
 				<br></br>
-				<div class="card-group mx-auto" th:each="producto:${listadoProductos}">
+				<div th:id="${producto.id}" class="card-group mx-auto " th:each="producto:${listadoProductos}">
 					<div class="card">
-					  <img class="card-img-top img-fluid" alt="Responsive image" th:src="${producto.urlimagen}"></img>
-					  <div class="card-body">
+					  <img class="card-img-top img-fluid card-producto" alt="Responsive image" th:src="${producto.urlimagen}"></img>
+					  <div class="card-body card-producto">
 					    <h5 class="card-title text-capitalize " th:text="${producto.tipo} +' '+ ${producto.marca} +' '+ ${producto.modelo}"></h5>
 					    <p class="card-text text-capitalize" th:text="${producto.sata?: ''} +' '+ ${producto.socketcpu?: ''} +' '+ ${producto.tiporam?: '' } + ' '+ ${producto.tamanio?: ''} +' '+ ${producto.velocidad?: ''} +' '+ '$' +${producto.precio?: ''}"></p>
+					  </div>
+					  <div class="card-body card-botones">
 					     <a th:href="'/detalle/' + ${producto.id}" class="btn btn-primary">Detalles</a>
 					     <button class="btn btn-danger my-cart-btn"  data-quantity="1" th:attr="data-image=${producto.urlimagen}, data-id=${producto.id}, 
 					     data-name=${producto.tipo} +' '+ ${producto.marca} +' '+ ${producto.modelo}, data-summary=summary + ' ' + ${producto.id}, 

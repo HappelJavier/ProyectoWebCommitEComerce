@@ -35,6 +35,31 @@ public class ProductosController {
 	@Autowired
 	private Environment env;
 	
+	@GetMapping("/insertar-producto-prueba")
+	public String insertProductoPrueba() throws SQLException {
+		Connection connection;
+		connection = DriverManager.getConnection(env.getProperty("spring.datasource.url"), env.getProperty("spring.datasource.username"),
+				env.getProperty("spring.datasource.password"));
+
+		PreparedStatement consulta = connection.prepareStatement(
+				"INSERT INTO productos(tipo, marca, modelo, socketcpu, tiporam, pci, sata, velocidad, tamanio, rendimiento, consumo, precio, urlimagen) VALUES( 'microprocesador', 'amd', 'ryzen 5 2400g', 'am4', null, null, null, '3.9', null, '9369', '65', '5300', '/imagenes/ryzen-5.jpg');\r\n" + 
+				"INSERT INTO productos(tipo, marca, modelo, socketcpu, tiporam, pci, sata, velocidad, tamanio, rendimiento, consumo, precio, urlimagen) VALUES( 'placa de video', 'nvidia geforce', 'gtx 1050 ti', null, 'ddr5', 'pci express 3.0', null, null, '4gb', '5894', '75', '7400', '/imagenes/gtx-1050.jpg');\r\n" + 
+				"INSERT INTO productos(tipo, marca, modelo, socketcpu, tiporam, pci, sata, velocidad, tamanio, rendimiento, consumo, precio, urlimagen) VALUES( 'disco duro', 'wd', 'caviar blue', null, null, null, 'sata3', null, '1tb', null, '30', '1200', '/imagenes/wd-blue-1tb.jpg');\r\n" + 
+				"INSERT INTO productos(tipo, marca, modelo, socketcpu, tiporam, pci, sata, velocidad, tamanio, rendimiento, consumo, precio, urlimagen) VALUES( 'motherboard', 'asrock', 'a320m-hdv', 'am4', 'ddr3', 'pci express 3.0', 'sata3', null, null, null, '50', '1700', '/imagenes/asrock-a320m-hdv.jpg');\r\n" + 
+				"INSERT INTO productos(tipo, marca, modelo, socketcpu, tiporam, pci, sata, velocidad, tamanio, rendimiento, consumo, precio, urlimagen) VALUES( 'memoria', 'nvidia geforce', 'gtx 750 ti', null, 'ddr5', 'pci express 3.0', null, null,'2gb', '3726', '60', '3500', '/imagenes/gtx-750.jpg');\r\n" + 
+				"INSERT INTO productos(tipo, marca, modelo, socketcpu, tiporam, pci, sata, velocidad, tamanio, rendimiento, consumo, precio, urlimagen) VALUES( 'placa de video', 'hyperx', 'fury', null, 'ddr3', null, null, '1866','4gb', null, '5', '1370', '/imagenes/hyperx-fury-blue.jpg');\r\n" + 
+				"INSERT INTO productos(tipo, marca, modelo, socketcpu, tiporam, pci, sata, velocidad, tamanio, rendimiento, consumo, precio, urlimagen) VALUES( 'memoria', 'hyperx', 'fury', null, 'ddr3', null, null, '1866','8gb', null, '5', '2600', '/imagenes/hyperx-fury-blue-2.jpg');\r\n" + 
+				"INSERT INTO productos(tipo, marca, modelo, socketcpu, tiporam, pci, sata, velocidad, tamanio, rendimiento, consumo, precio, urlimagen) VALUES( 'microprocesador', 'amd', 'a8-900', 'am4', null, null, null, '3.4', null, '4850', '65', '1850', '/imagenes/a8-9600.jpg');\r\n" + 
+				"INSERT INTO productos(tipo, marca, modelo, socketcpu, tiporam, pci, sata, velocidad, tamanio, rendimiento, consumo, precio, urlimagen) VALUES( 'microprocesador', 'amd', 'ryzen 3 2200', 'am4', null, null, null, '3.7', null, '7351', '65', '3200', '/imagenes/ryzen-3.jpg');");
+
+
+		consulta.executeUpdate();
+
+		connection.close();
+
+		return "redirect:/administrar";
+	}
+	
 	@GetMapping("/")
 	public String index(HttpSession session, Model template) throws SQLException {
 		Connection connection;
@@ -46,11 +71,35 @@ public class ProductosController {
 
 		ProductosHelper.checkearHeader(logeado, template);
 		
+		int offset = 0;
+		
+		ProductosHelper.crearListadoOfertas(session, template, connection, offset);
+		
 		connection.close();
 		
 		
 		return "index";
 	}
+	
+	@GetMapping("/contacto")
+	public String contactanos(HttpSession session, Model template) throws SQLException {
+		Connection connection;
+		connection = DriverManager.getConnection(env.getProperty("spring.datasource.url"), env.getProperty("spring.datasource.username"),
+				env.getProperty("spring.datasource.password"));
+		
+		Usuario logeado = UsuarioHelper.usuarioLogeado(session, connection);
+		
+
+		ProductosHelper.checkearHeader(logeado, template);
+		
+		
+		
+		connection.close();
+		
+		
+		return "contactanos";
+	}
+		
 	
 	@GetMapping("/administrar")
 	public String administrar(HttpSession session,Model template) throws SQLException {
@@ -309,6 +358,7 @@ public class ProductosController {
 			String consumo = resultado.getString("consumo");
 			int precio = resultado.getInt("precio");
 			String urlimagen = resultado.getString("urlimagen");
+			boolean oferta = resultado.getBoolean("enoferta");
 			template.addAttribute("id", id);
 			template.addAttribute("tipo", tipo);
 			template.addAttribute("marca", marca);
@@ -323,6 +373,7 @@ public class ProductosController {
 			template.addAttribute("consumo", consumo);
 			template.addAttribute("precio", precio);
 			template.addAttribute("urlimagen", urlimagen);
+			template.addAttribute("oferta", oferta);
 		}
 
 		connection.close();
@@ -424,13 +475,13 @@ public class ProductosController {
 	}
 	
 	@GetMapping("/update-producto")
-	public String updateProducto(Model template, HttpSession session, @RequestParam int id, @RequestParam String tipo, @RequestParam String marca, @RequestParam String modelo, @RequestParam String socketcpu, @RequestParam String tiporam, @RequestParam String pci, @RequestParam String sata, @RequestParam String velocidad, @RequestParam String tamanio, @RequestParam String rendimiento, @RequestParam String consumo, @RequestParam int precio, @RequestParam String urlimagen) throws SQLException {
+	public String updateProducto(Model template, HttpSession session, @RequestParam int id, @RequestParam String tipo, @RequestParam String marca, @RequestParam String modelo, @RequestParam String socketcpu, @RequestParam String tiporam, @RequestParam String pci, @RequestParam String sata, @RequestParam String velocidad, @RequestParam String tamanio, @RequestParam String rendimiento, @RequestParam String consumo, @RequestParam int precio, @RequestParam String urlimagen, @RequestParam (value = "oferta", required = false) boolean oferta) throws SQLException {
 
 		Connection connection;
 		connection = DriverManager.getConnection(env.getProperty("spring.datasource.url"), env.getProperty("spring.datasource.username"),
 				env.getProperty("spring.datasource.password"));
 		
-		PreparedStatement consulta = connection.prepareStatement("UPDATE productos SET tipo = ?, marca = ?, modelo = ?, socketcpu = ?, tiporam = ?, pci = ?, sata = ?, velocidad = ?, tamanio = ?, rendimiento = ?, consumo = ?, precio = ?, urlimagen = ?  WHERE id = ? ;");
+		PreparedStatement consulta = connection.prepareStatement("UPDATE productos SET tipo = ?, marca = ?, modelo = ?, socketcpu = ?, tiporam = ?, pci = ?, sata = ?, velocidad = ?, tamanio = ?, rendimiento = ?, consumo = ?, precio = ?, urlimagen = ?, enoferta = ? WHERE id = ? ;");
 
 		consulta.setString(1, tipo);
 		consulta.setString(2, marca);
@@ -445,7 +496,8 @@ public class ProductosController {
 		consulta.setString(11, consumo);
 		consulta.setInt(12, precio);
 		consulta.setString(13, urlimagen);
-		consulta.setInt(14, id);
+		consulta.setBoolean(14, oferta);
+		consulta.setInt(15, id);
 		consulta.executeUpdate();
 		
 		connection.close();
@@ -1111,12 +1163,19 @@ public class ProductosController {
 	
 	@ResponseBody
 	@GetMapping("/modificar-comentario-ajax")
-	public ArrayList<String> modificarComentarioAjax(Model template, @RequestParam int idcom, @RequestParam String comentarionuevo, @RequestParam int id) throws SQLException {
+	public ArrayList<String> modificarComentarioAjax(Model template, @RequestParam int idcom, @RequestParam String comentarionuevo, @RequestParam int id, HttpSession session) throws SQLException {
 		
 		
 		Connection connection;
 		connection = DriverManager.getConnection(env.getProperty("spring.datasource.url"), env.getProperty("spring.datasource.username"),
 				env.getProperty("spring.datasource.password"));
+		
+		if (UsuarioHelper.usuarioLogeado(session, connection)== null) {
+			ArrayList<String> respuesta = new ArrayList<String>();
+			respuesta.add("false");
+			return respuesta;
+		}
+
 
 		PreparedStatement consulta = connection.prepareStatement("UPDATE comentarios SET contenido = ? WHERE id = ? ;");
 
@@ -1144,7 +1203,7 @@ public class ProductosController {
 					env.getProperty("spring.datasource.password"));
 	
 			Usuario logeado = UsuarioHelper.usuarioLogeado(session, connection);
-					
+
 			ProductosHelper.checkearHeader(logeado, template);
 			
 			if (UsuarioHelper.usuarioLogeado(session, connection)== null) {
@@ -1188,7 +1247,7 @@ public class ProductosController {
 					env.getProperty("spring.datasource.password"));
 	
 			Usuario logeado = UsuarioHelper.usuarioLogeado(session, connection);
-					
+
 			ProductosHelper.checkearHeader(logeado, template);
 			
 			if (UsuarioHelper.usuarioLogeado(session, connection)== null) {
@@ -1664,6 +1723,11 @@ public class ProductosController {
 				env.getProperty("spring.datasource.password"));
 
 		Usuario logeado = UsuarioHelper.usuarioLogeado(session, connection);
+		if(logeado==null) {
+			template.addAttribute("idlogeado", "0");
+		} else {
+			template.addAttribute("idlogeado", logeado.getId());
+		}
 				
 		ProductosHelper.checkearHeader(logeado, template);
 		
@@ -1855,10 +1919,10 @@ public class ProductosController {
 		connection.close();
 		
 		Email email = EmailBuilder.startingBlank()
-			    .from("javierBot", "javier.happel.16@gmail.com")
-			    .to("javierH", "happeljavierleonardo@gmail.com")
-			    .withSubject("Prueba")
-			    .withPlainText("el mail funciona")
+			    .from("Happel.com", "happeljavierleonardo@gmail.com")
+			    .to(nick , mail)
+			    .withSubject("Registro exitoso")
+			    .withPlainText("Felicidades "+nick+" te has registrado en happel.com con exito")
 			    .buildEmail();
 		
 			MailerBuilder

@@ -1,0 +1,40 @@
+<!doctype html>
+<html>
+<head>
+	<div th:replace="fragments/header :: headhtml"></div>
+	<meta charset="UTF-8"></meta>
+	<title>Home</title>
+	<link href="https://fonts.googleapis.com/css?family=Merriweather" rel="stylesheet"></link>
+	<link href="https://fonts.googleapis.com/css?family=Playfair+Display" rel="stylesheet"></link>
+</head>
+
+<body>
+	<div class="container">
+		<div th:replace="fragments/header :: header">Header</div>
+		
+		
+		<div class="row contenido-de-pagina">
+			<div class="col-6">
+				<p>Estamos en Scalabrini Ortiz 582, Villa Crespo.
+				</p>
+				<p>Horarios de atención:<br></br>lunes a viernes de 8 a 16hs, sabados de 9 a 14hs 
+				</p>
+				<p>Envíanos tu consulta a: contacto@happel.com
+				</p>
+				
+			</div>
+			<div class="col-6">
+				<iframe class="mapaimg" src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d6568.466508566718!2d-58.4375154!3d-34.5982628!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x95bcca7474b80f59%3A0x2c244a35197960f8!2sAv.+Ra%C3%BAl+Scalabrini+Ort%C3%ADz+582%2C+C1414DNS+CABA!5e0!3m2!1ses!2sar!4v1520298723660" frameborder="0" style="border:0" ></iframe>	
+			</div>
+			
+			
+			
+		</div>
+		
+		
+		
+		<div th:replace="fragments/header :: footer"></div>
+	</div>
+</body>
+
+</html>

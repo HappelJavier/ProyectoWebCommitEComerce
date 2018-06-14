@@ -65,12 +65,12 @@ public class ComentariosHelper {
 				int id_comentario_padre3 = resultado3.getInt("id_comentario_padre");
 				String fecha3 = resultado3.getString("fecha");
 				String contenido3 = resultado3.getString("contenido");
-				Subcomentario y = new Subcomentario(id3, id_usuario_receptor3, id_usuario_emisor3, id_producto_padre3, id_comentario_padre3, fecha3, contenido3, nombre_usuario3, foto_perfil3);
+				Subcomentario y = new Subcomentario(id3, id_usuario_emisor3, id_usuario_receptor3,  id_producto_padre3, id_comentario_padre3, fecha3, contenido3, nombre_usuario3, foto_perfil3);
 				subcomentarios.add(y);	
 				
 			}
 		
-			Comentario x = new Comentario (id2, id_usuario_receptor, id_usuario_emisor, id_producto_padre, id_comentario_padre, fecha, contenido, subcomentarios, nombre_usuario, foto_perfil);
+			Comentario x = new Comentario (id2, id_usuario_emisor, id_usuario_receptor,  id_producto_padre, id_comentario_padre, fecha, contenido, subcomentarios, nombre_usuario, foto_perfil);
 			listadoComentarios.add(x);	
 			
 		}

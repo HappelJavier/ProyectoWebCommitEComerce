@@ -197,12 +197,21 @@ ALTER TABLE public.juegos
     OWNER to postgres;
     
   
-INSERT INTO productos(tipo, marca, modelo, socketcpu, tiporam, pci, sata, velocidad, tamanio, rendimiento, consumo, precio, urlimagen) VALUES( 'microprocesador', 'amd', 'ryzen 5 2400g', 'am4', null, null, null, '3.9', null, '14838', '95', '4400', '/imagenes/ryzen-5.jpg');
-INSERT INTO productos(tipo, marca, modelo, socketcpu, tiporam, pci, sata, velocidad, tamanio, rendimiento, consumo, precio, urlimagen) VALUES( 'placa de video', 'nvidia geforce', 'gtx 1050 ti', null, 'ddr5', 'pci express 3.0', null, null, '4gb', '5894', '75', '5700', '/imagenes/gtx-1050.jpg');
-INSERT INTO productos(tipo, marca, modelo, socketcpu, tiporam, pci, sata, velocidad, tamanio, rendimiento, consumo, precio, urlimagen) VALUES( 'disco duro', 'wd', 'caviar blue', null, null, null, 'sata3', null, '1tb', null, '30', '1000', '/imagenes/wd-blue-1tb.jpg');
-INSERT INTO productos(tipo, marca, modelo, socketcpu, tiporam, pci, sata, velocidad, tamanio, rendimiento, consumo, precio, urlimagen) VALUES( 'motherboard', 'asrock', 'a320m-hdv', 'am4', 'ddr3', 'pci express 3.0', 'sata3', null, null, null, '50', '1400', '/imagenes/asrock-a320m-hdv.jpg');
-INSERT INTO productos(tipo, marca, modelo, socketcpu, tiporam, pci, sata, velocidad, tamanio, rendimiento, consumo, precio, urlimagen) VALUES( 'memoria', 'hyperx', 'fury', null, 'ddr3', null, null, '1866','4gb', null, '5', '1125', '/imagenes/hyperx-fury-blue.jpg');
+INSERT INTO productos(tipo, marca, modelo, socketcpu, tiporam, pci, sata, velocidad, tamanio, rendimiento, consumo, precio, urlimagen) VALUES( 'microprocesador', 'amd', 'ryzen 5 2400g', 'am4', null, null, null, '3.9', null, '9369', '65', '5300', '/imagenes/ryzen-5.jpg');
+INSERT INTO productos(tipo, marca, modelo, socketcpu, tiporam, pci, sata, velocidad, tamanio, rendimiento, consumo, precio, urlimagen) VALUES( 'placa de video', 'nvidia geforce', 'gtx 1050 ti', null, 'ddr5', 'pci express 3.0', null, null, '4gb', '5894', '75', '7400', '/imagenes/gtx-1050.jpg');
+INSERT INTO productos(tipo, marca, modelo, socketcpu, tiporam, pci, sata, velocidad, tamanio, rendimiento, consumo, precio, urlimagen) VALUES( 'disco duro', 'wd', 'caviar blue', null, null, null, 'sata3', null, '1tb', null, '30', '1200', '/imagenes/wd-blue-1tb.jpg');
+INSERT INTO productos(tipo, marca, modelo, socketcpu, tiporam, pci, sata, velocidad, tamanio, rendimiento, consumo, precio, urlimagen) VALUES( 'motherboard', 'asrock', 'a320m-hdv', 'am4', 'ddr3', 'pci express 3.0', 'sata3', null, null, null, '50', '1700', '/imagenes/asrock-a320m-hdv.jpg');
+INSERT INTO productos(tipo, marca, modelo, socketcpu, tiporam, pci, sata, velocidad, tamanio, rendimiento, consumo, precio, urlimagen) VALUES( 'memoria', 'nvidia geforce', 'gtx 750 ti', null, 'ddr5', 'pci express 3.0', null, null,'2gb', '3726', '60', '3500', '/imagenes/gtx-750.jpg');
+INSERT INTO productos(tipo, marca, modelo, socketcpu, tiporam, pci, sata, velocidad, tamanio, rendimiento, consumo, precio, urlimagen) VALUES( 'placa de video', 'hyperx', 'fury', null, 'ddr3', null, null, '1866','4gb', null, '5', '1370', '/imagenes/hyperx-fury-blue.jpg');
+INSERT INTO productos(tipo, marca, modelo, socketcpu, tiporam, pci, sata, velocidad, tamanio, rendimiento, consumo, precio, urlimagen) VALUES( 'memoria', 'hyperx', 'fury', null, 'ddr3', null, null, '1866','8gb', null, '5', '2600', '/imagenes/hyperx-fury-blue-2.jpg');
+INSERT INTO productos(tipo, marca, modelo, socketcpu, tiporam, pci, sata, velocidad, tamanio, rendimiento, consumo, precio, urlimagen) VALUES( 'microprocesador', 'amd', 'a8-900', 'am4', null, null, null, '3.4', null, '4850', '65', '1850', '/imagenes/a8-9600.jpg');
+INSERT INTO productos(tipo, marca, modelo, socketcpu, tiporam, pci, sata, velocidad, tamanio, rendimiento, consumo, precio, urlimagen) VALUES( 'microprocesador', 'amd', 'ryzen 3 2200', 'am4', null, null, null, '3.7', null, '7351', '65', '3200', '/imagenes/ryzen-3.jpg');
+
 INSERT INTO juegos(nombre, desarrollador, fecha, plataforma, genero, rencpu1, rencpu2, rengpu1, rengpu2, vram1, vram2, ram1, ram2, precio, urlimagen) VALUES('battletech', 'Harebrained Schemes', '24 ABR 2018', 'pc', 'accion, aventura, estrategia', '3721','4953', '3535','5373', '1', '2', '8', '16', '440', '/imagenes/battletech.jpg');
+INSERT INTO juegos(nombre, desarrollador, fecha, plataforma, genero, rencpu1, rencpu2, rengpu1, rengpu2, vram1, vram2, ram1, ram2, precio, urlimagen) VALUES('grand theft auto', 'rockstar games', '17 SEPT 2013', 'pc', 'accion, mundo abierto', '2958','6679', '720','5373', '1', '2', '4', '8', '1000', '/imagenes/gta5.jpg');
+INSERT INTO juegos(nombre, desarrollador, fecha, plataforma, genero, rencpu1, rencpu2, rengpu1, rengpu2, vram1, vram2, ram1, ram2, precio, urlimagen) VALUES('battletech', 'Harebrained Schemes', '24 ABR 2018', 'pc', 'accion, mundo abierto', '6383','9791', '5371','5373', '2', '4', '8', '16', '1500', '/imagenes/farcry5.jpg');
+
+
 INSERT INTO usuarios(nombre, apellido, nick, contrasenia, mail, imagen_de_perfil, idpc, administrador) VALUES ('javier', 'happel', 'javi', 'admin', 'happeljavierleonardo@gmail.com', null , '1', true);
 INSERT INTO pcusuarios(motherboard, microprocesador, placadevideo, ram1, ram2, discoduro, idpropietario) VALUES('4', '1', '2', '5', '5', '3', '1');
 
