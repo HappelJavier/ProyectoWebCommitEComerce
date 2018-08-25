@@ -36,7 +36,7 @@ public class ProductosHelper {
 			String velocidad = resultado.getString("velocidad");
 			String tamanio = resultado.getString("tamanio");
 			String rendimiento = resultado.getString("rendimiento");
-			String consumo = resultado.getString("consumo");
+			int consumo = resultado.getInt("consumo");
 			int precio = resultado.getInt("precio");
 			String urlimagen = resultado.getString("urlimagen");
 			
@@ -88,7 +88,7 @@ public class ProductosHelper {
 			String velocidad = resultado.getString("velocidad");
 			String tamanio = resultado.getString("tamanio");
 			String rendimiento = resultado.getString("rendimiento");
-			String consumo = resultado.getString("consumo");
+			int consumo = resultado.getInt("consumo");
 			int precio = resultado.getInt("precio");
 			String urlimagen = resultado.getString("urlimagen");
 			
@@ -171,7 +171,7 @@ public static void crearListadoOfertas(HttpSession session,Model template, Conne
 			String velocidad = resultado.getString("velocidad");
 			String tamanio = resultado.getString("tamanio");
 			String rendimiento = resultado.getString("rendimiento");
-			String consumo = resultado.getString("consumo");
+			int consumo = resultado.getInt("consumo");
 			int precio = resultado.getInt("precio");
 			String urlimagen = resultado.getString("urlimagen");
 			

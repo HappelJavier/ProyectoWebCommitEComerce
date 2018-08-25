@@ -1,5 +1,6 @@
 package com.example.model;
 
+
 public class Producto {
 	
 	
@@ -14,12 +15,12 @@ public class Producto {
 	private String velocidad;
 	private String tamanio;
 	private String rendimiento;
-	private String consumo;
+	private int consumo;
 	private int precio;
 	private String urlimagen;
 	
 	public Producto(int id, String tipo, String marca, String modelo, String socketcpu, String tiporam, String pci,
-			String sata, String velocidad, String tamanio, String rendimiento, String consumo, int precio,
+			String sata, String velocidad, String tamanio, String rendimiento, int consumo, int precio,
 			String urlimagen) {
 		super();
 		this.id = id;
@@ -126,11 +127,11 @@ public class Producto {
 		this.rendimiento = rendimiento;
 	}
 
-	public String getConsumo() {
+	public int getConsumo() {
 		return consumo;
 	}
 
-	public void setConsumo(String consumo) {
+	public void setConsumo(int consumo) {
 		this.consumo = consumo;
 	}
 

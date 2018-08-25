@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.example.model.Computadora2;
 import com.example.model.Juego;
 import com.example.model.Pagina;
 import com.example.model.Producto;
@@ -62,6 +63,151 @@ public class ProductosController {
 	
 	@GetMapping("/")
 	public String index(HttpSession session, Model template) throws SQLException {
+		return "index";
+	}
+	
+	@GetMapping("/proyectos")
+	public String proyectos(HttpSession session, Model template) throws SQLException {
+		return "proyectos";
+	}
+	
+	@GetMapping("/arma-tu-pc")
+	public String ArmaTuPc(Model template) throws SQLException {
+		return "arma-tu-pc";
+	}
+
+	@GetMapping("/arma-tu-pc/modificar-producto")
+	public String ModificarProducto(Model template,@RequestParam String type, @RequestParam int idProducto) throws SQLException {
+		Connection connection;
+		connection = DriverManager.getConnection(env.getProperty("spring.datasource.url"), env.getProperty("spring.datasource.username"),
+				env.getProperty("spring.datasource.password"));
+		PreparedStatement consulta;
+		
+		if(type.equals("micro")) {
+			consulta = connection.prepareStatement("UPDATE pc SET micro = ? WHERE id=2 ;");
+		} else if (type.equals("gpu")){
+			consulta = connection.prepareStatement("UPDATE pc SET gpu = ? WHERE id=2 ;");
+		} else if (type.equals("mother")){
+			consulta = connection.prepareStatement("UPDATE pc SET mother = ? WHERE id=2 ;");
+		} else if (type.equals("disco")){
+			consulta = connection.prepareStatement("UPDATE pc SET disco = ? WHERE id=2 ;");
+		} else if (type.equals("ram1")){
+			consulta = connection.prepareStatement("UPDATE pc SET ram1 = ? WHERE id=2 ;");
+		} else if (type.equals("ram2")){
+			consulta = connection.prepareStatement("UPDATE pc SET ram2 = ? WHERE id=2 ;");
+		} else if (type.equals("ram3")){
+			consulta = connection.prepareStatement("UPDATE pc SET ram3 = ? WHERE id=2 ;");
+		} else if (type.equals("ram4")){
+			consulta = connection.prepareStatement("UPDATE pc SET ram4 = ? WHERE id=2 ;");
+		} else {
+			consulta = connection.prepareStatement("UPDATE pc SET fuente = ? WHERE id=2 ;");
+		}
+		
+		consulta.setInt(1, idProducto);
+		consulta.executeUpdate();
+		connection.close();
+		
+		return "redirect:/arma-tu-pc/armar";
+	}
+	
+	@GetMapping("/arma-tu-pc/eliminar-producto")
+	public String eliminarProducto(Model template, @RequestParam String type ) throws SQLException {
+		Connection connection;
+		connection = DriverManager.getConnection(env.getProperty("spring.datasource.url"), env.getProperty("spring.datasource.username"),
+				env.getProperty("spring.datasource.password"));
+		PreparedStatement consulta;
+		if(type.equals("micro")) {
+			consulta = connection.prepareStatement("UPDATE pc SET micro = null WHERE id=2 ;");
+		} else if (type.equals("gpu")){
+			consulta = connection.prepareStatement("UPDATE pc SET gpu = null WHERE id=2 ;");
+		} else if (type.equals("mother")){
+			consulta = connection.prepareStatement("UPDATE pc SET mother = null WHERE id=2 ;");
+		} else if (type.equals("disco")){
+			consulta = connection.prepareStatement("UPDATE pc SET disco = null WHERE id=2 ;");
+		} else if (type.equals("ram1")){
+			consulta = connection.prepareStatement("UPDATE pc SET ram1 = null WHERE id=2 ;");
+		} else if (type.equals("ram2")){
+			consulta = connection.prepareStatement("UPDATE pc SET ram2 = null WHERE id=2 ;");
+		} else if (type.equals("ram3")){
+			consulta = connection.prepareStatement("UPDATE pc SET ram3 = null WHERE id=2 ;");
+		} else if (type.equals("ram4")){
+			consulta = connection.prepareStatement("UPDATE pc SET ram4 = null WHERE id=2 ;");
+		} else {
+			consulta = connection.prepareStatement("UPDATE pc SET fuente = null WHERE id=2 ;");
+		}
+		consulta.executeUpdate();
+		connection.close();
+		return "redirect:/arma-tu-pc/armar";
+	}
+
+	
+	@GetMapping("/arma-tu-pc/armar")
+	public String armar(Model template) throws SQLException {
+		Connection connection;
+		connection = DriverManager.getConnection(env.getProperty("spring.datasource.url"), env.getProperty("spring.datasource.username"),
+				env.getProperty("spring.datasource.password"));
+		
+		
+		SQLHelper.cargarProductos(connection, template);
+		
+		Computadora2 pc = SQLHelper.cargarPc(connection, template);
+		
+		boolean haveRam;
+		
+		if(pc.getRam1()==0) {
+			haveRam = false;
+		} else {
+			haveRam = true;
+		}
+		
+		if(pc.getMicro()==0 && haveRam == false) {
+			Cargar.mothers(connection, template);	
+		}
+		if(pc.getMicro()!=0 && haveRam == false) {
+			Producto micro =Cargar.producto(connection, template, pc.getMicro());
+			Cargar.motherSocket(connection, template, micro.getSocketcpu());
+		}
+		if(haveRam == true && pc.getMicro()==0) {
+			Producto ram =Cargar.producto(connection, template, pc.getRam1());
+			Cargar.motherRam(connection, template, ram.getTiporam());
+		}
+		if(haveRam == true && pc.getMicro()!=0) {
+			Producto micro =Cargar.producto(connection, template, pc.getMicro());
+			Producto ram =Cargar.producto(connection, template, pc.getRam1());
+			Cargar.motherRamSocket(connection, template, ram.getTiporam(), micro.getSocketcpu());
+		}
+		
+		if(pc.getMother()==0) {
+			Cargar.micros(connection, template);
+			Cargar.rams(connection, template);
+		}
+		if(pc.getMother()!=0) {
+			Producto mother =Cargar.producto(connection, template, pc.getMother());
+			Cargar.microSocket(connection, template, mother.getSocketcpu());
+			Cargar.ramSocket(connection, template, mother.getTiporam());
+		}
+		Cargar.discos(connection, template);
+		Cargar.fuentes(connection, template);
+		Cargar.gpu(connection, template);
+		
+		connection.close();
+		return "armar-pc";
+	}
+
+	@GetMapping("/arma-tu-pc/crear-pc")
+	public String crearPC(Model template) throws SQLException {
+		Connection connection;
+		connection = DriverManager.getConnection(env.getProperty("spring.datasource.url"), env.getProperty("spring.datasource.username"),
+				env.getProperty("spring.datasource.password"));
+		SQLHelper.nuevaPc(connection);
+		
+		connection.close();
+		return "arma-tu-pc";
+	}
+	
+	
+	@GetMapping("/home")
+	public String home(HttpSession session, Model template) throws SQLException {
 		Connection connection;
 		connection = DriverManager.getConnection(env.getProperty("spring.datasource.url"), env.getProperty("spring.datasource.username"),
 				env.getProperty("spring.datasource.password"));
@@ -78,7 +224,7 @@ public class ProductosController {
 		connection.close();
 		
 		
-		return "index";
+		return "home";
 	}
 	
 	@GetMapping("/contacto")
@@ -133,7 +279,7 @@ public class ProductosController {
 			String velocidad = resultadoProductos.getString("velocidad");
 			String tamanio = resultadoProductos.getString("tamanio");
 			String rendimiento = resultadoProductos.getString("rendimiento");
-			String consumo = resultadoProductos.getString("consumo");
+			int consumo = resultadoProductos.getInt("consumo");
 			int precio = resultadoProductos.getInt("precio");
 			String urlimagenProducto = resultadoProductos.getString("urlimagen");
 			Producto x = new Producto (idProducto, tipo, marca, modelo, socketcpu, tiporam, pci, sata, velocidad, tamanio, rendimiento, consumo, precio, urlimagenProducto);
@@ -952,7 +1098,7 @@ public class ProductosController {
 			String velocidad = resultado.getString("velocidad");
 			String tamanio = resultado.getString("tamanio");
 			String rendimiento = resultado.getString("rendimiento");
-			String consumo = resultado.getString("consumo");
+			int consumo = resultado.getInt("consumo");
 			int precio = resultado.getInt("precio");
 			String urlimagen = resultado.getString("urlimagen");
 			
@@ -1063,7 +1209,7 @@ public class ProductosController {
 			String velocidad = resultado.getString("velocidad");
 			String tamanio = resultado.getString("tamanio");
 			String rendimiento = resultado.getString("rendimiento");
-			String consumo = resultado.getString("consumo");
+			int consumo = resultado.getInt("consumo");
 			int precio = resultado.getInt("precio");
 			String urlimagen = resultado.getString("urlimagen");
 			
@@ -2273,7 +2419,7 @@ public class ProductosController {
 			String velocidad = resultado.getString("velocidad");
 			String tamanio = resultado.getString("tamanio");
 			String rendimiento = resultado.getString("rendimiento");
-			String consumo = resultado.getString("consumo");
+			int consumo = resultado.getInt("consumo");
 			int precio = resultado.getInt("precio");
 			String urlimagen = resultado.getString("urlimagen");
 			

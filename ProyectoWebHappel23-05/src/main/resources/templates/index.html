@@ -8,61 +8,47 @@
 
 <body>
 	<div class="container">
-		<div th:replace="fragments/header :: header">Header</div>
-		
-		
-		<div class="contenido-de-pagina">
-			<div id="myCarousel" class="carousel slide" data-ride="carousel">
-			  <ol class="carousel-indicators">
-			    <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
-			    <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
-			    <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
-			  </ol>
-			  <div class="carousel-inner">
-			    <div class="carousel-item active">
-			      <img class="d-block w-100" src="/imagenes/slide-intel.jpg" alt="First slide"></img>
-			    </div>
-			    <div class="carousel-item">
-			      <img class="d-block w-100" src="/imagenes/slide-ryzen.jpg" alt="Second slide"></img>
-			    </div>
-			    <div class="carousel-item">
-			      <img class="d-block w-100" src="/imagenes/slide-vs.jpg" alt="Third slide"></img>
-			    </div>
-			  </div>
-			  <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-			    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-			    <span class="sr-only">Previous</span>
-			  </a>
-			  <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-			    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-			    <span class="sr-only">Next</span>
-			  </a>
+		<div th:replace="fragments/main-header :: header">Header</div>
+		<div class="row">
+			<div class="col-12 ">
+				<h1 class="center">Happel Javier, Curriculm Vitae</h1>
+				<h5 class="center">Programación web - Html5, Css, Bootstrap, Javascript, Jquery, Ajax, Json, Java, Spring(mvc), Thymeleaf, SQL - Metodologías Agiles (Scrum)</h5>
+				<div class="center"><img class="img-fluid col-2 center" src="/imagenes/perfil.jpg" alt="perfil"></img></div>
+				<ul>
+					<li><h6 class="black">Nombre y Apellido: <a>Javier Happel</a></h6></li>
+					<li><h6 class="black">Edad: <a>22 años</a></h6></li>
+					<li><h6 class="black">Zona de residencia: <a>Villa Diamante, Lanús</a></h6></li>
+					<li><h6 class="black">Mail: <a>happeljavierleonardo@gmail.com</a></h6></li>
+					<li><h6 class="black">Perfil LinkedIn: <a class="gray" target="_blank" href="https://www.linkedin.com/in/happel-javier/">https://www.linkedin.com/in/happel-javier/</a></h6></li>
+					<li><h6 class="black">Perfil Github: <a class="gray" target="_blank" href="https://github.com/HappelJavier">https://github.com/HappelJavier</a></h6></li>
+				</ul>
+				<br></br>
+				<h4 class="black">Formación Académica:</h4>
+				<ul>
+					<li><h6 class="black">Comunidad IT 2018: <a>Desarrollador de Aplicaciones Java.</a></h6></li>
+					<li><h6 class="black">Comunidad IT 2018: <a>Maquetador Web</a></h6></li>
+					<li><h6 class="black">E.T. N° 11 Manuel Belgrano: 2009/2014 <a>Técnico electromecánico.</a></h6></li>
+				</ul>
+				<br></br>
+				<h4 class="black">Habilidades</h4>
+				<ul>
+					<li>
+						<h6>Programación web</h6>
+						<ul>
+							<li>Html5, Css, Bootstrap, Javascript, Jquery, Ajax, Json.</li>
+							<li>Java, Spring(mvc), Thymeleaf, SQL</li>
+							<li>Metodologías Agiles(Scrum)</li>
+						</ul>
+					</li>
+					<li><h6>Microsoft Office a nivel medio-avanzado.</h6></li>
+					<li><h6>AutoCAD a nivel medio.</h6></li>
+					<li><h6>Armado y reparación de PC.</h6></li>
+					<li><h6>Nivel de Inglés: Hablado intermedio, Escrito Alto.</h6></li>
+					<li><h6>Nivel de Portugués: Hablado basico, Escrito basico.</h6></li>
+				</ul>
 			</div>
-			<br></br>
-			<h6>OFERTAS DE LA SEMANA</h6>
-			<div class="row">
-				<div th:id="${producto.id}" class="card-group mx-auto card-producto" th:each="producto:${listadoProductos}">
-					<div class="card">
-						<img class="card-img-top img-fluid" alt="Responsive image" th:src="${producto.urlimagen}"></img>
-						<div class="card-body">
-						<h5 class="card-title text-capitalize " th:text="${producto.tipo} +' '+ ${producto.marca} +' '+ ${producto.modelo}"></h5>
-				   		<p class="card-text text-capitalize" th:text="${producto.sata?: ''} +' '+ ${producto.socketcpu?: ''} +' '+ ${producto.tiporam?: '' } + ' '+ ${producto.tamanio?: ''} +' '+ ${producto.velocidad?: ''} +' '+ '$' +${producto.precio?: ''}"></p>
-				     	<a th:href="'/detalle/' + ${producto.id}" class="btn btn-primary">Detalles</a>
-				     	<button class="btn btn-danger my-cart-btn"  data-quantity="1" th:attr="data-image=${producto.urlimagen}, data-id=${producto.id}, 
-				     	data-name=${producto.tipo} +' '+ ${producto.marca} +' '+ ${producto.modelo}, data-summary=summary + ' ' + ${producto.id}, 
-				     	data-price=${producto.precio}" >Añadir al carro</button>
-				  	</div>
-				</div>						
-			</div>
-			
-			</div>
-			
-			
 		</div>
-		
-		
-		
-		<div th:replace="fragments/header :: footer"></div>
+		<div th:replace="fragments/header :: footer-main"></div>
 	</div>
 </body>
 

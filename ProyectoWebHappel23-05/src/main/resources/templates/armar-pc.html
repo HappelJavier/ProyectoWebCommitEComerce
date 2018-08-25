@@ -1,0 +1,553 @@
+<!doctype html>
+<html>
+<head>
+	<div th:replace="fragments/header :: headhtml"></div>
+	<meta charset="UTF-8"></meta>
+	<title>Home</title>
+</head>
+
+<body>
+	<div class="container">
+		<div th:replace="fragments/header :: header">Header</div>
+		<div class="row">
+			<div class="col-8">
+				<div class="row mx-auto">
+					<div class="col-4 bg-black">
+						<div  th:if="${pc.mother} == 0" class="center">
+							<label>MOTHER</label>
+							<h6>
+								<img class="img-fluid cs-point" src="/imagenes/plus-icon.jpg" data-toggle="modal" data-target="#modalMother"></img>
+								<label class="empty"></label>
+							</h6>
+							<button class="btn btn-primary" data-toggle="modal" data-target="#modalMother">elegir</button>
+						</div>
+						<div class="center" th:if="${pc.mother} != 0">
+							<label class="uppercase" th:text="${mother.marca}+' '+${mother.modelo}"></label>
+							<h6  class="center" >
+								<img class="img-fluid" th:src="${mother.urlimagen}" data-toggle="modal" data-target="#modalMother"></img>
+								<label th:text="'$'+${mother.precio}"></label>
+							</h6>
+							<form action="/arma-tu-pc/eliminar-producto">
+								<input type="hidden" name="type" value="mother"></input>
+								<button class="btn btn-primary">restablecer</button>
+							</form>
+						</div>				
+					</div>
+					
+					<div class="col-4 bg-black">
+						<div  th:if="${pc.micro} == 0" class="center">
+							<label>MICRO</label>
+							<h6>
+								<img class="img-fluid cs-point" src="/imagenes/plus-icon.jpg" data-toggle="modal" data-target="#modalMicro"></img>
+								<label class="empty"></label>
+							</h6>						
+							<button class="btn btn-primary" data-toggle="modal" data-target="#modalMicro">elegir</button>
+						</div>
+						<div class="center" th:if="${pc.micro} != 0">
+							<label class="uppercase" th:text="${micro.marca}+' '+${micro.modelo}"></label>
+							<h6  class="center">
+								<img class="img-fluid" th:src="${micro.urlimagen}" data-toggle="modal" data-target="#modalMicro"></img>
+								<label th:text="'$'+${micro.precio}"></label>
+							</h6>
+							<form action="/arma-tu-pc/eliminar-producto">
+								<input type="hidden" name="type" value="micro"></input>
+								<button class="btn btn-primary">restablecer</button>
+							</form>
+						</div>
+					</div>
+					
+					<div class="col-4 bg-black">
+						<div  th:if="${pc.gpu} == 0" class="center">
+							<label>GPU</label>
+							<h6>
+								<img class="img-fluid cs-point" src="/imagenes/plus-icon.jpg" data-toggle="modal" data-target="#modalGpu"></img>
+								<label class="empty"></label>
+							</h6>						
+							<button class="btn btn-primary" data-toggle="modal" data-target="#modalGpu">elegir</button>
+						</div>
+						<div class="center" th:if="${pc.gpu} != 0">
+							<label class="uppercase" th:text="${gpu.modelo}"></label>
+							<h6  class="center">
+								<img class="img-fluid" th:src="${gpu.urlimagen}" data-toggle="modal" data-target="#modalGpu"></img>
+								<label th:text="'$'+${gpu.precio}"></label>
+							</h6>
+							<form action="/arma-tu-pc/eliminar-producto">
+								<input type="hidden" name="type" value="gpu"></input>
+								<button class="btn btn-primary">restablecer</button>
+							</form>
+						</div>
+					</div>
+					
+					<div class="col-4 bg-black">
+						<div  th:if="${pc.disco} == 0" class="center">
+							<label>DISCO</label>
+							<h6>
+								<img class="img-fluid cs-point" src="/imagenes/plus-icon.jpg" data-toggle="modal" data-target="#modalDisco"></img>
+								<label class="empty"></label>
+							</h6>						
+							<button class="btn btn-primary" data-toggle="modal" data-target="#modalDisco">elegir</button>
+						</div>
+						<div class="center" th:if="${pc.disco} != 0">
+							<label class="uppercase" th:text="${disco.modelo}+' '+${disco.tamanio}"></label>
+							<h6  class="center">
+								<img class="img-fluid" th:src="${disco.urlimagen}" data-toggle="modal" data-target="#modalDisco"></img>
+								<label th:text="'$'+${disco.precio}"></label>
+							</h6>
+							<form action="/arma-tu-pc/eliminar-producto">
+								<input type="hidden" name="type" value="disco"></input>
+								<button class="btn btn-primary">restablecer</button>
+							</form>
+						</div>
+					</div>
+	
+					<div class="col-4 bg-black">
+						<div  th:if="${pc.fuente} == 0" class="center">
+							<label>FUENTE</label>
+							<h6>
+								<img class="img-fluid cs-point" src="/imagenes/plus-icon.jpg" data-toggle="modal" data-target="#modalFuente"></img>
+								<label class="empty"></label>
+							</h6>						
+							<button class="btn btn-primary" data-toggle="modal" data-target="#modalFuente">elegir</button>
+						</div>
+						<div class="center" th:if="${pc.fuente} != 0">
+							<label class="uppercase" th:text="${fuente.tipo}+' '+${fuente.consumo}+'w'"></label>
+							<h6  class="center">
+								<img class="img-fluid" th:src="${fuente.urlimagen}" data-toggle="modal" data-target="#modalFuente"></img>
+								<label th:text="'$'+${fuente.precio}"></label>
+							</h6>
+							<form action="/arma-tu-pc/eliminar-producto">
+								<input type="hidden" name="type" value="disco"></input>
+								<button class="btn btn-primary">restablecer</button>
+							</form>
+						</div>
+					</div>
+
+					<div class="col-4 bg-black">
+						<div th:if="${pc.ram1} == 0" class="center">
+							<label>RAM1</label>
+							<h6>
+								<img class="img-fluid cs-point" src="/imagenes/plus-icon.jpg" data-toggle="modal" data-target="#modalRam1"></img>
+								<label class="empty"></label>
+							</h6>						
+							<button class="btn btn-primary" data-toggle="modal" data-target="#modalRam1">elegir</button>
+						</div>
+						<div class="center" th:if="${pc.ram1} != 0">
+							<label class="uppercase" th:text="${ram1.marca}+' '+${ram1.tamanio}"></label>
+							<h6  class="center">
+								<img class="img-fluid" th:src="${ram1.urlimagen}" data-toggle="modal" data-target="#modalRam1"></img>
+								<label th:text="'$'+${ram1.precio}"></label>
+							</h6>
+							<form action="/arma-tu-pc/eliminar-producto">
+								<input type="hidden" name="type" value="ram1"></input>
+								<button class="btn btn-primary">restablecer</button>
+							</form>
+						</div>
+					</div>
+					<div th:if="${bram2}  == true or ${pc.ram2}!=0" class="col-4 bg-black">
+						<div th:if="${pc.ram2} == 0" class="center">
+							<label>RAM2</label>
+							<h6>
+								<img class="img-fluid cs-point" src="/imagenes/plus-icon.jpg" data-toggle="modal" data-target="#modalRam2"></img>
+								<label class="empty"></label>
+							</h6>						
+							<button class="btn btn-primary" data-toggle="modal" data-target="#modalRam2">elegir</button>
+						</div>
+						<div class="center" th:if="${pc.ram2} != 0">
+							<label class="uppercase" th:text="${ram2.marca}+' '+${ram2.tamanio}"></label>
+							<h6  class="center">
+								<img class="img-fluid" th:src="${ram2.urlimagen}" data-toggle="modal" data-target="#modalRam2"></img>
+								<label th:text="'$'+${ram2.precio}"></label>
+							</h6>
+							<form action="/arma-tu-pc/eliminar-producto">
+								<input type="hidden" name="type" value="ram2"></input>
+								<button class="btn btn-primary">restablecer</button>
+							</form>
+						</div>
+					</div>
+					
+					<div th:if="${bram3} == true or ${pc.ram3}!=0" class="col-4 bg-black">
+						<div th:if="${pc.ram3} == 0" class="center">
+							<label>RAM3</label>
+							<h6>
+								<img class="img-fluid cs-point" src="/imagenes/plus-icon.jpg" data-toggle="modal" data-target="#modalRam3"></img>
+								<label class="empty"></label>
+							</h6>						
+							<button class="btn btn-primary" data-toggle="modal" data-target="#modalRam3">elegir</button>
+						</div>
+						<div class="center" th:if="${pc.ram3} != 0">
+							<label class="uppercase" th:text="${ram3.marca}+' '+${ram3.tamanio}"></label>
+							<h6  class="center">
+								<img class="img-fluid" th:src="${ram3.urlimagen}" data-toggle="modal" data-target="#modalRam3"></img>
+								<label th:text="'$'+${ram3.precio}"></label>
+							</h6>
+							<form action="/arma-tu-pc/eliminar-producto">
+								<input type="hidden" name="type" value="ram3"></input>
+								<button class="btn btn-primary">restablecer</button>
+							</form>
+						</div>
+					</div>
+					
+					<div th:if="${bram4} == true or ${pc.ram4}!=0" class="col-4 bg-black">
+						<div th:if="${pc.ram4} == 0" class="center">
+							<label>RAM4</label>
+							<h6>
+								<img class="img-fluid cs-point" src="/imagenes/plus-icon.jpg" data-toggle="modal" data-target="#modalRam4"></img>
+								<label class="empty"></label>
+							</h6>						
+							<button class="btn btn-primary" data-toggle="modal" data-target="#modalRam4">elegir</button>
+						</div>
+						<div class="center" th:if="${pc.ram4} != 0">
+							<label class="uppercase" th:text="${ram4.marca}+' '+${ram4.tamanio}"></label>
+							<h6  class="center">
+								<img class="img-fluid" th:src="${ram4.urlimagen}" data-toggle="modal" data-target="#modalRam4"></img>
+								<label th:text="'$'+${ram4.precio}"></label>
+							</h6>
+							<form action="/arma-tu-pc/eliminar-producto">
+								<input type="hidden" name="type" value="ram4"></input>
+								<button class="btn btn-primary">restablecer</button>
+							</form>
+						</div>
+					</div>
+
+				<!-- Modal Mother-->
+					<div class="modal fade" id="modalMother" tabindex="-1" role="dialog" aria-labelledby="modalMother" aria-hidden="true">
+					  <div class="modal-dialog" role="document">
+					    <div class="modal-content">
+					      <div class="modal-header">
+					        <h5 class="modal-title" id="exampleModalLabel">Elige tu Motherboard</h5>
+					        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					          <span aria-hidden="true">&times;</span>
+					        </button>
+					      </div>
+					      <div class="modal-body">
+					      	<div class="row">
+					      		<div class="col-2" ></div>
+					        	<div class="col-2"><h6>Modelo</h6></div>
+					        	<div class="col-2"><h6>Socket</h6></div>
+					        	<div class="col-2"><h6>Precio</h6></div>
+					        	<div class="col-2"><h6>Detalles</h6></div>
+					        	<div class="col-2"><h6>Elegir</h6></div>
+					      	</div>
+					        <div class="row" th:each="mother:${listadoMothers}">
+					        	<div class="col-2" ><img class="img-fluid" th:src="${mother.urlimagen}"></img></div><div class="col-2"><h6 th:text="${mother.modelo}"></h6></div>
+					        	<div class="col-2"><h6 th:text="${mother.socketcpu}"></h6></div>
+					        	<div class="col-2"><h6 th:text="${mother.precio}"></h6></div>
+					        	<div class="col-2">
+					        		<form th:action="'/arma-tu-pc/detalles/'+${mother.id}"><button type="submit" class="btn btn-primary">Detalles</button></form>
+					        	</div>
+					        	<div class="col-2">
+					        		<form action="/arma-tu-pc/modificar-producto">
+					        			<input type="hidden" name="type" value="mother"></input>
+					        			<input type="hidden" name="idProducto" th:value="${mother.id}"></input>
+							        	<button type="submit" class="btn btn-primary">Elegir</button>
+					       			</form>
+					        	</div>
+					        </div>
+					      </div>
+					    </div>
+					  </div>
+					</div>	
+				<!-- Modal Micro-->
+					<div class="modal fade" id="modalMicro" tabindex="-1" role="dialog" aria-labelledby="modalMicro" aria-hidden="true">
+					  <div class="modal-dialog" role="document">
+					    <div class="modal-content">
+					      <div class="modal-header">
+					        <h5 class="modal-title" id="exampleModalLabel">Elige tu Microprocesador</h5>
+					      </div>
+					      <div class="modal-body">
+					      	<div class="row">
+					      		<div class="col-2" ></div>
+					        	<div class="col-2"><h6>Modelo</h6></div>
+					        	<div class="col-2"><h6>Socket</h6></div><div class="col-2"><h6>Precio</h6></div><div class="col-2"><h6>Detalles</h6></div>
+					        	<div class="col-2"><h6>Elegir</h6></div>
+					      	</div>
+					        <div class="row" th:each="micro:${listadoMicros}">
+					        	<div class="col-2" ><img class="img-fluid" th:src="${micro.urlimagen}"></img></div><div class="col-2"><h6 th:text="${micro.modelo}"></h6></div>
+					        	<div class="col-2"><h6 th:text="${micro.socketcpu}"></h6></div>
+					        	<div class="col-2"><h6 th:text="${micro.precio}"></h6></div>
+					        	<div class="col-2">
+					        		<form th:action="'/arma-tu-pc/detalles/'+${micro.id}"><button type="submit" class="btn btn-primary">Detalles</button></form>
+					        	</div>
+					        	<div class="col-2">
+					        		<form action="/arma-tu-pc/modificar-producto">
+					        			<input type="hidden" name="type" value="micro"></input>
+					        			<input type="hidden" name="idProducto" th:value="${micro.id}"></input>
+							        	<button type="submit" class="btn btn-primary">Elegir</button>
+					       			</form>
+					        	</div>
+					        </div>
+					      </div>
+					    </div>
+					  </div>
+					</div>	
+				<!-- Modal Gpu-->
+					<div class="modal fade" id="modalGpu" tabindex="-1" role="dialog" aria-labelledby="modalGpu" aria-hidden="true">
+					  <div class="modal-dialog" role="document">
+					    <div class="modal-content">
+					      <div class="modal-header">
+					        <h5 class="modal-title" id="exampleModalLabel">Elige tu Placa de Video</h5>
+					        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					          <span aria-hidden="true">&times;</span>
+					        </button>
+					      </div>
+					       <div class="modal-body">
+					      	<div class="row">
+					      		<div class="col-2" ></div>
+					        	<div class="col-2"><h6>Modelo</h6></div>
+					        	<div class="col-2"><h6>Precio</h6></div>
+					        	<div class="col-2"><h6>Detalles</h6></div>
+					        	<div class="col-2"><h6>Elegir</h6></div>
+					      	</div>
+					        <div class="row" th:each="gpu:${listadoGpus}">
+					        	<div class="col-2" ><img class="img-fluid" th:src="${gpu.urlimagen}"></img></div>
+					        	<div class="col-2"><h6 th:text="${gpu.modelo}"></h6></div>
+					        	<div class="col-2"><h6 th:text="${gpu.precio}"></h6></div>
+					        	<div class="col-2">
+					        		<form th:action="'/arma-tu-pc/detalles/'+${gpu.id}"><button type="submit" class="btn btn-primary">Detalles</button></form>
+					        	</div>
+					        	<div class="col-2">
+					        		<form action="/arma-tu-pc/modificar-producto">
+					        			<input type="hidden" name="type" value="gpu"></input>
+					        			<input type="hidden" name="idProducto" th:value="${gpu.id}"></input>
+							        	<button type="submit" class="btn btn-primary">Elegir</button>
+					       			</form>
+					        	</div>
+					        </div>
+					      </div>
+					    </div>
+					  </div>
+					</div>	
+				<!-- Modal Disco-->
+					<div class="modal fade" id="modalDisco" tabindex="-1" role="dialog" aria-labelledby="modalDisco" aria-hidden="true">
+					  <div class="modal-dialog" role="document">
+					    <div class="modal-content">
+					      <div class="modal-header">
+					        <h5 class="modal-title" id="exampleModalLabel">Elige tu Disco</h5>
+					        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					          <span aria-hidden="true">&times;</span>
+					        </button>
+					      </div>
+					      <div class="modal-body">
+					      	<div class="row">
+					      		<div class="col-2" ></div>
+					        	<div class="col-2"><h6>Modelo</h6></div>
+					        	<div class="col-2"><h6>Precio</h6></div>
+					        	<div class="col-2"><h6>Detalles</h6></div>
+					        	<div class="col-2"><h6>Elegir</h6></div>
+					      	</div>
+					        <div class="row" th:each="disco:${listadoDiscos}">
+					        	<div class="col-2" ><img class="img-fluid" th:src="${disco.urlimagen}"></img></div><div class="col-2"><h6 th:text="${disco.modelo}"></h6></div>
+					        	<div class="col-2"><h6 th:text="${disco.precio}"></h6></div>
+					        	<div class="col-2">
+					        		<form th:action="'/arma-tu-pc/detalles/'+${disco.id}"><button type="submit" class="btn btn-primary">Detalles</button></form>
+					        	</div>
+					        	<div class="col-2">
+					        		<form action="/arma-tu-pc/modificar-producto">
+					        			<input type="hidden" name="type" value="disco"></input>
+					        			<input type="hidden" name="idProducto" th:value="${disco.id}"></input>
+							        	<button type="submit" class="btn btn-primary">Elegir</button>
+					       			</form>
+					        	</div>
+					        </div>
+					      </div>
+					    </div>
+					  </div>
+					</div>	
+				<!-- Modal Fuente-->
+					<div class="modal fade" id="modalFuente" tabindex="-1" role="dialog" aria-labelledby="modalFuente" aria-hidden="true">
+					  <div class="modal-dialog" role="document">
+					    <div class="modal-content">
+					      <div class="modal-header">
+					        <h5 class="modal-title" id="exampleModalLabel">Elige tu Fuente</h5>
+					        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					          <span aria-hidden="true">&times;</span>
+					        </button>
+					      </div>
+					      <div class="modal-body">
+					      	<div class="row">
+					      		<div class="col-2" ></div>
+					        	<div class="col-2"><h6>Modelo</h6></div>
+					        	<div class="col-2"><h6>Capacidad</h6></div>
+					        	<div class="col-2"><h6>Precio</h6></div>
+					        	<div class="col-2"><h6>Detalles</h6></div>
+					        	<div class="col-2"><h6>Elegir</h6></div>
+					      	</div>
+					        <div class="row" th:each="fuente:${listadoFuentes}">
+					        	<div class="col-2" ><img class="img-fluid" th:src="${fuente.urlimagen}"></img></div><div class="col-2"><h6 th:text="${fuente.modelo}"></h6></div>
+					        	<div class="col-2"><h6 th:text="${fuente.consumo}+'w'"></h6></div>
+					        	<div class="col-2"><h6 th:text="${fuente.precio}"></h6></div>
+					        	<div class="col-2">
+					        		<form th:action="'/arma-tu-pc/detalles/'+${fuente.id}"><button type="submit" class="btn btn-primary">Detalles</button></form>
+					        	</div>
+					        	<div class="col-2">
+					        		<form action="/arma-tu-pc/modificar-producto">
+					        			<input type="hidden" name="type" value="fuente"></input>
+					        			<input type="hidden" name="idProducto" th:value="${fuente.id}"></input>
+							        	<button type="submit" class="btn btn-primary">Elegir</button>
+					       			</form>
+					        	</div>
+					        </div>
+					      </div>
+					    </div>
+					  </div>
+					</div>	
+				<!-- Modal Ram-->
+					<div class="modal fade" id="modalRam1" tabindex="-1" role="dialog" aria-labelledby="modalRam" aria-hidden="true">
+					  <div class="modal-dialog" role="document">
+					    <div class="modal-content">
+					      <div class="modal-header">
+					        <h5 class="modal-title" id="exampleModalLabel">Elige tus Rams</h5>
+					        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					          <span aria-hidden="true">&times;</span>
+					        </button>
+					      </div>
+					      <div class="modal-body">
+					      	<div class="row">
+					      		<div class="col-2" ></div>
+					        	<div class="col-2"><h6>Modelo</h6></div>
+					        	<div class="col-2"><h6>Tamaño</h6></div>
+					        	<div class="col-2"><h6>Precio</h6></div>
+					        	<div class="col-2"><h6>Detalles</h6></div>
+					        	<div class="col-2"><h6>Elegir</h6></div>
+					      	</div>
+					        <div class="row" th:each="ram:${listadoRams}">
+					        	<div class="col-2" ><img class="img-fluid" th:src="${ram.urlimagen}"></img></div><div class="col-2"><h6 th:text="${ram.modelo}"></h6></div>
+					        	<div class="col-2"><h6 th:text="${ram.tamanio}"></h6></div>
+					        	<div class="col-2"><h6 th:text="${ram.precio}"></h6></div>
+					        	<div class="col-2">
+					        		<form th:action="'/arma-tu-pc/detalles/'+${ram.id}"><button type="submit" class="btn btn-primary">Detalles</button></form>
+					        	</div>
+					        	<div class="col-2">
+					        		<form action="/arma-tu-pc/modificar-producto">
+					        			<input type="hidden" name="type" value="ram1"></input>
+					        			<input type="hidden" name="idProducto" th:value="${ram.id}"></input>
+							        	<button type="submit" class="btn btn-primary">Elegir</button>
+					       			</form>
+					        	</div>
+					        </div>
+					      </div>
+					    </div>
+					  </div>
+					</div>	
+					<div class="modal fade" id="modalRam2" tabindex="-1" role="dialog" aria-labelledby="modalRam" aria-hidden="true">
+					  <div class="modal-dialog" role="document">
+					    <div class="modal-content">
+					      <div class="modal-header">
+					        <h5 class="modal-title" id="exampleModalLabel">Elige tus Rams</h5>
+					        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					          <span aria-hidden="true">&times;</span>
+					        </button>
+					      </div>
+					      <div class="modal-body">
+					      	<div class="row">
+					      		<div class="col-2" ></div>
+					        	<div class="col-2"><h6>Modelo</h6></div>
+					        	<div class="col-2"><h6>Tamaño</h6></div>
+					        	<div class="col-2"><h6>Precio</h6></div>
+					        	<div class="col-2"><h6>Detalles</h6></div>
+					        	<div class="col-2"><h6>Elegir</h6></div>
+					      	</div>
+					        <div class="row" th:each="ram:${listadoRams}">
+					        	<div class="col-2" ><img class="img-fluid" th:src="${ram.urlimagen}"></img></div><div class="col-2"><h6 th:text="${ram.modelo}"></h6></div>
+					        	<div class="col-2"><h6 th:text="${ram.tamanio}"></h6></div>
+					        	<div class="col-2"><h6 th:text="${ram.precio}"></h6></div>
+					        	<div class="col-2">
+					        		<form th:action="'/arma-tu-pc/detalles/'+${ram.id}"><button type="submit" class="btn btn-primary">Detalles</button></form>
+					        	</div>
+					        	<div class="col-2">
+					        		<form action="/arma-tu-pc/modificar-producto">
+					        			<input type="hidden" name="type" value="ram2"></input>
+					        			<input type="hidden" name="idProducto" th:value="${ram.id}"></input>
+							        	<button type="submit" class="btn btn-primary">Elegir</button>
+					       			</form>
+					        	</div>
+					        </div>
+					      </div>
+					    </div>
+					  </div>
+					</div>
+					<div class="modal fade" id="modalRam3" tabindex="-1" role="dialog" aria-labelledby="modalRam" aria-hidden="true">
+					  <div class="modal-dialog" role="document">
+					    <div class="modal-content">
+					      <div class="modal-header">
+					        <h5 class="modal-title" id="exampleModalLabel">Elige tus Rams</h5>
+					        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					          <span aria-hidden="true">&times;</span>
+					        </button>
+					      </div>
+					      <div class="modal-body">
+					      	<div class="row">
+					      		<div class="col-2" ></div>
+					        	<div class="col-2"><h6>Modelo</h6></div>
+					        	<div class="col-2"><h6>Tamaño</h6></div>
+					        	<div class="col-2"><h6>Precio</h6></div>
+					        	<div class="col-2"><h6>Detalles</h6></div>
+					        	<div class="col-2"><h6>Elegir</h6></div>
+					      	</div>
+					        <div class="row" th:each="ram:${listadoRams}">
+					        	<div class="col-2" ><img class="img-fluid" th:src="${ram.urlimagen}"></img></div><div class="col-2"><h6 th:text="${ram.modelo}"></h6></div>
+					        	<div class="col-2"><h6 th:text="${ram.tamanio}"></h6></div>
+					        	<div class="col-2"><h6 th:text="${ram.precio}"></h6></div>
+					        	<div class="col-2">
+					        		<form th:action="'/arma-tu-pc/detalles/'+${ram.id}"><button type="submit" class="btn btn-primary">Detalles</button></form>
+					        	</div>
+					        	<div class="col-2">
+					        		<form action="/arma-tu-pc/modificar-producto">
+					        			<input type="hidden" name="type" value="ram3"></input>
+					        			<input type="hidden" name="idProducto" th:value="${ram.id}"></input>
+							        	<button type="submit" class="btn btn-primary">Elegir</button>
+					       			</form>
+					        	</div>
+					        </div>
+					      </div>
+					    </div>
+					  </div>
+					</div>
+					<div class="modal fade" id="modalRam4" tabindex="-1" role="dialog" aria-labelledby="modalRam" aria-hidden="true">
+					  <div class="modal-dialog" role="document">
+					    <div class="modal-content">
+					      <div class="modal-header">
+					        <h5 class="modal-title" id="exampleModalLabel">Elige tus Rams</h5>
+					        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					          <span aria-hidden="true">&times;</span>
+					        </button>
+					      </div>
+					      <div class="modal-body">
+					      	<div class="row">
+					      		<div class="col-2" ></div>
+					        	<div class="col-2"><h6>Modelo</h6></div>
+					        	<div class="col-2"><h6>Tamaño</h6></div>
+					        	<div class="col-2"><h6>Precio</h6></div>
+					        	<div class="col-2"><h6>Detalles</h6></div>
+					        	<div class="col-2"><h6>Elegir</h6></div>
+					      	</div>
+					        <div class="row" th:each="ram:${listadoRams}">
+					        	<div class="col-2" ><img class="img-fluid" th:src="${ram.urlimagen}"></img></div><div class="col-2"><h6 th:text="${ram.modelo}"></h6></div>
+					        	<div class="col-2"><h6 th:text="${ram.tamanio}"></h6></div>
+					        	<div class="col-2"><h6 th:text="${ram.precio}"></h6></div>
+					        	<div class="col-2">
+					        		<form th:action="'/arma-tu-pc/detalles/'+${ram.id}"><button type="submit" class="btn btn-primary">Detalles</button></form>
+					        	</div>
+					        	<div class="col-2">
+					        		<form action="/arma-tu-pc/modificar-producto">
+					        			<input type="hidden" name="type" value="ram4"></input>
+					        			<input type="hidden" name="idProducto" th:value="${ram.id}"></input>
+							        	<button type="submit" class="btn btn-primary">Elegir</button>
+					       			</form>
+					        	</div>
+					        </div>
+					      </div>
+					    </div>
+					  </div>
+					</div>
+				</div>
+			</div>
+			<div class="col-4">
+				rendimiento
+			</div>
+		</div>
+		<div th:replace="fragments/header :: footer"></div>
+	</div>
+</body>
+
+</html>
