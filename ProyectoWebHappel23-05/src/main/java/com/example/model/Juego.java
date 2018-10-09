@@ -19,6 +19,11 @@ public class Juego {
 	private int precio;
 	private String urlimagen;
 	
+	public Juego() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
 	public Juego(int id, String nombre, String desarrollador, String fecha, String plataforma, String genero,
 			int rencpu1, int rencpu2, int rengpu1, int rengpu2, int vram1, int vram2, int ram1, int ram2, int precio,
 			String urlimagen) {

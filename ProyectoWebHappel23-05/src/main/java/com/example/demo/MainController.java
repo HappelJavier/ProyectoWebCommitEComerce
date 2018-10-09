@@ -18,6 +18,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -30,12 +31,86 @@ import com.example.model.Producto;
 import com.example.model.Usuario;
 
 @Controller
-public class ProductosController {
+public class MainController {
 	
 	
 	@Autowired
 	private Environment env;
 	
+	@GetMapping("/")
+	public String index(HttpSession session, Model template) throws SQLException {
+		return "index";
+	}
+	
+	@GetMapping("/proyectos")
+	public String proyectos(HttpSession session, Model template) throws SQLException {
+		return "proyectos";
+	}
+	
+	@GetMapping("/arma-tu-pc")
+	public String ArmaTuPc(Model template) throws SQLException {
+		return "arma-tu-pc";
+	}
+
+	@GetMapping("/home")
+	public String home(HttpSession session, Model template) throws SQLException {
+		Connection connection;
+		connection = DriverManager.getConnection(env.getProperty("spring.datasource.url"), env.getProperty("spring.datasource.username"),
+				env.getProperty("spring.datasource.password"));
+		
+		Usuario logeado = Usuarios.usuarioLogeado(session, connection);
+		
+		Productos.checkearHeader(logeado, template);
+		
+		int offset = 0;
+		
+		Productos.crearListadoOfertas(session, template, connection, offset);
+		
+		connection.close();
+		
+		return "home";
+	}
+	
+	@GetMapping("/administrar")
+	public String administrar(HttpSession session,Model template) throws SQLException {
+
+		Connection connection;
+		connection = DriverManager.getConnection(env.getProperty("spring.datasource.url"), env.getProperty("spring.datasource.username"),
+				env.getProperty("spring.datasource.password"));
+		Usuario logeado = Usuarios.usuarioLogeado(session, connection);
+		
+		if (logeado == null || logeado.isAdministrador() == false) {
+			return "redirect:/login";
+		}
+		
+		Productos.checkearHeader(logeado, template);
+		
+		Productos.cargarListadoComponentes(connection, template);
+		
+		Productos.cargarListadoJuegos(connection, template);
+		
+		Usuarios.cargarListadoUsuarios(connection, template);
+				
+		connection.close();
+		
+		return "administrar";
+	}
+
+	@GetMapping("/contacto")
+	public String contactanos(HttpSession session, Model template) throws SQLException {
+		Connection connection;
+		connection = DriverManager.getConnection(env.getProperty("spring.datasource.url"), env.getProperty("spring.datasource.username"),
+				env.getProperty("spring.datasource.password"));
+		
+		Usuario logeado = Usuarios.usuarioLogeado(session, connection);
+		
+		Productos.checkearHeader(logeado, template);
+		
+		connection.close();
+		
+		return "contactanos";
+	}
+
 	@GetMapping("/insertar-producto-prueba")
 	public String insertProductoPrueba() throws SQLException {
 		Connection connection;
@@ -60,300 +135,18 @@ public class ProductosController {
 
 		return "redirect:/administrar";
 	}
-	
-	@GetMapping("/")
-	public String index(HttpSession session, Model template) throws SQLException {
-		return "index";
-	}
-	
-	@GetMapping("/proyectos")
-	public String proyectos(HttpSession session, Model template) throws SQLException {
-		return "proyectos";
-	}
-	
-	@GetMapping("/arma-tu-pc")
-	public String ArmaTuPc(Model template) throws SQLException {
-		return "arma-tu-pc";
-	}
-
-	@GetMapping("/arma-tu-pc/modificar-producto")
-	public String ModificarProducto(Model template,@RequestParam String type, @RequestParam int idProducto) throws SQLException {
-		Connection connection;
-		connection = DriverManager.getConnection(env.getProperty("spring.datasource.url"), env.getProperty("spring.datasource.username"),
-				env.getProperty("spring.datasource.password"));
-		PreparedStatement consulta;
-		
-		if(type.equals("micro")) {
-			consulta = connection.prepareStatement("UPDATE pc SET micro = ? WHERE id=2 ;");
-		} else if (type.equals("gpu")){
-			consulta = connection.prepareStatement("UPDATE pc SET gpu = ? WHERE id=2 ;");
-		} else if (type.equals("mother")){
-			consulta = connection.prepareStatement("UPDATE pc SET mother = ? WHERE id=2 ;");
-		} else if (type.equals("disco")){
-			consulta = connection.prepareStatement("UPDATE pc SET disco = ? WHERE id=2 ;");
-		} else if (type.equals("ram1")){
-			consulta = connection.prepareStatement("UPDATE pc SET ram1 = ? WHERE id=2 ;");
-		} else if (type.equals("ram2")){
-			consulta = connection.prepareStatement("UPDATE pc SET ram2 = ? WHERE id=2 ;");
-		} else if (type.equals("ram3")){
-			consulta = connection.prepareStatement("UPDATE pc SET ram3 = ? WHERE id=2 ;");
-		} else if (type.equals("ram4")){
-			consulta = connection.prepareStatement("UPDATE pc SET ram4 = ? WHERE id=2 ;");
-		} else {
-			consulta = connection.prepareStatement("UPDATE pc SET fuente = ? WHERE id=2 ;");
-		}
-		
-		consulta.setInt(1, idProducto);
-		consulta.executeUpdate();
-		connection.close();
-		
-		return "redirect:/arma-tu-pc/armar";
-	}
-	
-	@GetMapping("/arma-tu-pc/eliminar-producto")
-	public String eliminarProducto(Model template, @RequestParam String type ) throws SQLException {
-		Connection connection;
-		connection = DriverManager.getConnection(env.getProperty("spring.datasource.url"), env.getProperty("spring.datasource.username"),
-				env.getProperty("spring.datasource.password"));
-		PreparedStatement consulta;
-		if(type.equals("micro")) {
-			consulta = connection.prepareStatement("UPDATE pc SET micro = null WHERE id=2 ;");
-		} else if (type.equals("gpu")){
-			consulta = connection.prepareStatement("UPDATE pc SET gpu = null WHERE id=2 ;");
-		} else if (type.equals("mother")){
-			consulta = connection.prepareStatement("UPDATE pc SET mother = null WHERE id=2 ;");
-		} else if (type.equals("disco")){
-			consulta = connection.prepareStatement("UPDATE pc SET disco = null WHERE id=2 ;");
-		} else if (type.equals("ram1")){
-			consulta = connection.prepareStatement("UPDATE pc SET ram1 = null WHERE id=2 ;");
-		} else if (type.equals("ram2")){
-			consulta = connection.prepareStatement("UPDATE pc SET ram2 = null WHERE id=2 ;");
-		} else if (type.equals("ram3")){
-			consulta = connection.prepareStatement("UPDATE pc SET ram3 = null WHERE id=2 ;");
-		} else if (type.equals("ram4")){
-			consulta = connection.prepareStatement("UPDATE pc SET ram4 = null WHERE id=2 ;");
-		} else {
-			consulta = connection.prepareStatement("UPDATE pc SET fuente = null WHERE id=2 ;");
-		}
-		consulta.executeUpdate();
-		connection.close();
-		return "redirect:/arma-tu-pc/armar";
-	}
-
-	
-	@GetMapping("/arma-tu-pc/armar")
-	public String armar(Model template) throws SQLException {
-		Connection connection;
-		connection = DriverManager.getConnection(env.getProperty("spring.datasource.url"), env.getProperty("spring.datasource.username"),
-				env.getProperty("spring.datasource.password"));
-		
-		
-		SQLHelper.cargarProductos(connection, template);
-		
-		Computadora2 pc = SQLHelper.cargarPc(connection, template);
-		
-		boolean haveRam;
-		
-		if(pc.getRam1()==0) {
-			haveRam = false;
-		} else {
-			haveRam = true;
-		}
-		
-		if(pc.getMicro()==0 && haveRam == false) {
-			Cargar.mothers(connection, template);	
-		}
-		if(pc.getMicro()!=0 && haveRam == false) {
-			Producto micro =Cargar.producto(connection, template, pc.getMicro());
-			Cargar.motherSocket(connection, template, micro.getSocketcpu());
-		}
-		if(haveRam == true && pc.getMicro()==0) {
-			Producto ram =Cargar.producto(connection, template, pc.getRam1());
-			Cargar.motherRam(connection, template, ram.getTiporam());
-		}
-		if(haveRam == true && pc.getMicro()!=0) {
-			Producto micro =Cargar.producto(connection, template, pc.getMicro());
-			Producto ram =Cargar.producto(connection, template, pc.getRam1());
-			Cargar.motherRamSocket(connection, template, ram.getTiporam(), micro.getSocketcpu());
-		}
-		
-		if(pc.getMother()==0) {
-			Cargar.micros(connection, template);
-			Cargar.rams(connection, template);
-		}
-		if(pc.getMother()!=0) {
-			Producto mother =Cargar.producto(connection, template, pc.getMother());
-			Cargar.microSocket(connection, template, mother.getSocketcpu());
-			Cargar.ramSocket(connection, template, mother.getTiporam());
-		}
-		Cargar.discos(connection, template);
-		Cargar.fuentes(connection, template);
-		Cargar.gpu(connection, template);
-		
-		connection.close();
-		return "armar-pc";
-	}
-
-	@GetMapping("/arma-tu-pc/crear-pc")
-	public String crearPC(Model template) throws SQLException {
-		Connection connection;
-		connection = DriverManager.getConnection(env.getProperty("spring.datasource.url"), env.getProperty("spring.datasource.username"),
-				env.getProperty("spring.datasource.password"));
-		SQLHelper.nuevaPc(connection);
-		
-		connection.close();
-		return "arma-tu-pc";
-	}
-	
-	
-	@GetMapping("/home")
-	public String home(HttpSession session, Model template) throws SQLException {
-		Connection connection;
-		connection = DriverManager.getConnection(env.getProperty("spring.datasource.url"), env.getProperty("spring.datasource.username"),
-				env.getProperty("spring.datasource.password"));
-		
-		Usuario logeado = UsuarioHelper.usuarioLogeado(session, connection);
-		
-
-		ProductosHelper.checkearHeader(logeado, template);
-		
-		int offset = 0;
-		
-		ProductosHelper.crearListadoOfertas(session, template, connection, offset);
-		
-		connection.close();
-		
-		
-		return "home";
-	}
-	
-	@GetMapping("/contacto")
-	public String contactanos(HttpSession session, Model template) throws SQLException {
-		Connection connection;
-		connection = DriverManager.getConnection(env.getProperty("spring.datasource.url"), env.getProperty("spring.datasource.username"),
-				env.getProperty("spring.datasource.password"));
-		
-		Usuario logeado = UsuarioHelper.usuarioLogeado(session, connection);
-		
-
-		ProductosHelper.checkearHeader(logeado, template);
-		
-		
-		
-		connection.close();
-		
-		
-		return "contactanos";
-	}
 		
 	
-	@GetMapping("/administrar")
-	public String administrar(HttpSession session,Model template) throws SQLException {
-
-		Connection connection;
-		connection = DriverManager.getConnection(env.getProperty("spring.datasource.url"), env.getProperty("spring.datasource.username"),
-				env.getProperty("spring.datasource.password"));
-		Usuario logeado = UsuarioHelper.usuarioLogeado(session, connection);
-		
-		if (logeado == null || logeado.isAdministrador() == false) {
-			return "redirect:/login";
-		}
-		
-		ProductosHelper.checkearHeader(logeado, template);
-		
-		PreparedStatement consultaProductos = connection.prepareStatement("SELECT * FROM productos ORDER BY id ASC;");
-
-		ResultSet resultadoProductos = consultaProductos.executeQuery();
-
-		ArrayList<Producto> listadoProductos = new ArrayList<Producto>();
-
-		while ( resultadoProductos.next() ) {
-			int idProducto = resultadoProductos.getInt("id");
-			String tipo = resultadoProductos.getString("tipo");
-			String marca = resultadoProductos.getString("marca");
-			String modelo = resultadoProductos.getString("modelo");
-			String socketcpu = resultadoProductos.getString("socketcpu");
-			String tiporam = resultadoProductos.getString("tiporam");
-			String pci = resultadoProductos.getString("pci");
-			String sata = resultadoProductos.getString("sata");
-			String velocidad = resultadoProductos.getString("velocidad");
-			String tamanio = resultadoProductos.getString("tamanio");
-			String rendimiento = resultadoProductos.getString("rendimiento");
-			int consumo = resultadoProductos.getInt("consumo");
-			int precio = resultadoProductos.getInt("precio");
-			String urlimagenProducto = resultadoProductos.getString("urlimagen");
-			Producto x = new Producto (idProducto, tipo, marca, modelo, socketcpu, tiporam, pci, sata, velocidad, tamanio, rendimiento, consumo, precio, urlimagenProducto);
-			listadoProductos.add(x);	
-		}
-
-		template.addAttribute("listadoProductos", listadoProductos);
-		
-		
-		PreparedStatement consultaJuegos = connection.prepareStatement("SELECT * FROM juegos ORDER BY id ASC;");
-
-		ResultSet resultadoJuegos = consultaJuegos.executeQuery();
-
-		ArrayList<Juego> listadoJuegos= new ArrayList<Juego>();
-
-		while ( resultadoJuegos.next() ) {
-			int idJuego = resultadoJuegos.getInt("id");
-			String nombreJuego = resultadoJuegos.getString("nombre");
-			String desarrollador = resultadoJuegos.getString("desarrollador");
-			String fecha = resultadoJuegos.getString("fecha");
-			String plataforma = resultadoJuegos.getString("plataforma");
-			String genero = resultadoJuegos.getString("genero");
-			int rencpu1 = resultadoJuegos.getInt("rencpu1");
-			int rencpu2 = resultadoJuegos.getInt("rencpu2");
-			int rengpu1 = resultadoJuegos.getInt("rengpu1");
-			int rengpu2 = resultadoJuegos.getInt("rengpu2");
-			int vram1 = resultadoJuegos.getInt("vram1");
-			int vram2 = resultadoJuegos.getInt("vram2");
-			int ram1 = resultadoJuegos.getInt("ram1");
-			int ram2 = resultadoJuegos.getInt("ram2");
-			int precio = resultadoJuegos.getInt("precio");
-			String urlimagenJuego = resultadoJuegos.getString("urlimagen");
-			
-			Juego z = new Juego (idJuego, nombreJuego, desarrollador, fecha, plataforma, genero, rencpu1, rencpu2, rengpu1, rengpu2, vram1, vram2, ram1, ram2, precio, urlimagenJuego);
-			listadoJuegos.add(z);	
-		}
-
-		template.addAttribute("listadoJuegos", listadoJuegos);
-		
-		
-		PreparedStatement consultaUsuarios = connection.prepareStatement("SELECT * FROM usuarios ORDER BY id ASC;");
-
-		ResultSet resultadoUsuarios = consultaUsuarios.executeQuery();
-
-		ArrayList<Usuario> listadoUsuarios = new ArrayList<Usuario>();
-
-		while ( resultadoUsuarios.next() ) {
-			int idUsuario = resultadoUsuarios.getInt("id");
-			String nombreUsuario = resultadoUsuarios.getString("nombre");
-			String contrasenia = resultadoUsuarios.getString("contrasenia");
-			String nick = resultadoUsuarios.getString("nick");
-			String mail = resultadoUsuarios.getString("mail");
-			String idpc = resultadoUsuarios.getString("idpc");
-			String imagen_de_perfil = resultadoUsuarios.getString("imagen_de_perfil");
-			Boolean administrador = resultadoUsuarios.getBoolean("administrador");
-			Usuario y = new Usuario (idUsuario, nombreUsuario, contrasenia, nick, mail, idpc, imagen_de_perfil, administrador);
-			listadoUsuarios.add(y);	
-		}
-
-		template.addAttribute("listadoUsuarios", listadoUsuarios);
-		
-		connection.close();
-		
-		return "administrar";
-	}
+	
 	
 	@GetMapping("/registro-juego")
 	public String registroJuego(HttpSession session,Model template) throws SQLException {
 		Connection connection;
 		connection = DriverManager.getConnection(env.getProperty("spring.datasource.url"), env.getProperty("spring.datasource.username"),
 				env.getProperty("spring.datasource.password"));
-		Usuario logeado = UsuarioHelper.usuarioLogeado(session, connection);
+		Usuario logeado = Usuarios.usuarioLogeado(session, connection);
 		
-		ProductosHelper.checkearHeader(logeado, template);
+		Productos.checkearHeader(logeado, template);
 		
 		return "registro-juego";
 	}
@@ -363,9 +156,9 @@ public class ProductosController {
 		Connection connection;
 		connection = DriverManager.getConnection(env.getProperty("spring.datasource.url"), env.getProperty("spring.datasource.username"),
 				env.getProperty("spring.datasource.password"));
-		Usuario logeado = UsuarioHelper.usuarioLogeado(session, connection);
+		Usuario logeado = Usuarios.usuarioLogeado(session, connection);
 		
-		ProductosHelper.checkearHeader(logeado, template);
+		Productos.checkearHeader(logeado, template);
 		
 		connection.close();
 		
@@ -377,9 +170,9 @@ public class ProductosController {
 		Connection connection;
 		connection = DriverManager.getConnection(env.getProperty("spring.datasource.url"), env.getProperty("spring.datasource.username"),
 				env.getProperty("spring.datasource.password"));
-		Usuario logeado = UsuarioHelper.usuarioLogeado(session, connection);
+		Usuario logeado = Usuarios.usuarioLogeado(session, connection);
 		
-		ProductosHelper.checkearHeader(logeado, template);
+		Productos.checkearHeader(logeado, template);
 		
 		connection.close();
 		
@@ -392,30 +185,11 @@ public class ProductosController {
 		connection = DriverManager.getConnection(env.getProperty("spring.datasource.url"), env.getProperty("spring.datasource.username"),
 				env.getProperty("spring.datasource.password"));
 
+		Productos.insertarJuego(connection, nombre, desarrollador, fecha, plataforma, genero, rencpu1, rencpu2, rengpu1, rengpu2, vram1, vram2, ram1, ram2, precio, urlimagen);
 		
-		PreparedStatement consulta = connection.prepareStatement(
-				"INSERT INTO juegos(nombre, desarrollador, fecha, plataforma, genero, rencpu1, rencpu2, rengpu1, rengpu2, vram1, vram2, ram1, ram2, precio, urlimagen) "
-				+ "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);");
-		consulta.setString(1, nombre);
-		consulta.setString(2, desarrollador);
-		consulta.setString(3, fecha);
-		consulta.setString(4, plataforma);
-		consulta.setString(5, genero);
-		consulta.setInt(6, rencpu1);
-		consulta.setInt(7, rencpu2);
-		consulta.setInt(8, rengpu1);
-		consulta.setInt(9, rengpu2);
-		consulta.setInt(10, vram1);
-		consulta.setInt(11, vram2);
-		consulta.setInt(12, ram1);
-		consulta.setInt(13, ram2);
-		consulta.setInt(14, precio);
-		consulta.setString(15, urlimagen);
-
-		consulta.executeUpdate();
 		connection.close();
 
-		return "redirect:/registro-producto";
+		return "redirect:/registro-Juego";
 	}
 	
 	@GetMapping("/insertar-producto")
@@ -427,23 +201,7 @@ public class ProductosController {
 		connection = DriverManager.getConnection(env.getProperty("spring.datasource.url"), env.getProperty("spring.datasource.username"),
 				env.getProperty("spring.datasource.password"));
 
-		PreparedStatement consulta = connection.prepareStatement(
-				"INSERT INTO productos(tipo, marca, modelo, socketcpu, tiporam, pci, sata, velocidad, tamanio, rendimiento, consumo, precio, urlimagen) VALUES( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?); ");
-		consulta.setString(1, tipo);
-		consulta.setString(2, marca);
-		consulta.setString(3, modelo);
-		consulta.setString(4, socketcpu);
-		consulta.setString(5, tiporam);
-		consulta.setString(6, pci);
-		consulta.setString(7, sata);
-		consulta.setString(8, velocidad);
-		consulta.setString(9, tamanio);
-		consulta.setString(10, rendimiento);
-		consulta.setString(11, consumo);
-		consulta.setInt(12, precio);
-		consulta.setString(13, urlimagen);
-
-		consulta.executeUpdate();
+		Productos.insertarComponente(connection, tipo, marca, modelo, socketcpu, tiporam, pci, sata, velocidad, tamanio, rendimiento, consumo, precio, urlimagen);
 
 		connection.close();
 
@@ -454,20 +212,11 @@ public class ProductosController {
 	public String insertUsuario(@RequestParam String nombre, @RequestParam String apellido, @RequestParam String nick,
 			@RequestParam String contrasenia, @RequestParam String mail, @RequestParam (value = "admin", required = false) boolean admin) throws SQLException {
 		
-		
 		Connection connection;
 		connection = DriverManager.getConnection(env.getProperty("spring.datasource.url"), env.getProperty("spring.datasource.username"),
 				env.getProperty("spring.datasource.password"));
 		
-		PreparedStatement consulta = connection.prepareStatement(
-				"INSERT INTO usuarios(nombre, apellido, nick, contrasenia, mail, administrador) VALUES( ?, ?, ?, ?, ?, ?); ");
-		consulta.setString(1, nombre);
-		consulta.setString(2, apellido);
-		consulta.setString(3, nick);
-		consulta.setString(4, contrasenia);
-		consulta.setString(5, mail);
-		consulta.setBoolean(6, admin);
-		consulta.executeUpdate();
+		Usuarios.insertarUsuarios(connection, nombre, apellido, nick, contrasenia, mail, admin);
 
 		connection.close();
 
@@ -481,46 +230,11 @@ public class ProductosController {
 		connection = DriverManager.getConnection(env.getProperty("spring.datasource.url"), env.getProperty("spring.datasource.username"),
 				env.getProperty("spring.datasource.password"));
 		
-		Usuario logeado = UsuarioHelper.usuarioLogeado(session, connection);
+		Usuario logeado = Usuarios.usuarioLogeado(session, connection);
 		
-		ProductosHelper.checkearHeader(logeado, template);
+		Productos.checkearHeader(logeado, template);
 		
-		PreparedStatement consulta = connection.prepareStatement("SELECT * FROM productos WHERE id = ?;");
-		consulta.setInt(1, id);
-		
-		ResultSet resultado = consulta.executeQuery();
-
-		while ( resultado.next() ) {
-			String tipo = resultado.getString("tipo");
-			String marca = resultado.getString("marca");
-			String modelo = resultado.getString("modelo");
-			String socketcpu = resultado.getString("socketcpu");
-			String tiporam = resultado.getString("tiporam");
-			String pci = resultado.getString("pci");
-			String sata = resultado.getString("sata");
-			String velocidad = resultado.getString("velocidad");
-			String tamanio = resultado.getString("tamanio");
-			String rendimiento = resultado.getString("rendimiento");
-			String consumo = resultado.getString("consumo");
-			int precio = resultado.getInt("precio");
-			String urlimagen = resultado.getString("urlimagen");
-			boolean oferta = resultado.getBoolean("enoferta");
-			template.addAttribute("id", id);
-			template.addAttribute("tipo", tipo);
-			template.addAttribute("marca", marca);
-			template.addAttribute("modelo", modelo);
-			template.addAttribute("socketcpu", socketcpu);
-			template.addAttribute("tiporam", tiporam);
-			template.addAttribute("pci", pci);
-			template.addAttribute("sata", sata);
-			template.addAttribute("velocidad", velocidad);
-			template.addAttribute("tamanio", tamanio);
-			template.addAttribute("rendimiento", rendimiento);
-			template.addAttribute("consumo", consumo);
-			template.addAttribute("precio", precio);
-			template.addAttribute("urlimagen", urlimagen);
-			template.addAttribute("oferta", oferta);
-		}
+		Productos.cargarComponente(connection, id, template);
 
 		connection.close();
 		return "formModificarProducto";
@@ -533,48 +247,11 @@ public class ProductosController {
 		connection = DriverManager.getConnection(env.getProperty("spring.datasource.url"), env.getProperty("spring.datasource.username"),
 				env.getProperty("spring.datasource.password"));
 		
-		Usuario logeado = UsuarioHelper.usuarioLogeado(session, connection);
+		Usuario logeado = Usuarios.usuarioLogeado(session, connection);
 		
-		ProductosHelper.checkearHeader(logeado, template);
+		Productos.checkearHeader(logeado, template);
 		
-		PreparedStatement consulta = connection.prepareStatement("SELECT * FROM juegos WHERE id = ?;");
-		consulta.setInt(1, id);
-		
-		ResultSet resultado = consulta.executeQuery();
-
-		while ( resultado.next() ) {
-			String nombre = resultado.getString("nombre");
-			String desarrollador = resultado.getString("desarrollador");
-			String fecha = resultado.getString("fecha");
-			String plataforma = resultado.getString("plataforma");
-			String genero = resultado.getString("genero");
-			int rencpu1 = resultado.getInt("rencpu1");
-			int rencpu2 = resultado.getInt("rencpu2");
-			int rengpu1 = resultado.getInt("rengpu1");
-			int rengpu2 = resultado.getInt("rengpu2");
-			int vram1 = resultado.getInt("vram1");
-			int vram2 = resultado.getInt("vram2");
-			int ram1 = resultado.getInt("ram1");
-			int ram2 = resultado.getInt("ram2");
-			int precio = resultado.getInt("precio");
-			String urlimagenJuego = resultado.getString("urlimagen");
-			template.addAttribute("id", id);
-			template.addAttribute("nombre", nombre);
-			template.addAttribute("desarrollador", desarrollador);
-			template.addAttribute("fecha", fecha);
-			template.addAttribute("plataforma", plataforma);
-			template.addAttribute("genero", genero);
-			template.addAttribute("rencpu1", rencpu1);
-			template.addAttribute("rencpu2", rencpu2);
-			template.addAttribute("rengpu1", rengpu1);
-			template.addAttribute("rengpu2", rengpu2);
-			template.addAttribute("vram1", vram1);
-			template.addAttribute("vram2", vram2);
-			template.addAttribute("ram1", ram1);
-			template.addAttribute("ram2", ram2);
-			template.addAttribute("precio", precio);
-			template.addAttribute("urlimagen", urlimagenJuego);
-		}
+		Productos.cargarJuego(connection, id, template);
 
 		connection.close();
 		return "formModificarJuego";
@@ -587,34 +264,11 @@ public class ProductosController {
 		connection = DriverManager.getConnection(env.getProperty("spring.datasource.url"), env.getProperty("spring.datasource.username"),
 				env.getProperty("spring.datasource.password"));
 		
-		Usuario logeado = UsuarioHelper.usuarioLogeado(session, connection);
+		Usuario logeado = Usuarios.usuarioLogeado(session, connection);
 		
-		ProductosHelper.checkearHeader(logeado, template);
+		Productos.checkearHeader(logeado, template);
 		
-		PreparedStatement consulta = connection.prepareStatement("SELECT * FROM usuarios WHERE id = ?;");
-		consulta.setInt(1, id);
-		
-		ResultSet resultado = consulta.executeQuery();
-
-		while ( resultado.next() ) {
-			String nombre = resultado.getString("nombre");
-			String apellido = resultado.getString("apellido");
-			String nick = resultado.getString("nick");
-			String contrasenia = resultado.getString("contrasenia");
-			String mail = resultado.getString("mail");
-			String idpc = resultado.getString("idpc");
-			String imagen_de_perfil = resultado.getString("imagen_de_perfil");
-			Boolean administrador = resultado.getBoolean("administrador");
-			template.addAttribute("id", id);
-			template.addAttribute("nombre", nombre);
-			template.addAttribute("apellido", apellido);
-			template.addAttribute("nick", nick);
-			template.addAttribute("contrasenia", contrasenia);
-			template.addAttribute("mail", mail);
-			template.addAttribute("idpc", idpc);
-			template.addAttribute("imagen_de_perfil", imagen_de_perfil);
-			template.addAttribute("administrador", administrador);
-			}
+		Usuarios.cargarUsuario(connection, id, template);
 
 		connection.close();
 		return "formModificarUsuario";
@@ -765,7 +419,7 @@ public class ProductosController {
 		connection = DriverManager.getConnection(env.getProperty("spring.datasource.url"), env.getProperty("spring.datasource.username"),
 				env.getProperty("spring.datasource.password"));
 		
-		Usuario logeado = UsuarioHelper.usuarioLogeado(session,connection);
+		Usuario logeado = Usuarios.usuarioLogeado(session,connection);
 
 		PreparedStatement consulta = connection.prepareStatement(
 			"UPDATE usuarios SET imagen_de_perfil = ? WHERE id = ?");
@@ -786,9 +440,9 @@ public class ProductosController {
 		connection = DriverManager.getConnection(env.getProperty("spring.datasource.url"), env.getProperty("spring.datasource.username"),
 				env.getProperty("spring.datasource.password"));
 
-		Usuario logeado = UsuarioHelper.usuarioLogeado(session, connection);
+		Usuario logeado = Usuarios.usuarioLogeado(session, connection);
 		
-		ProductosHelper.checkearHeader(logeado, template);
+		Productos.checkearHeader(logeado, template);
 		
 		
 		template.addAttribute("micro", micro);
@@ -1071,9 +725,9 @@ public class ProductosController {
 		connection = DriverManager.getConnection(env.getProperty("spring.datasource.url"), env.getProperty("spring.datasource.username"),
 				env.getProperty("spring.datasource.password"));
 
-		Usuario logeado = UsuarioHelper.usuarioLogeado(session, connection);
+		Usuario logeado = Usuarios.usuarioLogeado(session, connection);
 		
-		ProductosHelper.checkearHeader(logeado, template);
+		Productos.checkearHeader(logeado, template);
 			
 		
 		PreparedStatement consulta = connection.prepareStatement("SELECT * FROM productos ORDER BY precio ASC;");
@@ -1181,9 +835,9 @@ public class ProductosController {
 		connection = DriverManager.getConnection(env.getProperty("spring.datasource.url"), env.getProperty("spring.datasource.username"),
 				env.getProperty("spring.datasource.password"));
 
-		Usuario logeado = UsuarioHelper.usuarioLogeado(session, connection);
+		Usuario logeado = Usuarios.usuarioLogeado(session, connection);
 		
-		ProductosHelper.checkearHeader(logeado, template);
+		Productos.checkearHeader(logeado, template);
 			
 		
 		PreparedStatement consulta = 
@@ -1231,7 +885,7 @@ public class ProductosController {
 		connection = DriverManager.getConnection(env.getProperty("spring.datasource.url"), env.getProperty("spring.datasource.username"),
 				env.getProperty("spring.datasource.password"));
 		
-		Usuario logeado = UsuarioHelper.usuarioLogeado(session,connection);
+		Usuario logeado = Usuarios.usuarioLogeado(session,connection);
 		
 		PreparedStatement consulta = connection.prepareStatement("DELETE FROM pcusuarios WHERE id = ?;");
 
@@ -1316,7 +970,7 @@ public class ProductosController {
 		connection = DriverManager.getConnection(env.getProperty("spring.datasource.url"), env.getProperty("spring.datasource.username"),
 				env.getProperty("spring.datasource.password"));
 		
-		if (UsuarioHelper.usuarioLogeado(session, connection)== null) {
+		if (Usuarios.usuarioLogeado(session, connection)== null) {
 			ArrayList<String> respuesta = new ArrayList<String>();
 			respuesta.add("false");
 			return respuesta;
@@ -1348,11 +1002,11 @@ public class ProductosController {
 			connection = DriverManager.getConnection(env.getProperty("spring.datasource.url"), env.getProperty("spring.datasource.username"),
 					env.getProperty("spring.datasource.password"));
 	
-			Usuario logeado = UsuarioHelper.usuarioLogeado(session, connection);
+			Usuario logeado = Usuarios.usuarioLogeado(session, connection);
 
-			ProductosHelper.checkearHeader(logeado, template);
+			Productos.checkearHeader(logeado, template);
 			
-			if (UsuarioHelper.usuarioLogeado(session, connection)== null) {
+			if (Usuarios.usuarioLogeado(session, connection)== null) {
 				ArrayList<String> respuesta = new ArrayList<String>();
 				respuesta.add("false");
 				return respuesta;
@@ -1392,11 +1046,11 @@ public class ProductosController {
 			connection = DriverManager.getConnection(env.getProperty("spring.datasource.url"), env.getProperty("spring.datasource.username"),
 					env.getProperty("spring.datasource.password"));
 	
-			Usuario logeado = UsuarioHelper.usuarioLogeado(session, connection);
+			Usuario logeado = Usuarios.usuarioLogeado(session, connection);
 
-			ProductosHelper.checkearHeader(logeado, template);
+			Productos.checkearHeader(logeado, template);
 			
-			if (UsuarioHelper.usuarioLogeado(session, connection)== null) {
+			if (Usuarios.usuarioLogeado(session, connection)== null) {
 				ArrayList<String> respuesta = new ArrayList<String>();
 				respuesta.add("false");
 				return respuesta;
@@ -1437,11 +1091,11 @@ public class ProductosController {
 		connection = DriverManager.getConnection(env.getProperty("spring.datasource.url"), env.getProperty("spring.datasource.username"),
 				env.getProperty("spring.datasource.password"));
 	
-		Usuario logeado = UsuarioHelper.usuarioLogeado(session, connection);
-		ProductosHelper.checkearHeader(logeado, template);
+		Usuario logeado = Usuarios.usuarioLogeado(session, connection);
+		Productos.checkearHeader(logeado, template);
 		
 		int offset = order * 8;
-		ProductosHelper.crearListadoOrdenado(session, template, connection, offset);
+		Productos.crearListadoOrdenado(session, template, connection, offset);
 		
 		if (order == 0){
 			template.addAttribute("anterior", order);
@@ -1475,7 +1129,7 @@ public class ProductosController {
 		template.addAttribute("listadoPaginas", listadoPaginas);
 		
 		
-		boolean cantidad = ProductosHelper.CheckearCantidad(session, template, connection, offset);
+		boolean cantidad = Productos.CheckearCantidad(session, template, connection, offset);
 		
 		if (cantidad == false){
 			template.addAttribute("siguiente", order);
@@ -1496,12 +1150,12 @@ public class ProductosController {
 		connection = DriverManager.getConnection(env.getProperty("spring.datasource.url"), env.getProperty("spring.datasource.username"),
 				env.getProperty("spring.datasource.password"));
 
-		Usuario logeado = UsuarioHelper.usuarioLogeado(session, connection);
+		Usuario logeado = Usuarios.usuarioLogeado(session, connection);
 				
-		ProductosHelper.checkearHeader(logeado, template);
+		Productos.checkearHeader(logeado, template);
 		int offset = order * 8;
 		String tiposql = "placa de video";
-		ProductosHelper.crearListadoEspecifico(session, template, connection, offset, tiposql);
+		Productos.crearListadoEspecifico(session, template, connection, offset, tiposql);
 		
 		if (order == 0){
 			template.addAttribute("anterior", order);
@@ -1537,7 +1191,7 @@ public class ProductosController {
 		template.addAttribute("listadoPaginas", listadoPaginas);
 	
 		
-		boolean cantidad = ProductosHelper.CheckearCantidadEspecifica(session, template, connection, offset, tiposql);
+		boolean cantidad = Productos.CheckearCantidadEspecifica(session, template, connection, offset, tiposql);
 		
 		if (cantidad == false){
 			template.addAttribute("siguiente", order);
@@ -1558,14 +1212,14 @@ public class ProductosController {
 		connection = DriverManager.getConnection(env.getProperty("spring.datasource.url"), env.getProperty("spring.datasource.username"),
 				env.getProperty("spring.datasource.password"));
 
-		Usuario logeado = UsuarioHelper.usuarioLogeado(session, connection);
+		Usuario logeado = Usuarios.usuarioLogeado(session, connection);
 				
-		ProductosHelper.checkearHeader(logeado, template);
+		Productos.checkearHeader(logeado, template);
 		
 		
 		int offset = order * 8;
 		String tiposql = "memoria";
-		ProductosHelper.crearListadoEspecifico(session, template, connection, offset, tiposql);
+		Productos.crearListadoEspecifico(session, template, connection, offset, tiposql);
 		
 		if (order == 0){
 			template.addAttribute("anterior", order);
@@ -1602,7 +1256,7 @@ public class ProductosController {
 		
 		
 		
-		boolean cantidad = ProductosHelper.CheckearCantidadEspecifica(session, template, connection, offset, tiposql);
+		boolean cantidad = Productos.CheckearCantidadEspecifica(session, template, connection, offset, tiposql);
 		
 		if (cantidad == false){
 			template.addAttribute("siguiente", order);
@@ -1623,14 +1277,14 @@ public class ProductosController {
 		connection = DriverManager.getConnection(env.getProperty("spring.datasource.url"), env.getProperty("spring.datasource.username"),
 				env.getProperty("spring.datasource.password"));
 
-		Usuario logeado = UsuarioHelper.usuarioLogeado(session, connection);
+		Usuario logeado = Usuarios.usuarioLogeado(session, connection);
 				
-		ProductosHelper.checkearHeader(logeado, template);
+		Productos.checkearHeader(logeado, template);
 		
 		
 		int offset = order * 8;
 		String tiposql = "microprocesador";
-		ProductosHelper.crearListadoEspecifico(session, template, connection, offset, tiposql);
+		Productos.crearListadoEspecifico(session, template, connection, offset, tiposql);
 		
 		if (order == 0){
 			template.addAttribute("anterior", order);
@@ -1665,7 +1319,7 @@ public class ProductosController {
 		template.addAttribute("listadoPaginas", listadoPaginas);
 
 		
-		boolean cantidad = ProductosHelper.CheckearCantidadEspecifica(session, template, connection, offset, tiposql);
+		boolean cantidad = Productos.CheckearCantidadEspecifica(session, template, connection, offset, tiposql);
 		
 		if (cantidad == false){
 			template.addAttribute("siguiente", order);
@@ -1686,14 +1340,14 @@ public class ProductosController {
 		connection = DriverManager.getConnection(env.getProperty("spring.datasource.url"), env.getProperty("spring.datasource.username"),
 				env.getProperty("spring.datasource.password"));
 
-		Usuario logeado = UsuarioHelper.usuarioLogeado(session, connection);
+		Usuario logeado = Usuarios.usuarioLogeado(session, connection);
 				
-		ProductosHelper.checkearHeader(logeado, template);
+		Productos.checkearHeader(logeado, template);
 		
 
 		int offset = order * 8;
 		String tiposql = "disco duro";
-		ProductosHelper.crearListadoEspecifico(session, template, connection, offset, tiposql);
+		Productos.crearListadoEspecifico(session, template, connection, offset, tiposql);
 		
 		if (order == 0){
 			template.addAttribute("anterior", order);
@@ -1728,7 +1382,7 @@ public class ProductosController {
 		template.addAttribute("listadoPaginas", listadoPaginas);
 
 		
-		boolean cantidad = ProductosHelper.CheckearCantidadEspecifica(session, template, connection, offset, tiposql);
+		boolean cantidad = Productos.CheckearCantidadEspecifica(session, template, connection, offset, tiposql);
 		
 		if (cantidad == false){
 			template.addAttribute("siguiente", order);
@@ -1749,14 +1403,14 @@ public class ProductosController {
 		connection = DriverManager.getConnection(env.getProperty("spring.datasource.url"), env.getProperty("spring.datasource.username"),
 				env.getProperty("spring.datasource.password"));
 
-		Usuario logeado = UsuarioHelper.usuarioLogeado(session, connection);
+		Usuario logeado = Usuarios.usuarioLogeado(session, connection);
 				
-		ProductosHelper.checkearHeader(logeado, template);
+		Productos.checkearHeader(logeado, template);
 		
 
 		int offset = order * 8;
 		String tiposql = "motherboard";
-		ProductosHelper.crearListadoEspecifico(session, template, connection, offset, tiposql);
+		Productos.crearListadoEspecifico(session, template, connection, offset, tiposql);
 		
 		if (order == 0){
 			template.addAttribute("anterior", order);
@@ -1792,7 +1446,7 @@ public class ProductosController {
 
 		
 		
-		boolean cantidad = ProductosHelper.CheckearCantidadEspecifica(session, template, connection, offset, tiposql);
+		boolean cantidad = Productos.CheckearCantidadEspecifica(session, template, connection, offset, tiposql);
 		
 		if (cantidad == false){
 			template.addAttribute("siguiente", order);
@@ -1807,27 +1461,16 @@ public class ProductosController {
 
 	@GetMapping("/procesar-comentario")
 	public String procesarComentario(HttpSession session, Model template,@RequestParam int id, @RequestParam String comentarionuevo, @RequestParam String fecha) throws SQLException {
-			
-
 			Connection connection;
 			connection = DriverManager.getConnection(env.getProperty("spring.datasource.url"), env.getProperty("spring.datasource.username"),
 					env.getProperty("spring.datasource.password"));
 	
-			Usuario logeado = UsuarioHelper.usuarioLogeado(session, connection);
-					
-			ProductosHelper.checkearHeader(logeado, template);
-			
-			if (UsuarioHelper.usuarioLogeado(session, connection)== null) {
+			Usuario logeado = Usuarios.usuarioLogeado(session, connection);
+			if (logeado== null) {
 				return "redirect:/login";
 			}
-
-			PreparedStatement consulta = connection.prepareStatement("INSERT INTO comentarios(id_producto_padre ,id_comentario_padre ,id_usuario_emisor ,id_usuario_receptor ,fecha ,contenido) VALUES(?, '0', ?, '0', ? , ?)");
-
-			consulta.setInt(1, id);
-			consulta.setInt(2, logeado.getId());
-			consulta.setString(3, fecha);
-			consulta.setString(4, comentarionuevo);
-			consulta.executeUpdate();
+			Productos.checkearHeader(logeado, template);
+			Comentarios.insertarComentario(connection, id, logeado, fecha, comentarionuevo);
 			connection.close();
 		return "redirect:/detalle/"+ id;
 	}
@@ -1840,11 +1483,11 @@ public class ProductosController {
 			connection = DriverManager.getConnection(env.getProperty("spring.datasource.url"), env.getProperty("spring.datasource.username"),
 					env.getProperty("spring.datasource.password"));
 	
-			Usuario logeado = UsuarioHelper.usuarioLogeado(session, connection);
+			Usuario logeado = Usuarios.usuarioLogeado(session, connection);
 					
-			ProductosHelper.checkearHeader(logeado, template);
+			Productos.checkearHeader(logeado, template);
 			
-			if (UsuarioHelper.usuarioLogeado(session, connection)== null) {
+			if (Usuarios.usuarioLogeado(session, connection)== null) {
 				return "redirect:/login";
 			}
 
@@ -1868,14 +1511,14 @@ public class ProductosController {
 		connection = DriverManager.getConnection(env.getProperty("spring.datasource.url"), env.getProperty("spring.datasource.username"),
 				env.getProperty("spring.datasource.password"));
 
-		Usuario logeado = UsuarioHelper.usuarioLogeado(session, connection);
+		Usuario logeado = Usuarios.usuarioLogeado(session, connection);
 		if(logeado==null) {
 			template.addAttribute("idlogeado", "0");
 		} else {
 			template.addAttribute("idlogeado", logeado.getId());
 		}
 				
-		ProductosHelper.checkearHeader(logeado, template);
+		Productos.checkearHeader(logeado, template);
 		
 
 		PreparedStatement consulta = connection.prepareStatement("SELECT * FROM productos WHERE id = ?;");
@@ -1918,7 +1561,7 @@ public class ProductosController {
 					template.addAttribute("bSata", false);
 					template.addAttribute("bSocket", false);
 					
-					ComentariosHelper.cargarComentarios(connection, id, template);
+					Comentarios.cargarComentarios(connection, id, template);
 					connection.close();
 					
 					return "detalleProducto";
@@ -1942,7 +1585,7 @@ public class ProductosController {
 					template.addAttribute("bTamanio", false);
 					template.addAttribute("bSata", false);
 					
-					ComentariosHelper.cargarComentarios(connection, id, template);
+					Comentarios.cargarComentarios(connection, id, template);
 					connection.close();
 					
 					return "detalleProducto";
@@ -1965,7 +1608,7 @@ public class ProductosController {
 					template.addAttribute("bVelocidad", false);
 					template.addAttribute("bSocket", false);
 					
-					ComentariosHelper.cargarComentarios(connection, id, template);
+					Comentarios.cargarComentarios(connection, id, template);
 					connection.close();
 					
 					return "detalleProducto";
@@ -1990,7 +1633,7 @@ public class ProductosController {
 					template.addAttribute("bConsumo", false);
 					template.addAttribute("bVelocidad", false);
 					
-					ComentariosHelper.cargarComentarios(connection, id, template);
+					Comentarios.cargarComentarios(connection, id, template);
 					connection.close();
 					
 					return "detalleProducto";
@@ -2015,7 +1658,7 @@ public class ProductosController {
 					template.addAttribute("bSata", false);
 					template.addAttribute("bSocket", false);
 					
-					ComentariosHelper.cargarComentarios(connection, id, template);
+					Comentarios.cargarComentarios(connection, id, template);
 					connection.close();
 					
 					return "detalleProducto";
@@ -2034,8 +1677,8 @@ public class ProductosController {
 		connection = DriverManager.getConnection(env.getProperty("spring.datasource.url"), env.getProperty("spring.datasource.username"),
 				env.getProperty("spring.datasource.password"));
 		
-		Usuario logeado = UsuarioHelper.usuarioLogeado(session, connection);
-		ProductosHelper.checkearHeader(logeado, template);
+		Usuario logeado = Usuarios.usuarioLogeado(session, connection);
+		Productos.checkearHeader(logeado, template);
 		if (logeado == null) {
 			connection.close();
 			return "formulario-registro-usuario";
@@ -2087,8 +1730,8 @@ public class ProductosController {
 		connection = DriverManager.getConnection(env.getProperty("spring.datasource.url"), env.getProperty("spring.datasource.username"),
 				env.getProperty("spring.datasource.password"));
 		
-		Usuario logeado = UsuarioHelper.usuarioLogeado(session, connection);
-		ProductosHelper.checkearHeader(logeado, template);
+		Usuario logeado = Usuarios.usuarioLogeado(session, connection);
+		Productos.checkearHeader(logeado, template);
 		
 		if (logeado == null) {
 			connection.close();
@@ -2106,7 +1749,7 @@ public class ProductosController {
 		Connection connection;
 		connection = DriverManager.getConnection(env.getProperty("spring.datasource.url"), env.getProperty("spring.datasource.username"),
 				env.getProperty("spring.datasource.password"));
-		UsuarioHelper.cerrarSesion(session, connection);
+		Usuarios.cerrarSesion(session, connection);
 		connection.close();
 		return "redirect:/login";
 	}
@@ -2118,10 +1761,10 @@ public class ProductosController {
 		connection = DriverManager.getConnection(env.getProperty("spring.datasource.url"), env.getProperty("spring.datasource.username"),
 				env.getProperty("spring.datasource.password"));
 		
-		boolean sePudo = UsuarioHelper.intentarLogearse(session, nick, contrasenia, connection);
+		boolean sePudo = Usuarios.intentarLogearse(session, nick, contrasenia, connection);
 			
 			if (sePudo){
-				Usuario logeado = UsuarioHelper.usuarioLogeado(session, connection);
+				Usuario logeado = Usuarios.usuarioLogeado(session, connection);
 				connection.close();
 				return "redirect:/perfil/" + logeado.getNick();
 			} else {
@@ -2136,9 +1779,9 @@ public class ProductosController {
 		connection = DriverManager.getConnection(env.getProperty("spring.datasource.url"), env.getProperty("spring.datasource.username"),
 				env.getProperty("spring.datasource.password"));
 		
-		Usuario logeado = UsuarioHelper.usuarioLogeado(session, connection);
+		Usuario logeado = Usuarios.usuarioLogeado(session, connection);
 		
-		ProductosHelper.checkearHeader(logeado, template);
+		Productos.checkearHeader(logeado, template);
 		
 
 
@@ -2340,9 +1983,9 @@ public class ProductosController {
 		connection = DriverManager.getConnection(env.getProperty("spring.datasource.url"), env.getProperty("spring.datasource.username"),
 				env.getProperty("spring.datasource.password"));
 		
-		Usuario logeado = UsuarioHelper.usuarioLogeado(session, connection);
+		Usuario logeado = Usuarios.usuarioLogeado(session, connection);
 		
-		ProductosHelper.checkearHeader(logeado, template);
+		Productos.checkearHeader(logeado, template);
 		
 		PreparedStatement consulta = connection.prepareStatement(
 				"INSERT INTO pcusuarios(motherboard, microprocesador, placadevideo, ram1, ram2, discoduro, idpropietario) VALUES( ?, ?, ?, ?, ?, ?, ?); ");
@@ -2381,7 +2024,7 @@ public class ProductosController {
 		connection = DriverManager.getConnection(env.getProperty("spring.datasource.url"), env.getProperty("spring.datasource.username"),
 				env.getProperty("spring.datasource.password"));
 		
-		Usuario logeado = UsuarioHelper.usuarioLogeado(session, connection);
+		Usuario logeado = Usuarios.usuarioLogeado(session, connection);
 		
 		if (logeado == null) {
 			template.addAttribute("header", "header");
@@ -2458,4 +2101,132 @@ public class ProductosController {
 		return "crearMiPc";
 	}
 
+	
+	@GetMapping("/arma-tu-pc/modificar-producto")
+	public String ModificarProducto(Model template,@RequestParam String type, @RequestParam int idProducto) throws SQLException {
+		Connection connection;
+		connection = DriverManager.getConnection(env.getProperty("spring.datasource.url"), env.getProperty("spring.datasource.username"),
+				env.getProperty("spring.datasource.password"));
+		PreparedStatement consulta;
+		
+		if(type.equals("micro")) {
+			consulta = connection.prepareStatement("UPDATE pc SET micro = ? WHERE id=2 ;");
+		} else if (type.equals("gpu")){
+			consulta = connection.prepareStatement("UPDATE pc SET gpu = ? WHERE id=2 ;");
+		} else if (type.equals("mother")){
+			consulta = connection.prepareStatement("UPDATE pc SET mother = ? WHERE id=2 ;");
+		} else if (type.equals("disco")){
+			consulta = connection.prepareStatement("UPDATE pc SET disco = ? WHERE id=2 ;");
+		} else if (type.equals("ram1")){
+			consulta = connection.prepareStatement("UPDATE pc SET ram1 = ? WHERE id=2 ;");
+		} else if (type.equals("ram2")){
+			consulta = connection.prepareStatement("UPDATE pc SET ram2 = ? WHERE id=2 ;");
+		} else if (type.equals("ram3")){
+			consulta = connection.prepareStatement("UPDATE pc SET ram3 = ? WHERE id=2 ;");
+		} else if (type.equals("ram4")){
+			consulta = connection.prepareStatement("UPDATE pc SET ram4 = ? WHERE id=2 ;");
+		} else {
+			consulta = connection.prepareStatement("UPDATE pc SET fuente = ? WHERE id=2 ;");
+		}
+		
+		consulta.setInt(1, idProducto);
+		consulta.executeUpdate();
+		connection.close();
+		
+		return "redirect:/arma-tu-pc/armar";
+	}
+	
+	@GetMapping("/arma-tu-pc/eliminar-producto")
+	public String eliminarProducto(Model template, @RequestParam String type ) throws SQLException {
+		Connection connection;
+		connection = DriverManager.getConnection(env.getProperty("spring.datasource.url"), env.getProperty("spring.datasource.username"),
+				env.getProperty("spring.datasource.password"));
+		PreparedStatement consulta;
+		if(type.equals("micro")) {
+			consulta = connection.prepareStatement("UPDATE pc SET micro = null WHERE id=2 ;");
+		} else if (type.equals("gpu")){
+			consulta = connection.prepareStatement("UPDATE pc SET gpu = null WHERE id=2 ;");
+		} else if (type.equals("mother")){
+			consulta = connection.prepareStatement("UPDATE pc SET mother = null WHERE id=2 ;");
+		} else if (type.equals("disco")){
+			consulta = connection.prepareStatement("UPDATE pc SET disco = null WHERE id=2 ;");
+		} else if (type.equals("ram1")){
+			consulta = connection.prepareStatement("UPDATE pc SET ram1 = null WHERE id=2 ;");
+		} else if (type.equals("ram2")){
+			consulta = connection.prepareStatement("UPDATE pc SET ram2 = null WHERE id=2 ;");
+		} else if (type.equals("ram3")){
+			consulta = connection.prepareStatement("UPDATE pc SET ram3 = null WHERE id=2 ;");
+		} else if (type.equals("ram4")){
+			consulta = connection.prepareStatement("UPDATE pc SET ram4 = null WHERE id=2 ;");
+		} else {
+			consulta = connection.prepareStatement("UPDATE pc SET fuente = null WHERE id=2 ;");
+		}
+		consulta.executeUpdate();
+		connection.close();
+		return "redirect:/arma-tu-pc/armar";
+	}
+
+	@GetMapping("/arma-tu-pc/armar")
+	public String armar(Model template) throws SQLException {
+		Connection connection;
+		connection = DriverManager.getConnection(env.getProperty("spring.datasource.url"), env.getProperty("spring.datasource.username"),
+				env.getProperty("spring.datasource.password"));
+		
+		
+		SQLHelper.cargarProductos(connection, template);
+		
+		Computadora2 pc = SQLHelper.cargarPc(connection, template);
+		
+		boolean haveRam;
+		
+		if(pc.getRam1()==0) {
+			haveRam = false;
+		} else {
+			haveRam = true;
+		}
+		
+		if(pc.getMicro()==0 && haveRam == false) {
+			ArmarPc.mothers(connection, template);	
+		}
+		if(pc.getMicro()!=0 && haveRam == false) {
+			Producto micro =ArmarPc.producto(connection, template, pc.getMicro());
+			ArmarPc.motherSocket(connection, template, micro.getSocketcpu());
+		}
+		if(haveRam == true && pc.getMicro()==0) {
+			Producto ram =ArmarPc.producto(connection, template, pc.getRam1());
+			ArmarPc.motherRam(connection, template, ram.getTiporam());
+		}
+		if(haveRam == true && pc.getMicro()!=0) {
+			Producto micro =ArmarPc.producto(connection, template, pc.getMicro());
+			Producto ram =ArmarPc.producto(connection, template, pc.getRam1());
+			ArmarPc.motherRamSocket(connection, template, ram.getTiporam(), micro.getSocketcpu());
+		}
+		
+		if(pc.getMother()==0) {
+			ArmarPc.micros(connection, template);
+			ArmarPc.rams(connection, template);
+		}
+		if(pc.getMother()!=0) {
+			Producto mother =ArmarPc.producto(connection, template, pc.getMother());
+			ArmarPc.microSocket(connection, template, mother.getSocketcpu());
+			ArmarPc.ramSocket(connection, template, mother.getTiporam());
+		}
+		ArmarPc.discos(connection, template);
+		ArmarPc.fuentes(connection, template);
+		ArmarPc.gpu(connection, template);
+		
+		connection.close();
+		return "armar-pc";
+	}
+
+	@GetMapping("/arma-tu-pc/crear-pc")
+	public String crearPC(Model template) throws SQLException {
+		Connection connection;
+		connection = DriverManager.getConnection(env.getProperty("spring.datasource.url"), env.getProperty("spring.datasource.username"),
+				env.getProperty("spring.datasource.password"));
+		SQLHelper.nuevaPc(connection);
+		
+		connection.close();
+		return "arma-tu-pc";
+	}
 }

@@ -11,7 +11,7 @@ import org.springframework.ui.Model;
 import com.example.model.Producto;
 
 
-public class Cargar {
+public class ArmarPc {
 	
 	public static Producto producto(Connection connection, Model template, int id) throws SQLException {
 		PreparedStatement consulta = connection.prepareStatement("SELECT * FROM productos WHERE id=?;");
