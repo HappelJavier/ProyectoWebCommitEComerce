@@ -37,7 +37,7 @@ public class MainController {
 	@Autowired
 	private Environment env;
 	
-	
+ 
 	@GetMapping("/proyectos")
 	public String proyectos(HttpSession session, Model template) throws SQLException {
 		return "proyectos";
