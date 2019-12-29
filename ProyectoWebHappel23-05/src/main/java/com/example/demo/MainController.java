@@ -37,10 +37,6 @@ public class MainController {
 	@Autowired
 	private Environment env;
 	
-	@GetMapping("/")
-	public String index(HttpSession session, Model template) throws SQLException {
-		return "index";
-	}
 	
 	@GetMapping("/proyectos")
 	public String proyectos(HttpSession session, Model template) throws SQLException {
@@ -52,7 +48,7 @@ public class MainController {
 		return "arma-tu-pc";
 	}
 
-	@GetMapping("/home")
+	@GetMapping("/")
 	public String home(HttpSession session, Model template) throws SQLException {
 		Connection connection;
 		connection = DriverManager.getConnection(env.getProperty("spring.datasource.url"), env.getProperty("spring.datasource.username"),
